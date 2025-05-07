@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DueDiligenceAI - Financial Reports</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Color System */
+    :root {
+      --deep-navy: #0A2342;
+      --azure-blue: #2D72D9;
+      --slate-gray: #3C4858;
+      --mint-green: #00BFA5;
+      --coral-red: #FF5252;
+      --amber-yellow: #FFC107;
+      --light-blue: #E1F5FE;
+      --sky-blue: #81D4FA;
+      --dark-blue: #01579B;
+      --charcoal: #263238;
+      --medium-gray: #78909C;
+      --light-gray: #ECEFF1;
+      --white: #FFFFFF;
+      
+      /* Typography */
+      --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-display: 'Manrope', var(--font-primary);
+      --font-mono: 'JetBrains Mono', SFMono-Regular, Consolas, monospace;
+      
+      /* Spacing */
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 12px;
+      --space-lg: 16px;
+      --space-xl: 24px;
+      --space-2xl: 32px;
+      --space-3xl: 48px;
+      
+      /* Shadows */
+      --shadow-sm: 0px 1px 3px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0px 2px 6px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      
+      /* Border Radius */
+      --radius-sm: 2px;
+      --radius-md: 4px;
+      --radius-lg: 8px;
+    }
+
+    /* Global Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-primary);
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--slate-gray);
+      background-color: var(--light-gray);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-display);
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      line-height: 1.2;
+      font-weight: 800;
+      color: var(--deep-navy);
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      line-height: 1.2;
+      font-weight: 700;
+      color: var(--slate-gray);
+    }
+
+    h4 {
+      font-size: 1.125rem;
+      line-height: 1.4;
+      font-weight: 600;
+      color: var(--deep-navy);
+    }
+
+    /* Top Navigation */
+    .top-nav {
+      background-color: var(--white);
+      height: 64px;
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 var(--space-xl);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .top-nav-left, .top-nav-right {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--deep-navy);
+      margin-right: var(--space-2xl);
+    }
+
+    .logo svg {
+      margin-right: var(--space-sm);
+    }
+
+    .nav-items {
+      display: flex;
+    }
+
+    .nav-item {
+      padding: 0 var(--space-lg);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      color: var(--slate-gray);
+      cursor: pointer;
+      transition: color 0.15s;
+      position: relative;
+    }
+
+    .nav-item:hover {
+      color: var(--azure-blue);
+    }
+
+    .nav-item.active {
+      color: var(--azure-blue);
+    }
+
+    .nav-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--azure-blue);
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      background-color: var(--light-gray);
+      border-radius: 4px;
+      padding: 0 var(--space-md);
+      margin-right: var(--space-lg);
+      height: 36px;
+      width: 240px;
+    }
+
+    .search-bar input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 14px;
+      width: 100%;
+      margin-left: var(--space-xs);
+    }
+
+    .notifications, .user-profile {
+      margin-left: var(--space-lg);
+      cursor: pointer;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      background-color: var(--azure-blue);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    /* Main Layout */
+    .container {
+      padding: var(--space-xl);
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    /* Page Header */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-xl);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: var(--space-md);
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--light-gray);
+      margin-bottom: var(--space-xl);
+      background-color: var(--white);
+      border-radius: var(--radius-md) var(--radius-md) 0 0;
+    }
+
+    .tab {
+      padding: var(--space-md) var(--space-xl);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--slate-gray);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .tab:hover {
+      background-color: var(--light-blue);
+    }
+
+    .tab.active {
+      color: var(--azure-blue);
+    }
+
+    .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--azure-blue);
+    }
+
+    /* Button Styles */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      border-radius: var(--radius-md);
+      font-weight: 500;
+      font-size: 14px;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .button .icon {
+      width: 18px;
+      height: 18px;
+      margin-right: var(--space-xs);
+    }
+
+    .primary {
+      background-color: var(--azure-blue);
+      color: var(--white);
+    }
+
+    .primary:hover {
+      background-color: #1A5DC7;
+    }
+
+    .secondary {
+      background-color: var(--white);
+      color: var(--azure-blue);
+      border: 1px solid var(--azure-blue);
+    }
+
+    .secondary:hover {
+      background-color: var(--light-blue);
+    }
+
+    .tertiary {
+      background-color: transparent;
+      color: var(--azure-blue);
+      padding: 8px 12px;
+    }
+
+    .tertiary:hover {
+      background-color: var(--light-blue);
+    }
+
+    .icon-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-md);
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+    }
+
+    .icon-button:hover {
+      background-color: var(--light-gray);
+    }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      stroke-width: 1.5;
+    }
+
+    /* Filter Bar */
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      gap: var(--space-lg);
+      margin-bottom: var(--space-xl);
+      flex-wrap: wrap;
+    }
+
+    .filter-item {
+      display: flex;
+      align-items: center;
+      background-color: var(--white);
+      border: 1px solid var(--light-gray);
+      border-radius: var(--radius-md);
+      padding: 8px 12px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .filter-item .icon {
+      margin-right: var(--space-xs);
+      width: 16px;
+      height: 16px;
+    }
+
+    .filter-item.active {
+      border-color: var(--azure-blue);
+      color: var(--azure-blue);
+    }
+
+    .search-filter {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .search-filter .filter-item {
+      width: 100%;
+    }
+
+    .search-filter input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 14px;
+      width: 100%;
+    }
+
+    /* Report Grid */
+    .reports-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: var(--space-xl);
+    }
+
+    /* Report Card */
+    .report-card {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      transition: box-shadow 0.2s ease;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .report-card:hover {
+      box-shadow: var(--shadow-lg);
+    }
+
+    .report-header {
+      padding: var(--space-lg);
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .report-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-xs);
+    }
+
+    .report-subtitle {
+      font-size: 14px;
+      color: var(--medium-gray);
+    }
+
+    .report-type {
+      font-size: 12px;
+      border-radius: 12px;
+      padding: 2px 8px;
+      font-weight: 500;
+    }
+
+    .report-type.financial {
+      background-color: rgba(45, 114, 217, 0.1);
+      color: var(--azure-blue);
+    }
+
+    .report-preview {
+      padding: var(--space-lg);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .report-metrics {
+      display: flex;
+      margin-bottom: var(--space-lg);
+      gap: var(--space-lg);
+    }
+
+    .report-metric {
+      flex: 1;
+    }
+
+    .metric-label {
+      font-size: 12px;
+      color: var(--medium-gray);
+      margin-bottom: 4px;
+    }
+
+    .metric-value {
+      font-family: var(--font-mono);
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--deep-navy);
+    }
+
+    .report-description {
+      font-size: 14px;
+      color: var(--slate-gray);
+      margin-bottom: var(--space-lg);
+      flex: 1;
+    }
+
+    .report-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-md) var(--space-lg);
+      border-top: 1px solid var(--light-gray);
+      background-color: var(--light-gray);
+    }
+
+    .report-meta {
+      font-size: 12px;
+      color: var(--medium-gray);
+      display: flex;
+      align-items: center;
+    }
+
+    .report-meta .icon {
+      width: 14px;
+      height: 14px;
+      margin-right: 4px;
+    }
+
+    .report-actions {
+      display: flex;
+      gap: var(--space-sm);
+    }
+
+    /* Financial Reports Specific Styles */
+    .financial-summary {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
+      margin-bottom: var(--space-xl);
+      box-shadow: var(--shadow-md);
+    }
+
+    .summary-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: var(--space-lg);
+    }
+
+    .summary-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--deep-navy);
+    }
+
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: var(--space-lg);
+    }
+
+    .summary-card {
+      background-color: var(--light-gray);
+      border-radius: var(--radius-md);
+      padding: var(--space-lg);
+    }
+
+    .summary-card-label {
+      font-size: 14px;
+      color: var(--medium-gray);
+      margin-bottom: var(--space-xs);
+    }
+
+    .summary-card-value {
+      font-family: var(--font-mono);
+      font-size: 24px;
+      font-weight: 500;
+      color: var(--deep-navy);
+    }
+
+    .summary-card-trend {
+      display: flex;
+      align-items: center;
+      margin-top: var(--space-xs);
+      font-size: 12px;
+    }
+
+    .trend-up {
+      color: var(--mint-green);
+    }
+
+    .trend-down {
+      color: var(--coral-red);
+    }
+
+    .trend-neutral {
+      color: var(--medium-gray);
+    }
+
+    .report-tags {
+      display: flex;
+      gap: var(--space-xs);
+      margin-top: var(--space-sm);
+    }
+
+    .report-tag {
+      font-size: 11px;
+      background-color: var(--light-gray);
+      border-radius: 10px;
+      padding: 1px 6px;
+      color: var(--medium-gray);
+    }
+
+    /* Pagination */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      margin-top: var(--space-2xl);
+    }
+
+    .pagination-item {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-md);
+      margin: 0 4px;
+      font-size: 14px;
+      cursor: pointer;
+      color: var(--slate-gray);
+    }
+
+    .pagination-item:hover {
+      background-color: var(--light-blue);
+    }
+
+    .pagination-item.active {
+      background-color: var(--azure-blue);
+      color: var(--white);
+    }
+
+    /* Responsive Breakpoints */
+    @media (max-width: 1024px) {
+      .reports-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      }
+      
+      .summary-cards {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      .reports-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-md);
+      }
+      
+      .header-actions {
+        width: 100%;
+      }
+      
+      .top-nav {
+        padding: 0 var(--space-md);
+      }
+      
+      .nav-items {
+        display: none;
+      }
+      
+      .search-bar {
+        width: 160px;
+      }
+      
+      .summary-cards {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <div class="top-nav-left">
+      <div class="logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 8H16C20.4183 8 24 11.5817 24 16C24 20.4183 20.4183 24 16 24H8V8Z" fill="#0A2342"/>
+          <path d="M16 8H24V16C24 20.4183 20.4183 24 16 24V8Z" fill="#2D72D9"/>
+        </svg>
+        <span>DueDiligenceAI</span>
+      </div>
+      <div class="nav-items">
+        <div class="nav-item">Dashboard</div>
+        <div class="nav-item">Documents</div>
+        <div class="nav-item">Analysis</div>
+        <div class="nav-item active">Reports</div>
+      </div>
+    </div>
+    <div class="top-nav-right">
+      <div class="search-bar">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <input type="text" placeholder="Search..." />
+      </div>
+      <div class="notifications">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 17H9M12 3V4M12 21V20M5.6 5.6L6.3 6.3M18.4 5.6L17.7 6.3M3 12H4M20 12H21M6 17.4V12C6 8.7 8.7 6 12 6C15.3 6 18 8.7 18 12V17.4H6Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="user-profile">
+        <div class="avatar">SK</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1>Financial Reports</h1>
+      <div class="header-actions">
+        <button class="button secondary">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 16.5V18.75C3 19.9926 4.00736 21 5.25 21H18.75C19.9926 21 21 19.9926 21 18.75V16.5M16.5 12L12 16.5M12 16.5L7.5 12M12 16.5V3" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Export All
+        </button>
+        <button class="button primary">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 5V19M5 12H19" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Create New Report
+        </button>
+      </div>
+    </div>
+
+    <!-- Financial Summary Section -->
+    <div class="financial-summary">
+      <div class="summary-header">
+        <div class="summary-title">Financial Overview</div>
+        <button class="button tertiary">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 6V12H18M12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21Z" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Last 30 Days
+        </button>
+      </div>
+      <div class="summary-cards">
+        <div class="summary-card">
+          <div class="summary-card-label">Total Reports</div>
+          <div class="summary-card-value">28</div>
+          <div class="summary-card-trend trend-up">
+            <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 20V4M12 4L18 10M12 4L6 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            +12% from last month
+          </div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-card-label">Avg. Revenue Analyzed</div>
+          <div class="summary-card-value">$42.8M</div>
+          <div class="summary-card-trend trend-up">
+            <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 20V4M12 4L18 10M12 4L6 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            +8.3% from last month
+          </div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-card-label">Avg. EBITDA</div>
+          <div class="summary-card-value">$9.7M</div>
+          <div class="summary-card-trend trend-down">
+            <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 4V20M12 20L18 14M12 20L6 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            -4.2% from last month
+          </div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-card-label">Avg. Risk Score</div>
+          <div class="summary-card-value">65</div>
+          <div class="summary-card-trend trend-neutral">
+            <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5 12H19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            No change from last month
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs Navigation -->
+    <div class="tabs">
+      <div class="tab">All Reports</div>
+      <div class="tab active">Financial</div>
+      <div class="tab">Risk Assessment</div>
+      <div class="tab">Compliance</div>
+      <div class="tab">Tax</div>
+      <div class="tab">Custom</div>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <div class="search-filter">
+        <div class="filter-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <input type="text" placeholder="Search financial reports..." />
+        </div>
+      </div>
+      <div class="filter-item active">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 7V3M8 7V11M8 7H20M4 15V19M4 15V11M4 15H16M12 19V15M12 19V23M12 19H4M16 11V7M16 11V15M16 11H4" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Filters (3)
+      </div>
+      <div class="filter-item">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 4H21M3 8H15M3 12H21M3 16H15M3 20H21" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Sort By: Revenue
+      </div>
+      <div class="filter-item">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Last 30 Days
+      </div>
+    </div>
+
+    <!-- Reports Grid -->
+    <div class="reports-grid">
+      <!-- Report Card 1 -->
+      <div class="report-card">
+        <div class="report-header">
+          <div>
+            <h4 class="report-title">ABC Corp Financial Due Diligence</h4>
+            <div class="report-subtitle">Acquisition Target Analysis</div>
+          </div>
+          <span class="report-type financial">Financial</span>
+        </div>
+        <div class="report-preview">
+          <div class="report-metrics">
+            <div class="report-metric">
+              <div class="metric-label">Risk Level</div>
+              <div class="metric-value">Medium</div>
+            </div>
+          </div>
+          <div class="report-description">
+            Comprehensive financial analysis of ABC Corp for potential acquisition. Includes revenue analysis, profitability assessment, debt structure, and cash flow projections for the next 5 years.
+          </div>
+          <div class="report-tags">
+            <span class="report-tag">Acquisition</span>
+            <span class="report-tag">Manufacturing</span>
+            <span class="report-tag">North America</span>
+          </div>
+        </div>
+        <div class="report-footer">
+          <div class="report-meta">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Apr 28, 2025
+          </div>
+          <div class="report-actions">
+            <button class="icon-button">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 15L12 3M12 3L16 7M12 3L8 7M3 15V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V15" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button class="icon-button">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8.5 13.5L11 16L16 11M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button class="icon-button">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 5V5.01M12 8V19M15 8H9C9 6.34315 10.3431 5 12 5C13.6569 5 15 6.34315 15 8Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Report Card 2 -->
+      <div class="report-card">
+        <div class="report-header">
+          <div>
+            <h4 class="report-title">PQR Group Financial Statement Analysis</h4>
+            <div class="report-subtitle">Quarterly Review</div>
+          </div>
+          <span class="report-type financial">Financial</span>
+        </div>
+        <div class="report-preview">
+          <div class="report-metrics">
+            <div class="report-metric">
+              <div class="metric-label">Revenue</div>
+              <div class="metric-value">$28.7M</div>
+            </div>
+            <div class="report-metric">
+              <div class="metric-label">Growth</div>
+              <div class="metric-value">+8.5%</div>
+            </div>
+            <div class="report-metric">
+              <div class="metric-label">Profit Margin</div>
+              <div class="metric-value">18.3%</div>
+            </div>
+          </div>
+          <div class="report-description">
+            Detailed analysis of PQR Group's Q1 2025 financial statements. Examines revenue streams, profitability metrics, operational efficiency, and provides comparison against industry benchmarks and previous quarters.
+          </div>
+          <div class="report-tags">
+            <span class="report-tag">Quarterly</span>
+            <span class="report-tag">Tech</span>
+            <span class="report-tag">Public Company</span>
+          </div>
+        </div>
+        <div class="report-footer">
+          <div class="report-meta">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Apr 15, 2025
+          </div>
+          <div class="report-actions">
+            <button class="icon-button">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 15L12 3M12 3L16 7M12 3L8 7M3 15V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V15" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button class="icon-button">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8.5 13.5L11 16L16 11M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button class="icon-button">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 5V5.01M12 8V19M15 8H9C9 6.34315 10.3431 5 12 5C13.6569 5 15 6.34315 15 8Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Report Card 3 -->
+      <div class="report-card">
+        <div class="report-header">
+          <div>
+            <h4 class="report-title">Horizon Investments Financial Analysis</h4>
+            <div class="report-subtitle">Pre-Funding Valuation</div>
+          </div>
+          <span class="report-type financial">Financial</span>
+        </div>
+        <div class="report-preview">
+          <div class="report-metrics">
+            <div class="report-metric">
+              <div class="metric-label">Valuation</div>
+              <div class="metric-value">$64.5M</div>
+            </div>
+            <div class="report-metric">
+              <div class="metric-label">Burn Rate</div>
+              <div class="metric-value">$420K</div>
+            </div>
+            <div class="report-metric">
+              <div class="metric-label">Runway</div>
+              <div class="metric-value">18 mo</div>
+            </div>
+          </div>
+          <div class="report-description">
+            Financial analysis and valuation for Horizon Investments prior to Series B funding. Includes valuation model, cash flow analysis, burn rate assessment, and market positioning evaluation.
+          </div>
+          <div class="report-tags">
+            <span class="report-tag">Startup</span>
+            <span class="report-tag">FinTech</span>
+            <span class="report-tag">Series B</span>
+          </div>
+        </div>
+        <div class="report-footer">
+          <div class="report-meta">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Apr 12, 2025
+          </div>
+          <div class="report-actions">
+            <button class="icon-button">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 15L12 3M12 3L16 7M12 3L8 7M3 15V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V15" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button class="icon-button">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8.5 13.5L11 16L16 11M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button class="icon-button">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 5V5.01M12 8V19M15 8H9C9 6.34315 10.3431 5 12 5C13.6569 5 15 6.34315 15 8Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Report Card 4 -->
+      <div class="report-card">
+        <div class="report-header">
+          <div>
+            <h4 class="report-title">GreenEnergy Corp Financial Due Diligence</h4>
+            <div class="report-subtitle">Merger Analysis</div>
+          </div>
+          <span class="report-type financial">Financial</span>
+        </div>
+        <div class="report-preview">
+          <div class="report-metrics">
+            <div class="report-metric">
+              <div class="metric-label">Revenue</div>
+              <div class="metric-value">$78.3M</div>
+            </div>
+            <div class="report-metric">
+              <div class="metric-label">EBITDA</div>
+              <div class="metric-value">$14.2M</div>
+            </div>
+            <div class="report-metric">
+              <div class="metric-label">Synergies</div>
+              <div class="metric-value">$5.8M</div>
+            </div>
+          </div>
+          <div class="report-description">
+            Financial due diligence for GreenEnergy Corp ahead of potential merger. Analyzes financial statements, revenue sources, cost structure, synergy potentials, and provides post-merger financial projections.
+          </div>
+          <div class="report-tags">
+            <span class="report-tag">Merger</span>
+            <span class="report-tag">Energy</span>
+            <span class="report-tag">Europe</span>
+          </div>
+        </div>
+        <div class="report-footer">
+          <div class="report-meta">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Apr 8, 2025
+          </div>
+          <div class="report-actions">
+            <button class="icon-button">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 15L12 3M12 3L16 7M12 3L8 7M3 15V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V15" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button class="icon-button">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8.5 13.5L11 16L16 11M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button class="icon-button">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 5V5.01M12 8V19M15 8H9C9 6.34315 10.3431 5 12 5C13.6569 5 15 6.34315 15 8Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Report Card 5 -->
+      <div class="report-card">
+        <div class="report-header">
+          <div>
+            <h4 class="report-title">MedTech Solutions Financial Review</h4>
+            <div class="report-subtitle">Expansion Funding</div>
+          </div>
+          <span class="report-type financial">Financial</span>
+        </div>
+        <div class="report-preview">
+          <div class="report-metrics">
+            <div class="report-metric">
+              <div class="metric-label">Revenue</div>
+              <div class="metric-value">$22.8M</div>
+            </div>
+            <div class="report-metric">
+              <div class="metric-label">Growth</div>
+              <div class="metric-value">+32.4%</div>
+            </div>
+            <div class="report-metric">
+              <div class="metric-label">Funding Need</div>
+              <div class="metric-value">$15M</div>
+            </div>
+          </div>
+          <div class="report-description">
+            Financial analysis of MedTech Solutions to support expansion funding round. Details growth trajectory, market opportunity, current financial position, and projected returns on new capital investment.
+          </div>
+          <div class="report-tags">
+            <span class="report-tag">Healthcare</span>
+            <span class="report-tag">Growth</span>
+            <span class="report-tag">Private Equity</span>
+          </div>
+        </div>
+        <div class="report-footer">
+          <div class="report-meta">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Apr 3, 2025
+          </div>
+          <div class="report-actions">
+            <button class="icon-button">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 15L12 3M12 3L16 7M12 3L8 7M3 15V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V15" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button class="icon-button">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8.5 13.5L11 16L16 11M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button class="icon-button">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 5V5.01M12 8V19M15 8H9C9 6.34315 10.3431 5 12 5C13.6569 5 15 6.34315 15 8Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Report Card 6 -->
+      <div class="report-card">
+        <div class="report-header">
+          <div>
+            <h4 class="report-title">Global Logistics Financial Assessment</h4>
+            <div class="report-subtitle">Operational Efficiency Review</div>
+          </div>
+          <span class="report-type financial">Financial</span>
+        </div>
+        <div class="report-preview">
+          <div class="report-metrics">
+            <div class="report-metric">
+              <div class="metric-label">Revenue</div>
+              <div class="metric-value">$103.5M</div>
+            </div>
+            <div class="report-metric">
+              <div class="metric-label">Op. Margin</div>
+              <div class="metric-value">11.2%</div>
+            </div>
+            <div class="report-metric">
+              <div class="metric-label">Cost Savings</div>
+              <div class="metric-value">$8.3M</div>
+            </div>
+          </div>
+          <div class="report-description">
+            Financial assessment of Global Logistics with focus on operational efficiency. Analyzes cost structure, pricing strategy, resource allocation, and identifies opportunities for margin improvement and cost reduction.
+          </div>
+          <div class="report-tags">
+            <span class="report-tag">Logistics</span>
+            <span class="report-tag">Efficiency</span>
+            <span class="report-tag">Global</span>
+          </div>
+        </div>
+        <div class="report-footer">
+          <div class="report-meta">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Mar 28, 2025
+          </div>
+          <div class="report-actions">
+            <button class="icon-button">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 15L12 3M12 3L16 7M12 3L8 7M3 15V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V15" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button class="icon-button">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8.5 13.5L11 16L16 11M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button class="icon-button">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 5V5.01M12 8V19M15 8H9C9 6.34315 10.3431 5 12 5C13.6569 5 15 6.34315 15 8Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+      <div class="pagination-item">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 19L8 12L15 5" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="pagination-item active">1</div>
+      <div class="pagination-item">2</div>
+      <div class="pagination-item">3</div>
+      <div class="pagination-item">4</div>
+      <div class="pagination-item">5</div>
+      <div class="pagination-item">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 5L16 12L9 19" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

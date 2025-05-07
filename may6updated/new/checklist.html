@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DueDiligenceAI - Buyer's Checklist</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Color System */
+    :root {
+      --deep-navy: #0A2342;
+      --azure-blue: #2D72D9;
+      --slate-gray: #3C4858;
+      --mint-green: #00BFA5;
+      --coral-red: #FF5252;
+      --amber-yellow: #FFC107;
+      --light-blue: #E1F5FE;
+      --sky-blue: #81D4FA;
+      --dark-blue: #01579B;
+      --charcoal: #263238;
+      --medium-gray: #78909C;
+      --light-gray: #ECEFF1;
+      --white: #FFFFFF;
+      
+      /* Typography */
+      --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-display: 'Manrope', var(--font-primary);
+      --font-mono: 'JetBrains Mono', SFMono-Regular, Consolas, monospace;
+      
+      /* Spacing */
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 12px;
+      --space-lg: 16px;
+      --space-xl: 24px;
+      --space-2xl: 32px;
+      --space-3xl: 48px;
+      
+      /* Shadows */
+      --shadow-sm: 0px 1px 3px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0px 2px 6px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      
+      /* Border Radius */
+      --radius-sm: 2px;
+      --radius-md: 4px;
+      --radius-lg: 8px;
+    }
+
+    /* Global Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-primary);
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--slate-gray);
+      background-color: var(--light-gray);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-display);
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      line-height: 1.2;
+      font-weight: 800;
+      color: var(--deep-navy);
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      line-height: 1.2;
+      font-weight: 700;
+      color: var(--slate-gray);
+    }
+
+    h4 {
+      font-size: 1.125rem;
+      line-height: 1.4;
+      font-weight: 600;
+      color: var(--deep-navy);
+    }
+
+    /* Top Navigation */
+    .top-nav {
+      background-color: var(--white);
+      height: 64px;
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 var(--space-xl);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .top-nav-left, .top-nav-right {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--deep-navy);
+      margin-right: var(--space-2xl);
+    }
+
+    .logo svg {
+      margin-right: var(--space-sm);
+    }
+
+    .nav-items {
+      display: flex;
+    }
+
+    .nav-item {
+      padding: 0 var(--space-lg);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      color: var(--slate-gray);
+      cursor: pointer;
+      transition: color 0.15s;
+      position: relative;
+    }
+
+    .nav-item:hover {
+      color: var(--azure-blue);
+    }
+
+    .nav-item.active {
+      color: var(--azure-blue);
+    }
+
+    .nav-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--azure-blue);
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      background-color: var(--light-gray);
+      border-radius: 4px;
+      padding: 0 var(--space-md);
+      margin-right: var(--space-lg);
+      height: 36px;
+      width: 240px;
+    }
+
+    .search-bar input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 14px;
+      width: 100%;
+      margin-left: var(--space-xs);
+    }
+
+    .notifications, .user-profile {
+      margin-left: var(--space-lg);
+      cursor: pointer;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      background-color: var(--azure-blue);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      font-size: 14px;
+    }
+    
+    /* Breadcrumbs */
+    .breadcrumbs {
+      display: flex;
+      padding: var(--space-md) var(--space-xl);
+      background-color: var(--white);
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .breadcrumb-item {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: var(--medium-gray);
+    }
+
+    .breadcrumb-item:not(:last-child)::after {
+      content: '';
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2378909C' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 18l6-6-6-6'%3E%3C/path%3E%3C/svg%3E");
+      background-position: center;
+      background-repeat: no-repeat;
+      margin: 0 var(--space-sm);
+    }
+
+    .breadcrumb-item:last-child {
+      color: var(--charcoal);
+      font-weight: 500;
+    }
+    
+    /* Main Layout */
+    .container {
+      padding: var(--space-xl);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    /* Page Header */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-xl);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: var(--space-md);
+    }
+    
+    /* Button Styles */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      border-radius: var(--radius-md);
+      font-weight: 500;
+      font-size: 14px;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .button .icon {
+      width: 18px;
+      height: 18px;
+      margin-right: var(--space-xs);
+    }
+
+    .primary {
+      background-color: var(--azure-blue);
+      color: var(--white);
+    }
+
+    .primary:hover {
+      background-color: #1A5DC7;
+    }
+
+    .secondary {
+      background-color: var(--white);
+      color: var(--azure-blue);
+      border: 1px solid var(--azure-blue);
+    }
+
+    .secondary:hover {
+      background-color: var(--light-blue);
+    }
+
+    .tertiary {
+      background-color: transparent;
+      color: var(--azure-blue);
+      padding: 8px 12px;
+    }
+
+    .tertiary:hover {
+      background-color: var(--light-blue);
+    }
+    
+    /* Checklist Cards */
+    .checklist-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+      gap: var(--space-xl);
+      margin-bottom: var(--space-xl);
+    }
+    
+    .checklist-card {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+    
+    .checklist-header {
+      padding: var(--space-lg);
+      background-color: var(--deep-navy);
+      color: var(--white);
+    }
+    
+    .checklist-title {
+      font-weight: 600;
+      font-size: 18px;
+      margin-bottom: var(--space-xs);
+    }
+    
+    .checklist-subtitle {
+      font-size: 14px;
+      opacity: 0.8;
+    }
+    
+    .checklist-body {
+      padding: var(--space-lg);
+    }
+    
+    .checklist-progress {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-lg);
+    }
+    
+    .progress-bar {
+      flex: 1;
+      height: 8px;
+      background-color: var(--light-gray);
+      border-radius: 4px;
+      margin-right: var(--space-md);
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background-color: var(--mint-green);
+      border-radius: 4px;
+    }
+    
+    .progress-fill.partial {
+      background-color: var(--amber-yellow);
+    }
+    
+    .progress-fill.low {
+      background-color: var(--coral-red);
+    }
+    
+    .progress-text {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--deep-navy);
+    }
+    
+    .checklist-items {
+      list-style: none;
+    }
+    
+    .checklist-item {
+      padding: var(--space-md) 0;
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      align-items: flex-start;
+    }
+    
+    .checklist-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    
+    .checklist-checkbox {
+      margin-right: var(--space-md);
+      width: 20px;
+      height: 20px;
+      border-radius: var(--radius-sm);
+      border: 2px solid var(--medium-gray);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    
+    .checklist-checkbox.checked {
+      background-color: var(--mint-green);
+      border-color: var(--mint-green);
+    }
+    
+    .checklist-checkbox svg {
+      width: 14px;
+      height: 14px;
+      color: var(--white);
+      display: none;
+    }
+    
+    .checklist-checkbox.checked svg {
+      display: block;
+    }
+    
+    .checklist-item-content {
+      flex: 1;
+    }
+    
+    .checklist-item-title {
+      font-weight: 500;
+      font-size: 14px;
+      color: var(--deep-navy);
+      margin-bottom: 4px;
+    }
+    
+    .checklist-item-description {
+      font-size: 13px;
+      color: var(--slate-gray);
+    }
+    
+    .checklist-item-meta {
+      display: flex;
+      margin-top: var(--space-xs);
+      font-size: 12px;
+      color: var(--medium-gray);
+    }
+    
+    .checklist-item-meta > div {
+      display: flex;
+      align-items: center;
+      margin-right: var(--space-md);
+    }
+    
+    .checklist-item-meta svg {
+      width: 14px;
+      height: 14px;
+      margin-right: 4px;
+    }
+    
+    /* Status Indicator */
+    .status-indicator {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px var(--space-sm);
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+      margin-left: var(--space-md);
+    }
+    
+    .status-indicator.complete {
+      background-color: rgba(0, 191, 165, 0.1);
+      color: var(--mint-green);
+    }
+    
+    .status-indicator.partial {
+      background-color: rgba(255, 193, 7, 0.1);
+      color: var(--amber-yellow);
+    }
+    
+    .status-indicator.pending {
+      background-color: rgba(255, 82, 82, 0.1);
+      color: var(--coral-red);
+    }
+    
+    /* Summary Card */
+    .summary-card {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: var(--space-xl);
+      margin-bottom: var(--space-xl);
+    }
+    
+    .summary-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-lg);
+    }
+    
+    .summary-title {
+      font-weight: 600;
+      font-size: 18px;
+      color: var(--deep-navy);
+    }
+    
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: var(--space-lg);
+    }
+    
+    .summary-item {
+      background-color: var(--light-gray);
+      border-radius: var(--radius-md);
+      padding: var(--space-lg);
+      text-align: center;
+    }
+    
+    .summary-item-value {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-xs);
+    }
+    
+    .summary-item-label {
+      font-size: 14px;
+      color: var(--slate-gray);
+    }
+    
+    /* Data Table Styles */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    
+    .data-table th {
+      background-color: var(--light-gray);
+      color: var(--charcoal);
+      font-weight: 600;
+      text-align: left;
+      padding: var(--space-md);
+    }
+    
+    .data-table td {
+      padding: var(--space-md);
+      border-bottom: 1px solid var(--light-gray);
+    }
+    
+    .data-table tr:hover {
+      background-color: rgba(236, 239, 241, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <div class="top-nav-left">
+      <div class="logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 8H16C20.4183 8 24 11.5817 24 16C24 20.4183 20.4183 24 16 24H8V8Z" fill="#0A2342"/>
+          <path d="M16 8H24V16C24 20.4183 20.4183 24 16 24V8Z" fill="#2D72D9"/>
+        </svg>
+        <span>DueDiligenceAI</span>
+      </div>
+      <div class="nav-items">
+        <div class="nav-item">Dashboard</div>
+        <div class="nav-item">Projects</div>
+        <div class="nav-item active">Data Room</div>
+        <div class="nav-item">Analysis</div>
+        <div class="nav-item">Reports</div>
+      </div>
+    </div>
+    <div class="top-nav-right">
+      <div class="search-bar">
+        <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <input type="text" placeholder="Search..." />
+      </div>
+      <div class="notifications">
+        <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 17H9M12 3V4M12 21V20M5.6 5.6L6.3 6.3M18.4 5.6L17.7 6.3M3 12H4M20 12H21M6 17.4V12C6 8.7 8.7 6 12 6C15.3 6 18 8.7 18 12V17.4H6Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="user-profile">
+        <div class="avatar">JD</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Breadcrumbs -->
+  <div class="breadcrumbs">
+    <div class="breadcrumb-item">Dashboard</div>
+    <div class="breadcrumb-item">Projects</div>
+    <div class="breadcrumb-item">ABC Corp Acquisition</div>
+    <div class="breadcrumb-item">Buyer's Checklist</div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1>Due Diligence Checklist</h1>
+      <div class="header-actions">
+        <button class="button secondary">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 16.5V18.75C3 19.9926 4.00736 21 5.25 21H18.75C19.9926 21 21 19.9926 21 18.75V16.5M16.5 12L12 16.5M12 16.5L7.5 12M12 16.5V3" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Export Checklist
+        </button>
+        <button class="button primary">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 12L11 14L15 10M12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Mark All as Reviewed
+        </button>
+      </div>
+    </div>
+
+    <!-- Checklist Summary -->
+    <div class="summary-card">
+      <div class="summary-header">
+        <h3 class="summary-title">Due Diligence Progress</h3>
+      </div>
+      <div class="summary-grid">
+        <div class="summary-item">
+          <div class="summary-item-value">78%</div>
+          <div class="summary-item-label">Overall Completion</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-item-value">124</div>
+          <div class="summary-item-label">Total Files</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-item-value">97</div>
+          <div class="summary-item-label">Files Reviewed</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-item-value">15</div>
+          <div class="summary-item-label">Outstanding Requests</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Checklist Categories -->
+    <div class="checklist-grid">
+      <!-- Financial Category -->
+      <div class="checklist-card">
+        <div class="checklist-header">
+          <h4 class="checklist-title">Financial Information</h4>
+          <div class="checklist-subtitle">Detailed financial statements and reports</div>
+        </div>
+        <div class="checklist-body">
+          <div class="checklist-progress">
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 85%"></div>
+            </div>
+            <div class="progress-text">85%</div>
+          </div>
+          <ul class="checklist-items">
+            <li class="checklist-item">
+              <div class="checklist-checkbox checked">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12L10 17L19 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="checklist-item-content">
+                <div class="checklist-item-title">Income Statements (3 years)</div>
+                <div class="checklist-item-description">Monthly income statements from 2022-2024 and YTD 2025</div>
+                <div class="checklist-item-meta">
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Reviewed May 2, 2025
+                  </div>
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    4 files
+                  </div>
+                </div>
+              </div>
+              <div class="status-indicator complete">Complete</div>
+            </li>
+            <li class="checklist-item">
+              <div class="checklist-checkbox checked">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12L10 17L19 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="checklist-item-content">
+                <div class="checklist-item-title">Balance Sheets (3 years)</div>
+                <div class="checklist-item-description">Monthly balance sheets from 2022-2024 and YTD 2025</div>
+                <div class="checklist-item-meta">
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Reviewed May 2, 2025
+                  </div>
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    4 files
+                  </div>
+                </div>
+              </div>
+              <div class="status-indicator complete">Complete</div>
+            </li>
+            <li class="checklist-item">
+              <div class="checklist-checkbox checked">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12L10 17L19 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="checklist-item-content">
+                <div class="checklist-item-title">Bank Statements (18 months)</div>
+                <div class="checklist-item-description">Monthly bank statements for all accounts</div>
+                <div class="checklist-item-meta">
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Reviewed May 3, 2025
+                  </div>
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    3 files
+                  </div>
+                </div>
+              </div>
+              <div class="status-indicator complete">Complete</div>
+            </li>
+            <li class="checklist-item">
+              <div class="checklist-checkbox">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12L10 17L19 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="checklist-item-content">
+                <div class="checklist-item-title">Tax Returns (3 years)</div>
+                <div class="checklist-item-description">Federal and state tax returns for 2022-2024</div>
+                <div class="checklist-item-meta">
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Pending review
+                  </div>
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    6 files
+                  </div>
+                </div>
+              </div>
+              <div class="status-indicator pending">Pending</div>
+            </li>
+            <li class="checklist-item">
+              <div class="checklist-checkbox checked">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12L10 17L19 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="checklist-item-content">
+                <div class="checklist-item-title">Financial Projections</div>
+                <div class="checklist-item-description">3-year financial projections (2025-2027)</div>
+                <div class="checklist-item-meta">
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Reviewed May 3, 2025
+                  </div>
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    1 file
+                  </div>
+                </div>
+              </div>
+              <div class="status-indicator complete">Complete</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <!-- Corporate Documents Category -->
+      <div class="checklist-card">
+        <div class="checklist-header" style="background-color: #2D72D9;">
+          <h4 class="checklist-title">Corporate Documents</h4>
+          <div class="checklist-subtitle">Legal and corporate formation documents</div>
+        </div>
+        <div class="checklist-body">
+          <div class="checklist-progress">
+            <div class="progress-bar">
+              <div class="progress-fill partial" style="width: 60%"></div>
+            </div>
+            <div class="progress-text">60%</div>
+          </div>
+          <ul class="checklist-items">
+            <li class="checklist-item">
+              <div class="checklist-checkbox checked">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12L10 17L19 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="checklist-item-content">
+                <div class="checklist-item-title">Articles of Incorporation</div>
+                <div class="checklist-item-description">Filed articles and amendments</div>
+                <div class="checklist-item-meta">
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Reviewed Apr 29, 2025
+                  </div>
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    2 files
+                  </div>
+                </div>
+              </div>
+              <div class="status-indicator complete">Complete</div>
+            </li>
+            <li class="checklist-item">
+              <div class="checklist-checkbox checked">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12L10 17L19 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="checklist-item-content">
+                <div class="checklist-item-title">Bylaws</div>
+                <div class="checklist-item-description">Current corporate bylaws and amendments</div>
+                <div class="checklist-item-meta">
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Reviewed Apr 29, 2025
+                  </div>
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    1 file
+                  </div>
+                </div>
+              </div>
+              <div class="status-indicator complete">Complete</div>
+            </li>
+            <li class="checklist-item">
+              <div class="checklist-checkbox">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12L10 17L19 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="checklist-item-content">
+                <div class="checklist-item-title">Board Meeting Minutes</div>
+                <div class="checklist-item-description">Last 3 years of meeting minutes</div>
+                <div class="checklist-item-meta">
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Pending review
+                  </div>
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    3 files needed
+                  </div>
+                </div>
+              </div>
+              <div class="status-indicator pending">Pending</div>
+            </li>
+            <li class="checklist-item">
+              <div class="checklist-checkbox checked">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12L10 17L19 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="checklist-item-content">
+                <div class="checklist-item-title">Shareholder Agreements</div>
+                <div class="checklist-item-description">All current shareholder agreements</div>
+                <div class="checklist-item-meta">
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Reviewed Apr 30, 2025
+                  </div>
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    2 files
+                  </div>
+                </div>
+              </div>
+              <div class="status-indicator complete">Complete</div>
+            </li>
+            <li class="checklist-item">
+              <div class="checklist-checkbox">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12L10 17L19 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="checklist-item-content">
+                <div class="checklist-item-title">Business Licenses & Permits</div>
+                <div class="checklist-item-description">All active licenses and permits</div>
+                <div class="checklist-item-meta">
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Pending review
+                  </div>
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    4 files
+                  </div>
+                </div>
+              </div>
+              <div class="status-indicator pending">Pending</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <!-- Client/Contracts Category -->
+      <div class="checklist-card">
+        <div class="checklist-header" style="background-color: #00BFA5;">
+          <h4 class="checklist-title">Sales & Client Information</h4>
+          <div class="checklist-subtitle">Sales data and client contracts</div>
+        </div>
+        <div class="checklist-body">
+          <div class="checklist-progress">
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 90%"></div>
+            </div>
+            <div class="progress-text">90%</div>
+          </div>
+          <ul class="checklist-items">
+            <li class="checklist-item">
+              <div class="checklist-checkbox checked">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12L10 17L19 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="checklist-item-content">
+                <div class="checklist-item-title">Sales Reports (3 years)</div>
+                <div class="checklist-item-description">Monthly and quarterly sales reports</div>
+                <div class="checklist-item-meta">
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Reviewed Apr 27, 2025
+                  </div>
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    6 files
+                  </div>
+                </div>
+              </div>
+              <div class="status-indicator complete">Complete</div>
+            </li>
+            <li class="checklist-item">
+              <div class="checklist-checkbox checked">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12L10 17L19 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="checklist-item-content">
+                <div class="checklist-item-title">Customer Concentration</div>
+                <div class="checklist-item-description">Analysis of top 20 customers by revenue</div>
+                <div class="checklist-item-meta">
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Reviewed Apr 28, 2025
+                  </div>
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    2 files
+                  </div>
+                </div>
+              </div>
+              <div class="status-indicator complete">Complete</div>
+            </li>
+            <li class="checklist-item">
+              <div class="checklist-checkbox checked">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12L10 17L19 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="checklist-item-content">
+                <div class="checklist-item-title">Major Client Contracts</div>
+                <div class="checklist-item-description">Contracts for top 10 customers</div>
+                <div class="checklist-item-meta">
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Reviewed Apr 28, 2025
+                  </div>
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    10 files
+                  </div>
+                </div>
+              </div>
+              <div class="status-indicator complete">Complete</div>
+            </li>
+            <li class="checklist-item">
+              <div class="checklist-checkbox checked">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12L10 17L19 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="checklist-item-content">
+                <div class="checklist-item-title">Sales Pipeline</div>
+                <div class="checklist-item-description">Current sales opportunities and forecasts</div>
+                <div class="checklist-item-meta">
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Reviewed Apr 29, 2025
+                  </div>
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    2 files
+                  </div>
+                </div>
+              </div>
+              <div class="status-indicator complete">Complete</div>
+            </li>
+            <li class="checklist-item">
+              <div class="checklist-checkbox">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12L10 17L19 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="checklist-item-content">
+                <div class="checklist-item-title">Pricing Strategies</div>
+                <div class="checklist-item-description">Current pricing models and history</div>
+                <div class="checklist-item-meta">
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Pending review
+                  </div>
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    1 file
+                  </div>
+                </div>
+              </div>
+              <div class="status-indicator pending">Pending</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <!-- Vendor Category -->
+      <div class="checklist-card">
+        <div class="checklist-header" style="background-color: #FFC107;">
+          <h4 class="checklist-title">Vendor Contracts</h4>
+          <div class="checklist-subtitle">Supplier and service provider agreements</div>
+        </div>
+        <div class="checklist-body">
+          <div class="checklist-progress">
+            <div class="progress-bar">
+              <div class="progress-fill partial" style="width: 75%"></div>
+            </div>
+            <div class="progress-text">75%</div>
+          </div>
+          <ul class="checklist-items">
+            <li class="checklist-item">
+              <div class="checklist-checkbox checked">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12L10 17L19 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="checklist-item-content">
+                <div class="checklist-item-title">Major Vendor Contracts</div>
+                <div class="checklist-item-description">Agreements with top suppliers</div>
+                <div class="checklist-item-meta">
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Reviewed May 2, 2025
+                  </div>
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    12 files
+                  </div>
+                </div>
+              </div>
+              <div class="status-indicator complete">Complete</div>
+            </li>
+            <li class="checklist-item">
+              <div class="checklist-checkbox checked">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12L10 17L19 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="checklist-item-content">
+                <div class="checklist-item-title">Vendor Spending Analysis</div>
+                <div class="checklist-item-description">Expense breakdown by vendor</div>
+                <div class="checklist-item-meta">
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Reviewed May 1, 2025
+                  </div>
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    3 files
+                  </div>
+                </div>
+              </div>
+              <div class="status-indicator complete">Complete</div>
+            </li>
+            <li class="checklist-item">
+              <div class="checklist-checkbox">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12L10 17L19 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="checklist-item-content">
+                <div class="checklist-item-title">Service Provider Agreements</div>
+                <div class="checklist-item-description">Contracts for key service providers</div>
+                <div class="checklist-item-meta">
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    In progress
+                  </div>
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    5 files
+                  </div>
+                </div>
+              </div>
+              <div class="status-indicator partial">In Progress</div>
+            </li>
+            <li class="checklist-item">
+              <div class="checklist-checkbox checked">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12L10 17L19 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="checklist-item-content">
+                <div class="checklist-item-title">Leasing Agreements</div>
+                <div class="checklist-item-description">All property and equipment leases</div>
+                <div class="checklist-item-meta">
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Reviewed May 1, 2025
+                  </div>
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    3 files
+                  </div>
+                </div>
+              </div>
+              <div class="status-indicator complete">Complete</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <!-- Compliance & Legal Category -->
+      <div class="checklist-card">
+        <div class="checklist-header" style="background-color: #01579B;">
+          <h4 class="checklist-title">Compliance & Legal</h4>
+          <div class="checklist-subtitle">Legal and regulatory compliance documents</div>
+        </div>
+        <div class="checklist-body">
+          <div class="checklist-progress">
+            <div class="progress-bar">
+              <div class="progress-fill partial" style="width: 65%"></div>
+            </div>
+            <div class="progress-text">65%</div>
+          </div>
+          <ul class="checklist-items">
+            <li class="checklist-item">
+              <div class="checklist-checkbox checked">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12L10 17L19 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="checklist-item-content">
+                <div class="checklist-item-title">Litigation History</div>
+                <div class="checklist-item-description">Past and current legal proceedings</div>
+                <div class="checklist-item-meta">
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Reviewed May 3, 2025
+                  </div>
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    2 files
+                  </div>
+                </div>
+              </div>
+              <div class="status-indicator complete">Complete</div>
+            </li>
+            <li class="checklist-item">
+              <div class="checklist-checkbox checked">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12L10 17L19 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="checklist-item-content">
+                <div class="checklist-item-title">Regulatory Compliance Documents</div>
+                <div class="checklist-item-description">Industry-specific compliance certifications</div>
+                <div class="checklist-item-meta">
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Reviewed May 1, 2025
+                  </div>
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    3 files
+                  </div>
+                </div>
+              </div>
+              <div class="status-indicator complete">Complete</div>
+            </li>
+            <li class="checklist-item">
+              <div class="checklist-checkbox">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12L10 17L19 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="checklist-item-content">
+                <div class="checklist-item-title">Intellectual Property Documentation</div>
+                <div class="checklist-item-description">Patents, trademarks, copyrights</div>
+                <div class="checklist-item-meta">
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Pending review
+                  </div>
+                  <div>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    4 files
+                  </div>
+                </div>
+              </div>
+              <div class="status-indicator pending">Pending</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Outstanding Information Requests -->
+    <div class="summary-card">
+      <div class="summary-header">
+        <h3 class="summary-title">Outstanding Information Requests</h3>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Request ID</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Requested Date</th>
+            <th>Status</th>
+            <th>Due Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>REQ-2025-042</td>
+            <td>Board meeting minutes (last 3 years)</td>
+            <td>Corporate Documents</td>
+            <td>Apr 28, 2025</td>
+            <td><span class="status-indicator pending">Pending</span></td>
+            <td>May 10, 2025</td>
+          </tr>
+          <tr>
+            <td>REQ-2025-044</td>
+            <td>Tax returns for 2022-2024</td>
+            <td>Financial Information</td>
+            <td>Apr 28, 2025</td>
+            <td><span class="status-indicator pending">Pending</span></td>
+            <td>May 8, 2025</td>
+          </tr>
+          <tr>
+            <td>REQ-2025-051</td>
+            <td>Collateral documentation</td>
+            <td>Lender Requirements</td>
+            <td>May 2, 2025</td>
+            <td><span class="status-indicator pending">Pending</span></td>
+            <td>May 12, 2025</td>
+          </tr>
+          <tr>
+            <td>REQ-2025-052</td>
+            <td>Personal guarantees documentation</td>
+            <td>Lender Requirements</td>
+            <td>May 2, 2025</td>
+            <td><span class="status-indicator pending">Pending</span></td>
+            <td>May 12, 2025</td>
+          </tr>
+          <tr>
+            <td>REQ-2025-053</td>
+            <td>Appraisal reports for major assets</td>
+            <td>Lender Requirements</td>
+            <td>May 2, 2025</td>
+            <td><span class="status-indicator partial">In Progress</span></td>
+            <td>May 15, 2025</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <script>
+    // Toggle checklist item checkboxes
+    document.addEventListener('DOMContentLoaded', () => {
+      const checkboxes = document.querySelectorAll('.checklist-checkbox');
+      
+      checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('click', () => {
+          checkbox.classList.toggle('checked');
+          
+          // Update parent list item to reflect status change
+          const listItem = checkbox.closest('.checklist-item');
+          const statusIndicator = listItem.querySelector('.status-indicator');
+          
+          if (checkbox.classList.contains('checked')) {
+            if (statusIndicator) {
+              statusIndicator.className = 'status-indicator complete';
+              statusIndicator.textContent = 'Complete';
+            }
+          } else {
+            if (statusIndicator) {
+              statusIndicator.className = 'status-indicator pending';
+              statusIndicator.textContent = 'Pending';
+            }
+          }
+          
+          // Update progress calculations
+          updateProgress();
+        });
+      });
+      
+      // Export button functionality
+      const exportButton = document.querySelector('.button.secondary');
+      if (exportButton) {
+        exportButton.addEventListener('click', () => {
+          alert('Exporting checklist as PDF...');
+          // In a real implementation, this would trigger a PDF export
+        });
+      }
+      
+      // Mark all as reviewed functionality
+      const markAllButton = document.querySelector('.button.primary');
+      if (markAllButton) {
+        markAllButton.addEventListener('click', () => {
+          const pendingCheckboxes = document.querySelectorAll('.checklist-checkbox:not(.checked)');
+          
+          pendingCheckboxes.forEach(checkbox => {
+            checkbox.classList.add('checked');
+            
+            // Update status indicators
+            const listItem = checkbox.closest('.checklist-item');
+            const statusIndicator = listItem.querySelector('.status-indicator');
+            
+            if (statusIndicator) {
+              statusIndicator.className = 'status-indicator complete';
+              statusIndicator.textContent = 'Complete';
+            }
+          });
+          
+          // Update all progress bars
+          updateProgress();
+        });
+      }
+      
+      // Function to update progress bars
+      function updateProgress() {
+        const checklistCards = document.querySelectorAll('.checklist-card');
+        
+        checklistCards.forEach(card => {
+          const checkboxes = card.querySelectorAll('.checklist-checkbox');
+          const checkedBoxes = card.querySelectorAll('.checklist-checkbox.checked');
+          
+          // Calculate percentage
+          const total = checkboxes.length;
+          const completed = checkedBoxes.length;
+          const percentage = Math.round((completed / total) * 100);
+          
+          // Update progress bar
+          const progressFill = card.querySelector('.progress-fill');
+          const progressText = card.querySelector('.progress-text');
+          
+          if (progressFill && progressText) {
+            progressFill.style.width = `${percentage}%`;
+            progressText.textContent = `${percentage}%`;
+            
+            // Set appropriate class based on progress
+            if (percentage === 100) {
+              progressFill.className = 'progress-fill';
+            } else if (percentage >= 50) {
+              progressFill.className = 'progress-fill partial';
+            } else {
+              progressFill.className = 'progress-fill low';
+            }
+          }
+        });
+        
+        // Update overall completion in summary card
+        updateOverallProgress();
+      }
+      
+      function updateOverallProgress() {
+        const allCheckboxes = document.querySelectorAll('.checklist-checkbox');
+        const allCheckedBoxes = document.querySelectorAll('.checklist-checkbox.checked');
+        
+        const total = allCheckboxes.length;
+        const completed = allCheckedBoxes.length;
+        const percentage = Math.round((completed / total) * 100);
+        
+        const overallCompletionValue = document.querySelector('.summary-item-value');
+        if (overallCompletionValue) {
+          overallCompletionValue.textContent = `${percentage}%`;
+        }
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DueDiligenceAI - High Priority Risk Assessment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Color System */
+    :root {
+      --deep-navy: #0A2342;
+      --azure-blue: #2D72D9;
+      --slate-gray: #3C4858;
+      --mint-green: #00BFA5;
+      --coral-red: #FF5252;
+      --amber-yellow: #FFC107;
+      --light-blue: #E1F5FE;
+      --sky-blue: #81D4FA;
+      --dark-blue: #01579B;
+      --charcoal: #263238;
+      --medium-gray: #78909C;
+      --light-gray: #ECEFF1;
+      --white: #FFFFFF;
+      --risk-severe: #d32f2f;
+      --risk-high: #f44336;
+      --risk-medium: #ff9800;
+      --risk-low: #4caf50;
+      --risk-minimal: #81c784;
+      
+      /* Typography */
+      --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-display: 'Manrope', var(--font-primary);
+      --font-mono: 'JetBrains Mono', SFMono-Regular, Consolas, monospace;
+      
+      /* Spacing */
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 12px;
+      --space-lg: 16px;
+      --space-xl: 24px;
+      --space-2xl: 32px;
+      --space-3xl: 48px;
+      
+      /* Shadows */
+      --shadow-sm: 0px 1px 3px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0px 2px 6px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      
+      /* Border Radius */
+      --radius-sm: 2px;
+      --radius-md: 4px;
+      --radius-lg: 8px;
+    }
+
+    /* Global Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-primary);
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--slate-gray);
+      background-color: var(--light-gray);
+      min-height: 100vh;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-display);
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      line-height: 1.2;
+      font-weight: 800;
+      color: var(--deep-navy);
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      line-height: 1.2;
+      font-weight: 700;
+      color: var(--slate-gray);
+    }
+
+    h4 {
+      font-size: 1.125rem;
+      line-height: 1.4;
+      font-weight: 600;
+      color: var(--deep-navy);
+    }
+
+    /* Top Navigation */
+    .top-nav {
+      background-color: var(--white);
+      height: 64px;
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 var(--space-xl);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+    }
+
+    .top-nav-left, .top-nav-right {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--deep-navy);
+      margin-right: var(--space-2xl);
+    }
+
+    .logo svg {
+      margin-right: var(--space-sm);
+    }
+
+    .nav-items {
+      display: flex;
+    }
+
+    .nav-item {
+      padding: 0 var(--space-lg);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      color: var(--slate-gray);
+      cursor: pointer;
+      transition: color 0.15s;
+      position: relative;
+    }
+
+    .nav-item:hover {
+      color: var(--azure-blue);
+    }
+
+    .nav-item.active {
+      color: var(--azure-blue);
+    }
+
+    .nav-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--azure-blue);
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      background-color: var(--light-gray);
+      border-radius: 4px;
+      padding: 0 var(--space-md);
+      margin-right: var(--space-lg);
+      height: 36px;
+      width: 240px;
+    }
+
+    .search-bar input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 14px;
+      width: 100%;
+      margin-left: var(--space-xs);
+    }
+
+    .notifications, .user-profile {
+      margin-left: var(--space-lg);
+      cursor: pointer;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      background-color: var(--azure-blue);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    /* Main Layout */
+    .container {
+      padding: var(--space-xl);
+      margin-top: 64px; /* Add space for fixed navbar */
+    }
+
+    /* Content wrapper to ensure proper scrolling */
+    .content-wrapper {
+      flex: 1;
+      padding-bottom: 60px;
+    }
+
+    /* Page Header */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-xl);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: var(--space-md);
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--light-gray);
+      margin-bottom: var(--space-xl);
+      background-color: var(--white);
+      border-radius: var(--radius-md) var(--radius-md) 0 0;
+    }
+
+    .tab {
+      padding: var(--space-md) var(--space-xl);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--slate-gray);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .tab:hover {
+      background-color: var(--light-blue);
+    }
+
+    .tab.active {
+      color: var(--azure-blue);
+    }
+
+    .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--azure-blue);
+    }
+
+    /* Button Styles */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      border-radius: var(--radius-md);
+      font-weight: 500;
+      font-size: 14px;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .button .icon {
+      width: 18px;
+      height: 18px;
+      margin-right: var(--space-xs);
+    }
+
+    .primary {
+      background-color: var(--azure-blue);
+      color: var(--white);
+    }
+
+    .primary:hover {
+      background-color: #1A5DC7;
+    }
+
+    .secondary {
+      background-color: var(--white);
+      color: var(--azure-blue);
+      border: 1px solid var(--azure-blue);
+    }
+
+    .secondary:hover {
+      background-color: var(--light-blue);
+    }
+
+    .tertiary {
+      background-color: transparent;
+      color: var(--azure-blue);
+      padding: 8px 12px;
+    }
+
+    .tertiary:hover {
+      background-color: var(--light-blue);
+    }
+
+    .icon-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-md);
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+    }
+
+    .icon-button:hover {
+      background-color: var(--light-gray);
+    }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      stroke-width: 1.5;
+    }
+
+    /* Filter Bar */
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      gap: var(--space-lg);
+      margin-bottom: var(--space-xl);
+      flex-wrap: wrap;
+    }
+
+    .filter-item {
+      display: flex;
+      align-items: center;
+      background-color: var(--white);
+      border: 1px solid var(--light-gray);
+      border-radius: var(--radius-md);
+      padding: 8px 12px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .filter-item .icon {
+      margin-right: var(--space-xs);
+      width: 16px;
+      height: 16px;
+    }
+
+    .filter-item.active {
+      border-color: var(--azure-blue);
+      color: var(--azure-blue);
+    }
+
+    .search-filter {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .search-filter .filter-item {
+      width: 100%;
+    }
+
+    .search-filter input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 14px;
+      width: 100%;
+    }
+
+    /* Dashboard Summary */
+    .dashboard-summary {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-lg);
+      margin-bottom: var(--space-xl);
+    }
+
+    .summary-card {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg);
+      box-shadow: var(--shadow-md);
+    }
+
+    .summary-card-title {
+      font-size: 14px;
+      color: var(--medium-gray);
+      margin-bottom: var(--space-xs);
+    }
+
+    .summary-card-value {
+      font-family: var(--font-mono);
+      font-size: 24px;
+      font-weight: 500;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-md);
+    }
+
+    .summary-card-trend {
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+    }
+
+    .trend-up {
+      color: var(--mint-green);
+    }
+
+    .trend-down {
+      color: var(--coral-red);
+    }
+
+    .trend-neutral {
+      color: var(--medium-gray);
+    }
+
+    .trend-icon {
+      width: 16px;
+      height: 16px;
+      margin-right: 4px;
+    }
+
+    /* Risk Assessment Grid */
+    .assessment-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: var(--space-xl);
+    }
+
+    /* Risk Assessment Card */
+    .assessment-card {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      transition: box-shadow 0.2s ease;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .assessment-card:hover {
+      box-shadow: var(--shadow-lg);
+    }
+
+    .assessment-header {
+      padding: var(--space-lg);
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .assessment-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-xs);
+    }
+
+    .assessment-subtitle {
+      font-size: 14px;
+      color: var(--medium-gray);
+    }
+
+    .risk-level {
+      font-size: 12px;
+      border-radius: 12px;
+      padding: 2px 8px;
+      font-weight: 500;
+    }
+
+    .risk-severe {
+      background-color: rgba(211, 47, 47, 0.1);
+      color: var(--risk-severe);
+    }
+
+    .risk-high {
+      background-color: rgba(244, 67, 54, 0.1);
+      color: var(--risk-high);
+    }
+
+    .risk-medium {
+      background-color: rgba(255, 152, 0, 0.1);
+      color: var(--risk-medium);
+    }
+
+    .risk-low {
+      background-color: rgba(76, 175, 80, 0.1);
+      color: var(--risk-low);
+    }
+
+    .risk-minimal {
+      background-color: rgba(129, 199, 132, 0.1);
+      color: var(--risk-minimal);
+    }
+
+    .assessment-preview {
+      padding: var(--space-lg);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .assessment-metrics {
+      display: flex;
+      margin-bottom: var(--space-lg);
+      gap: var(--space-lg);
+    }
+
+    .assessment-metric {
+      flex: 1;
+    }
+
+    .metric-label {
+      font-size: 12px;
+      color: var(--medium-gray);
+      margin-bottom: 4px;
+    }
+
+    .metric-value {
+      font-family: var(--font-mono);
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--deep-navy);
+    }
+
+    .assessment-description {
+      font-size: 14px;
+      color: var(--slate-gray);
+      margin-bottom: var(--space-lg);
+      flex: 1;
+    }
+
+    .risk-factors {
+      margin-top: auto;
+      margin-bottom: var(--space-md);
+    }
+
+    .risk-factors-title {
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: var(--space-xs);
+    }
+
+    .risk-factors-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-xs);
+    }
+
+    .risk-factor {
+      font-size: 11px;
+      background-color: var(--light-gray);
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+
+    .assessment-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-md) var(--space-lg);
+      border-top: 1px solid var(--light-gray);
+      background-color: var(--light-gray);
+    }
+
+    .assessment-meta {
+      font-size: 12px;
+      color: var(--medium-gray);
+      display: flex;
+      align-items: center;
+    }
+
+    .assessment-meta .icon {
+      width: 14px;
+      height: 14px;
+      margin-right: 4px;
+    }
+
+    .assessment-actions {
+      display: flex;
+      gap: var(--space-sm);
+    }
+
+    /* Risk Distribution Chart */
+    .chart-container {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
+      margin-top: var(--space-2xl);
+      margin-bottom: var(--space-2xl);
+      box-shadow: var(--shadow-md);
+    }
+
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-xl);
+    }
+
+    .chart-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--deep-navy);
+    }
+
+    .chart-controls {
+      display: flex;
+      gap: var(--space-sm);
+    }
+
+    .chart-area {
+      height: 300px;
+      position: relative;
+    }
+
+    .chart-placeholder {
+      width: 100%;
+      height: 100%;
+      background-color: var(--light-gray);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-md);
+      color: var(--medium-gray);
+    }
+
+    /* Risk Factors Section */
+    .section-header {
+      margin-top: 40px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--deep-navy);
+    }
+
+    .section-actions {
+      display: flex;
+      gap: var(--space-md);
+    }
+
+    .top-risk-factors {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      margin-bottom: var(--space-2xl);
+    }
+
+    .risk-factor-item {
+      display: flex;
+      padding: var(--space-lg);
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .risk-factor-item:last-child {
+      border-bottom: none;
+    }
+
+    .risk-factor-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: var(--space-lg);
+      flex-shrink: 0;
+    }
+
+    .risk-factor-icon.severe {
+      background-color: rgba(211, 47, 47, 0.1);
+      color: var(--risk-severe);
+    }
+
+    .risk-factor-icon.high {
+      background-color: rgba(244, 67, 54, 0.1);
+      color: var(--risk-high);
+    }
+
+    .risk-factor-icon.medium {
+      background-color: rgba(255, 152, 0, 0.1);
+      color: var(--risk-medium);
+    }
+
+    .risk-factor-icon.low {
+      background-color: rgba(76, 175, 80, 0.1);
+      color: var(--risk-low);
+    }
+
+    .risk-factor-content {
+      flex: 1;
+    }
+
+    .risk-factor-title {
+      font-weight: 500;
+      margin-bottom: 4px;
+      color: var(--deep-navy);
+      display: flex;
+      align-items: center;
+    }
+
+    .risk-factor-title .badge {
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-left: var(--space-sm);
+    }
+
+    .risk-factor-title .badge.severe {
+      background-color: rgba(211, 47, 47, 0.1);
+      color: var(--risk-severe);
+    }
+
+    .risk-factor-title .badge.high {
+      background-color: rgba(244, 67, 54, 0.1);
+      color: var(--risk-high);
+    }
+
+    .risk-factor-title .badge.medium {
+      background-color: rgba(255, 152, 0, 0.1);
+      color: var(--risk-medium);
+    }
+
+    .risk-factor-description {
+      font-size: 14px;
+      color: var(--slate-gray);
+    }
+
+    .risk-factor-meta {
+      display: flex;
+      margin-top: 4px;
+      font-size: 12px;
+      color: var(--medium-gray);
+    }
+
+    .risk-factor-meta > div {
+      display: flex;
+      align-items: center;
+      margin-right: var(--space-lg);
+    }
+
+    .risk-factor-meta .icon {
+      width: 14px;
+      height: 14px;
+      margin-right: 4px;
+    }
+
+    /* Industry Benchmark Section */
+    .benchmark-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-xl);
+      margin-bottom: var(--space-2xl);
+    }
+
+    .benchmark-card {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
+      box-shadow: var(--shadow-md);
+    }
+
+    .benchmark-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-lg);
+    }
+
+    .benchmark-chart {
+      height: 200px;
+      background-color: var(--light-gray);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--medium-gray);
+    }
+
+    /* Pagination */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      margin-top: var(--space-2xl);
+    }
+
+    .pagination-item {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-md);
+      margin: 0 4px;
+      font-size: 14px;
+      cursor: pointer;
+      color: var(--slate-gray);
+    }
+
+    .pagination-item:hover {
+      background-color: var(--light-blue);
+    }
+
+    .pagination-item.active {
+      background-color: var(--azure-blue);
+      color: var(--white);
+    }
+
+    /* High Priority Badge */
+    .high-priority-badge {
+      background-color: var(--risk-high);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
+      margin-left: 8px;
+    }
+
+    /* Responsive Breakpoints */
+    @media (max-width: 1200px) {
+      .dashboard-summary {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .benchmark-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .assessment-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      .assessment-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .dashboard-summary {
+        grid-template-columns: 1fr;
+      }
+      
+      .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-md);
+      }
+      
+      .header-actions {
+        width: 100%;
+      }
+      
+      .top-nav {
+        padding: 0 var(--space-md);
+      }
+      
+      .nav-items {
+        display: none;
+      }
+      
+      .search-bar {
+        width: 160px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <div class="top-nav-left">
+      <div class="logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 8H16C20.4183 8 24 11.5817 24 16C24 20.4183 20.4183 24 16 24H8V8Z" fill="#0A2342"/>
+          <path d="M16 8H24V16C24 20.4183 20.4183 24 16 24V8Z" fill="#2D72D9"/>
+        </svg>
+        <span>DueDiligenceAI</span>
+      </div>
+      <div class="nav-items">
+        <div class="nav-item">Dashboard</div>
+        <div class="nav-item">Documents</div>
+        <div class="nav-item">Analysis</div>
+        <div class="nav-item active">Reports</div>
+      </div>
+    </div>
+    <div class="top-nav-right">
+      <div class="search-bar">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <input type="text" placeholder="Search..." />
+      </div>
+      <div class="notifications">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 17H9M12 3V4M12 21V20M5.6 5.6L6.3 6.3M18.4 5.6L17.7 6.3M3 12H4M20 12H21M6 17.4V12C6 8.7 8.7 6 12 6C15.3 6 18 8.7 18 12V17.4H6Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="user-profile">
+        <div class="avatar">SK</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1>High Priority Risk Assessment <span class="high-priority-badge">High Priority</span></h1>
+      <div class="header-actions">
+        <button class="button secondary">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 16.5V18.75C3 19.9926 4.00736 21 5.25 21H18.75C19.9926 21 21 19.9926 21 18.75V16.5M16.5 12L12 16.5M12 16.5L7.5 12M12 16.5V3" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Export Results
+        </button>
+        <button class="button primary">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 5V19M5 12H19" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          New Assessment
+        </button>
+      </div>
+    </div>
+
+    <!-- Dashboard Summary -->
+    <div class="dashboard-summary">
+      <div class="summary-card">
+        <div class="summary-card-title">High Priority Assessments</div>
+        <div class="summary-card-value">8</div>
+        <div class="summary-card-trend trend-up">
+          <svg class="trend-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          +3% from last month
+        </div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-card-title">Severe Risk Entities</div>
+        <div class="summary-card-value">3</div>
+        <div class="summary-card-trend trend-down">
+          <svg class="trend-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7 7L17 17M17 17V7M17 17H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          -1 from last month
+        </div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-card-title">Average High Risk Score</div>
+        <div class="summary-card-value">83/100</div>
+        <div class="summary-card-trend trend-up">
+          <svg class="trend-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          +5 points from last month
+        </div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-card-title">High Risk Factors</div>
+        <div class="summary-card-value">42</div>
+        <div class="summary-card-trend trend-up">
+          <svg class="trend-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          +8% from last month
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs Navigation -->
+    <div class="tabs">
+      <div class="tab">All Assessments</div>
+      <div class="tab active">High Priority</div>
+      <div class="tab">Market Risk</div>
+      <div class="tab">Financial Risk</div>
+      <div class="tab">Operational Risk</div>
+      <div class="tab">Compliance Risk</div>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <div class="search-filter">
+        <div class="filter-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <input type="text" placeholder="Search high priority assessments..." />
+        </div>
+      </div>
+      <div class="filter-item active">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 7V3M8 7V11M8 7H20M4 15V19M4 15V11M4 15H16M12 19V15M12 19V23M12 19H4M16 11V7M16 11V15M16 11H4" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        High & Severe Risk
+      </div>
+      <div class="filter-item">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 4H21M3 8H15M3 12H21M3 16H15M3 20H21" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Sort By: Risk Level
+      </div>
+      <div class="filter-item">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Last 30 Days
+      </div>
+    </div>
+
+    <!-- Risk Distribution Chart -->
+    <div class="chart-container">
+      <div class="chart-header">
+        <h3 class="chart-title">High Priority Risk Distribution</h3>
+        <div class="chart-controls">
+          <button class="button tertiary">Monthly</button>
+          <button class="button tertiary">Quarterly</button>
+          <button class="button tertiary">Year to Date</button>
+        </div>
+      </div>
+      <div class="chart-area">
+        <div class="chart-placeholder">
+          [High Priority Risk Distribution Chart]
+        </div>
+      </div>
+    </div>
+
+    <!-- Risk Assessments Grid -->
+    <div class="section-header">
+      <h3 class="section-title">High Priority Risk Assessments</h3>
+      <div class="section-actions">
+        <button class="button tertiary">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 16.5V18.75C3 19.9926 4.00736 21 5.25 21H18.75C19.9926 21 21 19.9926 21 18.75V16.5M16.5 12L12 16.5M12 16.5L7.5 12M12 16.5V3" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Export All
+        </button>
+        <button class="button secondary">View All</button>
+      </div>
+    </div>
+    
+    <div class="assessment-grid">
+      <!-- Assessment Card 1 -->
+      <div class="assessment-card">
+        <div class="assessment-header">
+          <div>
+            <h4 class="assessment-title">XYZ Inc Risk Assessment</h4>
+            <div class="assessment-subtitle">Pre-investment Analysis</div>
+          </div>
+          <span class="risk-level risk-high">High Risk</span>
+        </div>
+        <div class="assessment-preview">
+          <div class="assessment-metrics">
+            <div class="assessment-metric">
+              <div class="metric-label">Risk Score</div>
+              <div class="metric-value">78/100</div>
+            </div>
+            <div class="assessment-metric">
+              <div class="metric-label">Factors</div>
+              <div class="metric-value">14</div>
+            </div>
+            <div class="assessment-metric">
+              <div class="metric-label">Confidence</div>
+              <div class="metric-value">92%</div>
+            </div>
+          </div>
+          <div class="assessment-description">
+            Pre-investment risk assessment for XYZ Inc identifies significant concerns in market positioning, financial stability, and regulatory compliance. Multiple high-severity risk factors require mitigation strategies before proceeding.
+          </div>
+          <div class="risk-factors">
+            <div class="risk-factors-title">Key Risk Factors:</div>
+            <div class="risk-factors-list">
+              <span class="risk-factor">Market Volatility</span>
+              <span class="risk-factor">Debt Structure</span>
+              <span class="risk-factor">Regulatory Gaps</span>
+              <span class="risk-factor">Management Turnover</span>
+            </div>
+          </div>
+        </div>
+        <div class="assessment-footer">
+          <div class="assessment-meta">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            May 03, 2025
+          </div>
+          <div class="assessment-actions">
+            <button class="icon-button">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 15L12 3M12 3L16 7M12 3L8 7M3 15V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V15" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button class="icon-button">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15.2322 5.23223L18.7677 8.76777M16.7322 3.73223C17.7085 2.75592 19.2914 2.75592 20.2677 3.73223C21.244 4.70854 21.244 6.29146 20.2677 7.26777L6.5 21.0355H3V17.4644L16.7322 3.73223Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button class="icon-button">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 5V5.01M12 8V19M15 8H9C9 6.34315 10.3431 5 12 5C13.6569 5 15 6.34315 15 8Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Assessment Card 2 -->
+      <div class="assessment-card">
+        <div class="assessment-header">
+          <div>
+            <h4 class="assessment-title">Global Logistics Partners Risk Review</h4>
+            <div class="assessment-subtitle">Pre-investment Analysis</div>
+          </div>
+          <span class="risk-level risk-severe">Severe Risk</span>
+        </div>
+        <div class="assessment-preview">
+          <div class="assessment-metrics">
+            <div class="assessment-metric">
+              <div class="metric-label">Risk Score</div>
+              <div class="metric-value">89/100</div>
+            </div>
+            <div class="assessment-metric">
+              <div class="metric-label">Factors</div>
+              <div class="metric-value">18</div>
+            </div>
+            <div class="assessment-metric">
+              <div class="metric-label">Confidence</div>
+              <div class="metric-value">96%</div>
+            </div>
+          </div>
+          <div class="assessment-description">
+            Pre-investment risk assessment for Global Logistics Partners reveals critical concerns that represent substantial barriers to investment. Significant issues in financial stability, operational capacity, and regulatory compliance create an untenable risk profile.
+          </div>
+          <div class="risk-factors">
+            <div class="risk-factors-title">Key Risk Factors:</div>
+            <div class="risk-factors-list">
+              <span class="risk-factor">Liquidity Issues</span>
+              <span class="risk-factor">Regulatory Violations</span>
+              <span class="risk-factor">Infrastructure Gaps</span>
+              <span class="risk-factor">Legal Actions</span>
+            </div>
+          </div>
+        </div>
+        <div class="assessment-footer">
+          <div class="assessment-meta">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Apr 22, 2025
+          </div>
+          <div class="assessment-actions">
+            <button class="icon-button">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 15L12 3M12 3L16 7M12 3L8 7M3 15V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V15" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button class="icon-button">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15.2322 5.23223L18.7677 8.76777M16.7322 3.73223C17.7085 2.75592 19.2914 2.75592 20.2677 3.73223C21.244 4.70854 21.244 6.29146 20.2677 7.26777L6.5 21.0355H3V17.4644L16.7322 3.73223Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button class="icon-button">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 5V5.01M12 8V19M15 8H9C9 6.34315 10.3431 5 12 5C13.6569 5 15 6.34315 15 8Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Assessment Card 3 -->
+      <div class="assessment-card">
+        <div class="assessment-header">
+          <div>
+            <h4 class="assessment-title">TechVista Innovations Risk Profile</h4>
+            <div class="assessment-subtitle">Merger Evaluation</div>
+          </div>
+          <span class="risk-level risk-high">High Risk</span>
+        </div>
+        <div class="assessment-preview">
+          <div class="assessment-metrics">
+            <div class="assessment-metric">
+              <div class="metric-label">Risk Score</div>
+              <div class="metric-value">76/100</div>
+            </div>
+            <div class="assessment-metric">
+              <div class="metric-label">Factors</div>
+              <div class="metric-value">11</div>
+            </div>
+            <div class="assessment-metric">
+              <div class="metric-label">Confidence</div>
+              <div class="metric-value">88%</div>
+            </div>
+          </div>
+          <div class="assessment-description">
+            Comprehensive merger risk assessment for TechVista Innovations reveals significant intellectual property concerns, cultural integration challenges, and unresolved technical debt. Recommended additional due diligence before proceeding with merger discussions.
+          </div>
+          <div class="risk-factors">
+            <div class="risk-factors-title">Key Risk Factors:</div>
+            <div class="risk-factors-list">
+              <span class="risk-factor">IP Disputes</span>
+              <span class="risk-factor">Tech Debt</span>
+              <span class="risk-factor">Integration Cost</span>
+              <span class="risk-factor">Culture Mismatch</span>
+            </div>
+          </div>
+        </div>
+        <div class="assessment-footer">
+          <div class="assessment-meta">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Apr 18, 2025
+          </div>
+          <div class="assessment-actions">
+            <button class="icon-button">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 15L12 3M12 3L16 7M12 3L8 7M3 15V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V15" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button class="icon-button">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15.2322 5.23223L18.7677 8.76777M16.7322 3.73223C17.7085 2.75592 19.2914 2.75592 20.2677 3.73223C21.244 4.70854 21.244 6.29146 20.2677 7.26777L6.5 21.0355H3V17.4644L16.7322 3.73223Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button class="icon-button">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 5V5.01M12 8V19M15 8H9C9 6.34315 10.3431 5 12 5C13.6569 5 15 6.34315 15 8Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Assessment Card 4 -->
+      <div class="assessment-card">
+        <div class="assessment-header">
+          <div>
+            <h4 class="assessment-title">Oceanic Shipping Corp Risk Assessment</h4>
+            <div class="assessment-subtitle">Annual Review</div>
+          </div>
+          <span class="risk-level risk-severe">Severe Risk</span>
+        </div>
+        <div class="assessment-preview">
+          <div class="assessment-metrics">
+            <div class="assessment-metric">
+              <div class="metric-label">Risk Score</div>
+              <div class="metric-value">92/100</div>
+            </div>
+            <div class="assessment-metric">
+              <div class="metric-label">Factors</div>
+              <div class="metric-value">16</div>
+            </div>
+            <div class="assessment-metric">
+              <div class="metric-label">Confidence</div>
+              <div class="metric-value">94%</div>
+            </div>
+          </div>
+          <div class="assessment-description">
+            Annual risk assessment for Oceanic Shipping Corp reveals extreme financial distress, regulatory violations in multiple jurisdictions, and operational deficiencies that create imminent business risk. Immediate intervention recommended.
+          </div>
+          <div class="risk-factors">
+            <div class="risk-factors-title">Key Risk Factors:</div>
+            <div class="risk-factors-list">
+              <span class="risk-factor">Bankruptcy Risk</span>
+              <span class="risk-factor">Compliance Failures</span>
+              <span class="risk-factor">Safety Violations</span>
+              <span class="risk-factor">Legal Liabilities</span>
+            </div>
+          </div>
+        </div>
+        <div class="assessment-footer">
+          <div class="assessment-meta">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Apr 15, 2025
+          </div>
+          <div class="assessment-actions">
+            <button class="icon-button">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 15L12 3M12 3L16 7M12 3L8 7M3 15V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V15" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button class="icon-button">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15.2322 5.23223L18.7677 8.76777M16.7322 3.73223C17.7085 2.75592 19.2914 2.75592 20.2677 3.73223C21.244 4.70854 21.244 6.29146 20.2677 7.26777L6.5 21.0355H3V17.4644L16.7322 3.73223Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button class="icon-button">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 5V5.01M12 8V19M15 8H9C9 6.34315 10.3431 5 12 5C13.6569 5 15 6.34315 15 8Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- End of assessment cards grid -->
+
+  <!-- Top Risk Factors Section - Part of content-wrapper -->
+    <div class="section-header">
+      <h3 class="section-title">Top High Priority Risk Factors</h3>
+      <div class="section-actions">
+        <button class="button tertiary">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 16.5V18.75C3 19.9926 4.00736 21 5.25 21H18.75C19.9926 21 21 19.9926 21 18.75V16.5M16.5 12L12 16.5M12 16.5L7.5 12M12 16.5V3" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Export List
+        </button>
+      </div>
+    </div>
+    <div class="top-risk-factors">
+      <div class="risk-factor-item">
+        <div class="risk-factor-icon severe">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 9V12M12 16.01V16M2 12C2 6.48 6.48 2 12 2C17.52 2 22 6.48 22 12C22 17.52 17.52 22 12 22C6.48 22 2 17.52 2 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="risk-factor-content">
+          <div class="risk-factor-title">
+            Insufficient Liquidity
+            <span class="badge severe">Severe</span>
+          </div>
+          <div class="risk-factor-description">
+            Multiple target companies show significant gaps in regulatory compliance across jurisdictions. Issues include outdated policies, insufficient documentation, and inadequate controls particularly in data privacy, financial reporting, and environmental compliance.
+          </div>
+          <div class="risk-factor-meta">
+            <div>
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Detected in 8 assessments
+            </div>
+            <div>
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 9V4C14 3.44772 13.5523 3 13 3H5C4.44772 3 4 3.44772 4 4V20C4 20.5523 4.44772 21 5 21H13C13.5523 21 14 20.5523 14 20V15M8 12H20M20 12L17 9M20 12L17 15" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Compliance Risk
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="risk-factor-item">
+        <div class="risk-factor-icon severe">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19 8C20.6569 8 22 6.65685 22 5C22 3.34315 20.6569 2 19 2M19 8C17.3431 8 16 6.65685 16 5C16 3.34315 17.3431 2 19 2M19 8V20C19 21.1046 18.1046 22 17 22H7C5.89543 22 5 21.1046 5 20V19M5 15C3.34315 15 2 13.6569 2 12C2 10.3431 3.34315 9 5 9M5 15C6.65685 15 8 13.6569 8 12C8 10.3431 6.65685 9 5 9M5 15V19M5 9V5C5 3.89543 5.89543 3 7 3H13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="risk-factor-content">
+          <div class="risk-factor-title">
+            Legal and Regulatory Violations
+            <span class="badge severe">Severe</span>
+          </div>
+          <div class="risk-factor-description">
+            Critical regulatory non-compliance identified across target entities, including active investigations by regulatory authorities. Potential for significant fines, operational restrictions, and reputation damage that threatens business continuity.
+          </div>
+          <div class="risk-factor-meta">
+            <div>
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Detected in 6 assessments
+            </div>
+            <div>
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 9V4C14 3.44772 13.5523 3 13 3H5C4.44772 3 4 3.44772 4 4V20C4 20.5523 4.44772 21 5 21H13C13.5523 21 14 20.5523 14 20V15M8 12H20M20 12L17 9M20 12L17 15" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Legal Risk
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="risk-factor-item">
+        <div class="risk-factor-icon high">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 14V17M16 14V17M12 14V17M9 3H15M10 21H14M3 8H21M5 21H19C20.1046 21 21 20.1046 21 19V7C21 5.89543 20.1046 5 19 5H5C3.89543 5 3 5.89543 3 7V19C3 20.1046 3.89543 21 5 21Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="risk-factor-content">
+          <div class="risk-factor-title">
+            Critical IP Litigation Exposure
+            <span class="badge high">High</span>
+          </div>
+          <div class="risk-factor-description">
+            Multiple target companies face ongoing intellectual property litigation with potential for significant damages and injunctions that could disrupt core operations. Patent disputes in key technology areas present material business continuity risk.
+          </div>
+          <div class="risk-factor-meta">
+            <div>
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Detected in 5 assessments
+            </div>
+            <div>
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 9V4C14 3.44772 13.5523 3 13 3H5C4.44772 3 4 3.44772 4 4V20C4 20.5523 4.44772 21 5 21H13C13.5523 21 14 20.5523 14 20V15M8 12H20M20 12L17 9M20 12L17 15" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Legal Risk
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Industry Benchmark Section -->
+    <div class="section-header">
+      <h3 class="section-title">High Risk Industry Benchmarks</h3>
+    </div>
+    <div class="benchmark-container">
+      <div class="benchmark-card">
+        <h4 class="benchmark-title">High Risk Score Comparison by Industry</h4>
+        <div class="benchmark-chart">
+          [High Risk Score Comparison Chart]
+        </div>
+      </div>
+      <div class="benchmark-card">
+        <h4 class="benchmark-title">High Risk Factor Distribution</h4>
+        <div class="benchmark-chart">
+          [High Risk Factor Distribution Chart]
+        </div>
+      </div>
+    </div>
+
+    <div style="clear: both; margin-top: 40px;"></div>
+
+    <!-- Pagination Section - Separate from the content above -->
+    <div class="pagination-section" style="margin-top: 40px; border-top: 1px solid var(--light-gray); padding-top: 20px;">
+      <div class="pagination">
+        <div class="pagination-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 19L8 12L15 5" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="pagination-item active">1</div>
+        <div class="pagination-item">2</div>
+        <div class="pagination-item">3</div>
+        <div class="pagination-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 5L16 12L9 19" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+      
+    <!-- Footer -->
+    <div class="footer" style="margin-top: 40px; padding: 20px 0; text-align: center; color: var(--medium-gray); font-size: 12px; border-top: 1px solid var(--light-gray);">
+      DueDiligenceAI © 2025 | High Priority Risk Assessment Report
+    </div>
+    
+    <!-- Add bottom spacing to ensure proper scrolling -->
+    <div style="height: 60px;"></div>
+  </div> <!-- End of container -->
+</body>
+</html>

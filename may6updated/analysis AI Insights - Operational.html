@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DueDiligenceAI - Operational AI Insights</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Color System */
+    :root {
+      --deep-navy: #0A2342;
+      --azure-blue: #2D72D9;
+      --slate-gray: #3C4858;
+      --mint-green: #00BFA5;
+      --coral-red: #FF5252;
+      --amber-yellow: #FFC107;
+      --light-blue: #E1F5FE;
+      --sky-blue: #81D4FA;
+      --dark-blue: #01579B;
+      --charcoal: #263238;
+      --medium-gray: #78909C;
+      --light-gray: #ECEFF1;
+      --white: #FFFFFF;
+      
+      /* Typography */
+      --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-display: 'Manrope', var(--font-primary);
+      --font-mono: 'JetBrains Mono', SFMono-Regular, Consolas, monospace;
+      
+      /* Spacing */
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 12px;
+      --space-lg: 16px;
+      --space-xl: 24px;
+      --space-2xl: 32px;
+      --space-3xl: 48px;
+      
+      /* Shadows */
+      --shadow-sm: 0px 1px 3px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0px 2px 6px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      
+      /* Border Radius */
+      --radius-sm: 2px;
+      --radius-md: 4px;
+      --radius-lg: 8px;
+    }
+
+    /* Global Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-primary);
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--slate-gray);
+      background-color: var(--light-gray);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-display);
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      line-height: 1.2;
+      font-weight: 800;
+      color: var(--deep-navy);
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      line-height: 1.2;
+      font-weight: 700;
+      color: var(--slate-gray);
+    }
+
+    h4 {
+      font-size: 1.125rem;
+      line-height: 1.4;
+      font-weight: 600;
+      color: var(--deep-navy);
+    }
+
+    /* Top Navigation */
+    .top-nav {
+      background-color: var(--white);
+      height: 64px;
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 var(--space-xl);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .top-nav-left, .top-nav-right {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--deep-navy);
+      margin-right: var(--space-2xl);
+    }
+
+    .logo svg {
+      margin-right: var(--space-sm);
+    }
+
+    .nav-items {
+      display: flex;
+    }
+
+    .nav-item {
+      padding: 0 var(--space-lg);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      color: var(--slate-gray);
+      cursor: pointer;
+      transition: color 0.15s;
+      position: relative;
+    }
+
+    .nav-item:hover {
+      color: var(--azure-blue);
+    }
+
+    .nav-item.active {
+      color: var(--azure-blue);
+    }
+
+    .nav-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--azure-blue);
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      background-color: var(--light-gray);
+      border-radius: 4px;
+      padding: 0 var(--space-md);
+      margin-right: var(--space-lg);
+      height: 36px;
+      width: 240px;
+    }
+
+    .search-bar input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 14px;
+      width: 100%;
+      margin-left: var(--space-xs);
+    }
+
+    .notifications, .user-profile {
+      margin-left: var(--space-lg);
+      cursor: pointer;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      background-color: var(--azure-blue);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    /* Main Layout */
+    .container {
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 64px);
+    }
+
+    /* Breadcrumbs */
+    .breadcrumbs {
+      display: flex;
+      padding: var(--space-md) var(--space-xl);
+      background-color: var(--white);
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .breadcrumb-item {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: var(--medium-gray);
+    }
+
+    .breadcrumb-item:not(:last-child)::after {
+      content: '';
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2378909C' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 18l6-6-6-6'%3E%3C/path%3E%3C/svg%3E");
+      background-position: center;
+      background-repeat: no-repeat;
+      margin: 0 var(--space-sm);
+    }
+
+    .breadcrumb-item:last-child {
+      color: var(--charcoal);
+      font-weight: 500;
+    }
+
+    /* Two Column Layout */
+    .two-column-layout {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .main-content {
+      flex: 7;
+      padding: var(--space-xl);
+      overflow-y: auto;
+    }
+
+    .sidebar {
+      flex: 3;
+      width: 320px;
+      min-width: 320px;
+      max-width: 320px;
+      background-color: var(--white);
+      border-left: 1px solid var(--light-gray);
+      padding: var(--space-xl);
+      overflow-y: auto;
+    }
+
+    /* Button Styles */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      border-radius: var(--radius-md);
+      font-weight: 500;
+      font-size: 14px;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .button .icon {
+      width: 18px;
+      height: 18px;
+      margin-right: var(--space-xs);
+    }
+
+    .primary {
+      background-color: var(--azure-blue);
+      color: var(--white);
+    }
+
+    .primary:hover {
+      background-color: #1A5DC7;
+    }
+
+    .secondary {
+      background-color: var(--white);
+      color: var(--azure-blue);
+      border: 1px solid var(--azure-blue);
+    }
+
+    .secondary:hover {
+      background-color: var(--light-blue);
+    }
+
+    .tertiary {
+      background-color: transparent;
+      color: var(--azure-blue);
+      padding: 8px 12px;
+    }
+
+    .tertiary:hover {
+      background-color: var(--light-blue);
+    }
+
+    .icon-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-md);
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+    }
+
+    .icon-button:hover {
+      background-color: var(--light-gray);
+    }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      stroke-width: 1.5;
+    }
+
+    /* Tab Panel */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--light-gray);
+      margin-bottom: var(--space-xl);
+    }
+
+    .tab {
+      padding: var(--space-md) var(--space-xl);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--slate-gray);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .tab:hover {
+      background-color: var(--light-blue);
+    }
+
+    .tab.active {
+      color: var(--azure-blue);
+    }
+
+    .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--azure-blue);
+    }
+
+    /* Page Header */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-xl);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: var(--space-md);
+    }
+
+    /* Cards and Sections */
+    .card {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      margin-bottom: var(--space-xl);
+    }
+
+    .card-header {
+      padding: var(--space-lg);
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+    }
+
+    .card-body {
+      padding: var(--space-lg);
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-lg);
+    }
+
+    /* AI Insights Styles - fixed */
+    .ai-insight-card {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      margin-bottom: var(--space-xl);
+      border-left: 4px solid var(--azure-blue);
+      overflow: hidden;
+    }
+
+    .ai-insight-card.warning {
+      border-left-color: var(--amber-yellow);
+    }
+
+    .ai-insight-card.danger {
+      border-left-color: var(--coral-red);
+    }
+
+    .ai-insight-card.success {
+      border-left-color: var(--mint-green);
+    }
+
+    .ai-insight-header {
+      padding: var(--space-lg);
+      background-color: rgba(45, 114, 217, 0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .ai-insight-card.warning .ai-insight-header {
+      background-color: rgba(255, 193, 7, 0.05);
+    }
+
+    .ai-insight-card.danger .ai-insight-header {
+      background-color: rgba(255, 82, 82, 0.05);
+    }
+
+    .ai-insight-card.success .ai-insight-header {
+      background-color: rgba(0, 191, 165, 0.05);
+    }
+
+    .ai-insight-title-wrapper {
+      display: flex;
+      align-items: center;
+    }
+
+    .ai-icon {
+      width: 24px;
+      height: 24px;
+      margin-right: var(--space-md);
+      color: var(--azure-blue);
+    }
+
+    .ai-insight-card.warning .ai-icon {
+      color: var(--amber-yellow);
+    }
+
+    .ai-insight-card.danger .ai-icon {
+      color: var(--coral-red);
+    }
+
+    .ai-insight-card.success .ai-icon {
+      color: var(--mint-green);
+    }
+
+    .ai-insight-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+    }
+
+    .ai-confidence {
+      font-size: 12px;
+      color: var(--medium-gray);
+      padding: 4px 8px;
+      background-color: var(--light-gray);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+    }
+
+    .ai-confidence-level {
+      margin-left: 4px;
+      font-weight: 600;
+    }
+
+    .ai-insight-body {
+      padding: var(--space-lg);
+    }
+
+    .ai-insight-content {
+      margin-bottom: var(--space-lg);
+    }
+
+    .data-visualization {
+      height: 200px;
+      background-color: var(--light-gray);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--space-lg);
+    }
+
+    .ai-insight-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: var(--space-md);
+      border-top: 1px solid var(--light-gray);
+    }
+
+    .ai-insight-metadata {
+      font-size: 12px;
+      color: var(--medium-gray);
+    }
+
+    .ai-insight-actions {
+      display: flex;
+      gap: var(--space-md);
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: var(--space-lg);
+    }
+
+    .tag {
+      font-size: 12px;
+      color: var(--slate-gray);
+      background-color: var(--light-gray);
+      padding: 4px 8px;
+      border-radius: 16px;
+    }
+
+    .impact-indicator {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: var(--space-lg);
+    }
+
+    .impact-indicator.high {
+      color: var(--coral-red);
+    }
+
+    .impact-indicator.medium {
+      color: var(--amber-yellow);
+    }
+
+    .impact-indicator.low {
+      color: var(--mint-green);
+    }
+
+    .impact-icon {
+      margin-right: var(--space-xs);
+    }
+
+    .ai-metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: var(--space-lg);
+      margin-bottom: var(--space-lg);
+    }
+
+    .ai-metric {
+      background-color: var(--light-gray);
+      padding: var(--space-md);
+      border-radius: var(--radius-md);
+    }
+
+    .ai-metric-label {
+      font-size: 12px;
+      color: var(--medium-gray);
+      margin-bottom: 4px;
+    }
+
+    .ai-metric-value {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--deep-navy);
+      font-family: var(--font-mono);
+    }
+
+    .insight-filters {
+      display: flex;
+      gap: var(--space-md);
+      margin-bottom: var(--space-xl);
+      flex-wrap: wrap;
+    }
+
+    .filter-chip {
+      display: flex;
+      align-items: center;
+      background-color: var(--white);
+      border: 1px solid var(--light-gray);
+      padding: 6px 12px;
+      border-radius: 16px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .filter-chip:hover {
+      border-color: var(--azure-blue);
+    }
+
+    .filter-chip.active {
+      background-color: var(--azure-blue);
+      color: var(--white);
+      border-color: var(--azure-blue);
+    }
+
+    .filter-chip .icon {
+      width: 16px;
+      height: 16px;
+      margin-right: 6px;
+    }
+
+    /* Info Box */
+    .info-box {
+      background-color: rgba(0, 191, 165, 0.1);
+      border-radius: var(--radius-md);
+      padding: var(--space-lg);
+      margin-bottom: var(--space-xl);
+      display: flex;
+    }
+
+    .info-box-icon {
+      margin-right: var(--space-md);
+      color: var(--mint-green);
+      flex-shrink: 0;
+    }
+
+    .info-box-content h4 {
+      margin-bottom: var(--space-xs);
+      color: var(--deep-navy);
+    }
+
+    .info-box-content p {
+      font-size: 14px;
+      color: var(--slate-gray);
+    }
+
+    /* Insight Group */
+    .insight-group {
+      margin-bottom: var(--space-2xl);
+    }
+
+    .insight-group-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-lg);
+    }
+
+    /* Document Link */
+    .document-link {
+      display: flex;
+      align-items: center;
+      padding: var(--space-md);
+      background-color: var(--light-gray);
+      border-radius: var(--radius-md);
+      color: var(--deep-navy);
+      text-decoration: none;
+      margin-bottom: var(--space-md);
+    }
+
+    .document-link .icon {
+      margin-right: var(--space-md);
+      color: var(--azure-blue);
+    }
+
+    .document-link:hover {
+      background-color: var(--light-blue);
+    }
+
+    /* Key Points List */
+    .key-points {
+      margin-bottom: var(--space-lg);
+    }
+
+    .key-point {
+      display: flex;
+      margin-bottom: var(--space-md);
+    }
+
+    .key-point-icon {
+      width: 20px;
+      height: 20px;
+      margin-right: var(--space-md);
+      color: var(--azure-blue);
+      flex-shrink: 0;
+    }
+
+    .key-point-text {
+      font-size: 14px;
+    }
+
+    /* Expandable Content */
+    .expandable-content {
+      border-top: 1px solid var(--light-gray);
+      margin-top: var(--space-md);
+      padding-top: var(--space-md);
+    }
+
+    .expandable-trigger {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--azure-blue);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+
+    .expandable-trigger .icon {
+      margin-left: var(--space-xs);
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 1024px) {
+      .two-column-layout {
+        display: flex;
+      }
+
+      .sidebar {
+        width: 280px;
+        min-width: 280px;
+        max-width: 280px;
+      }
+
+      .ai-metrics {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .two-column-layout {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
+        border-left: none;
+        border-top: 1px solid var(--light-gray);
+      }
+      
+      .top-nav {
+        padding: 0 var(--space-md);
+      }
+      
+      .nav-items {
+        display: none;
+      }
+      
+      .search-bar {
+        width: 160px;
+      }
+
+      .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-md);
+      }
+
+      .header-actions {
+        width: 100%;
+      }
+
+      .ai-insight-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-md);
+      }
+    }
+
+    /* Operational Insights Specific Styles */
+    .operational-metric {
+      display: flex;
+      flex-direction: column;
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg);
+      box-shadow: var(--shadow-md);
+    }
+
+    .operational-metric-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-md);
+    }
+
+    .operational-metric-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+    }
+
+    .operational-metric-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-sm);
+    }
+
+    .operational-metric-trend {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      margin-bottom: var(--space-md);
+    }
+
+    .trend-up {
+      color: var(--mint-green);
+    }
+
+    .trend-down {
+      color: var(--coral-red);
+    }
+
+    .trend-neutral {
+      color: var(--medium-gray);
+    }
+
+    .operational-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-lg);
+      margin-bottom: var(--space-xl);
+    }
+
+    .process-flow-diagram {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg);
+      box-shadow: var(--shadow-md);
+      margin-bottom: var(--space-xl);
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .benchmark-comparison {
+      display: flex;
+      align-items: center;
+      margin-bottom: var(--space-md);
+    }
+
+    .benchmark-bar {
+      flex-grow: 1;
+      height: 8px;
+      background-color: var(--light-gray);
+      border-radius: 4px;
+      margin: 0 var(--space-md);
+      position: relative;
+    }
+
+    .benchmark-value {
+      background-color: var(--azure-blue);
+      height: 100%;
+      border-radius: 4px;
+      position: absolute;
+      left: 0;
+    }
+
+    .benchmark-marker {
+      position: absolute;
+      width: 2px;
+      height: 16px;
+      background-color: var(--deep-navy);
+      top: -4px;
+    }
+
+    .benchmark-label {
+      font-size: 14px;
+      min-width: 100px;
+    }
+
+    .benchmark-value-text {
+      font-size: 14px;
+      min-width: 80px;
+      text-align: right;
+      font-weight: 500;
+    }
+
+    @media (max-width: 1024px) {
+      .operational-metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .operational-metrics-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <div class="top-nav-left">
+      <div class="logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 8H16C20.4183 8 24 11.5817 24 16C24 20.4183 20.4183 24 16 24H8V8Z" fill="#0A2342"/>
+          <path d="M16 8H24V16C24 20.4183 20.4183 24 16 24V8Z" fill="#2D72D9"/>
+        </svg>
+        <span>DueDiligenceAI</span>
+      </div>
+      <div class="nav-items">
+        <div class="nav-item">Dashboard</div>
+        <div class="nav-item">Documents</div>
+        <div class="nav-item active">Analysis</div>
+        <div class="nav-item">Reports</div>
+      </div>
+    </div>
+    <div class="top-nav-right">
+      <div class="search-bar">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <input type="text" placeholder="Search..." />
+      </div>
+      <div class="notifications">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 17H9M12 3V4M12 21V20M5.6 5.6L6.3 6.3M18.4 5.6L17.7 6.3M3 12H4M20 12H21M6 17.4V12C6 8.7 8.7 6 12 6C15.3 6 18 8.7 18 12V17.4H6Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="user-profile">
+        <div class="avatar">SK</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Breadcrumbs -->
+  <div class="breadcrumbs">
+    <div class="breadcrumb-item">Dashboard</div>
+    <div class="breadcrumb-item">Projects</div>
+    <div class="breadcrumb-item">ABC Corp Acquisition</div>
+    <div class="breadcrumb-item">Operational AI Insights</div>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="container">
+    <div class="two-column-layout">
+      <!-- Main Content -->
+      <div class="main-content">
+        <!-- Page Header -->
+        <div class="page-header">
+          <h1>ABC Corp Operational Insights</h1>
+          <div class="header-actions">
+            <button class="button secondary">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 16.5V18.75C3 19.9926 4.00736 21 5.25 21H18.75C19.9926 21 21 19.9926 21 18.75V16.5M16.5 12L12 16.5M12 16.5L7.5 12M12 16.5V3" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Export Insights
+            </button>
+            <button class="button primary">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 3.5V2M14.5 3.5V2M9 21.5V20M14.5 21.5V20M3.5 9H2M3.5 14.5H2M21.5 9H20M21.5 14.5H20" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Generate New Insights
+            </button>
+          </div>
+        </div>
+
+        <!-- Info Box -->
+        <div class="info-box">
+          <svg class="icon info-box-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 16V12M12 8H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div class="info-box-content">
+            <h4>Operational Analysis Summary</h4>
+            <p>Our AI has analyzed 18 operational documents from ABC Corp, including production reports, supply chain data, and quality metrics. The analysis reveals strong manufacturing efficiency but highlights several opportunities for process optimization. Based on industry benchmarks, we recommend focused improvements in inventory management and equipment maintenance scheduling.</p>
+          </div>
+        </div>
+
+        <!-- Insight Filters -->
+        <div class="insight-filters">
+          <div class="filter-chip">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 7H21M17 7V20L12 16L7 20V7M6 3H18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            All Insights
+          </div>
+          <div class="filter-chip">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 12V3M15.5 5.5L8.5 5.5M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Financial
+          </div>
+          <div class="filter-chip active">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16 8V16M12 11V16M8 14V16M6 20H18C19.1046 20 20 19.1046 20 18V6C20 4.89543 19.1046 4 18 4H6C4.89543 4 4 4.89543 4 6V18C4 19.1046 4.89543 20 6 20Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Operational
+          </div>
+          <div class="filter-chip">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0378 2.66667 10.268 4L3.33978 16C2.56998 17.3333 3.53223 19 5.07183 19Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Risk Assessment
+          </div>
+          <div class="filter-chip">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15.5 13.5L12 17M12 17L8.5 13.5M12 17V7M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Supply Chain
+          </div>
+          <div class="filter-chip">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 11L12 14L22 4M21 12V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V5C3 3.89543 3.89543 3 5 3H16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Action Items
+          </div>
+        </div>
+
+        <!-- Operational Key Metrics -->
+        <div class="insight-group">
+          <div class="insight-group-header">
+            <h3 class="section-title">Operational Key Metrics</h3>
+            <button class="button tertiary">View History</button>
+          </div>
+
+          <div class="operational-metrics-grid">
+            <!-- OEE Metric -->
+            <div class="operational-metric">
+              <div class="operational-metric-header">
+                <div class="operational-metric-title">Overall Equipment Effectiveness</div>
+              </div>
+              <div class="operational-metric-value">84.3%</div>
+              <div class="operational-metric-trend trend-up">
+                <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M18 9L12 3M12 3L6 9M12 3V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                +2.1% vs. Last Quarter
+              </div>
+              <div class="benchmark-comparison">
+                <div class="benchmark-label">Industry Avg.</div>
+                <div class="benchmark-bar">
+                  <div class="benchmark-value" style="width: 84.3%;"></div>
+                  <div class="benchmark-marker" style="left: 75%;"></div>
+                </div>
+                <div class="benchmark-value-text">75.0%</div>
+              </div>
+            </div>
+
+            <!-- Defect Rate Metric -->
+            <div class="operational-metric">
+              <div class="operational-metric-header">
+                <div class="operational-metric-title">Defect Rate</div>
+              </div>
+              <div class="operational-metric-value">1.2%</div>
+              <div class="operational-metric-trend trend-down">
+                <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M18 15L12 21M12 21L6 15M12 21V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                -0.3% vs. Last Quarter
+              </div>
+              <div class="benchmark-comparison">
+                <div class="benchmark-label">Industry Avg.</div>
+                <div class="benchmark-bar">
+                  <div class="benchmark-value" style="width: 60%;"></div>
+                  <div class="benchmark-marker" style="left: 85%;"></div>
+                </div>
+                <div class="benchmark-value-text">1.7%</div>
+              </div>
+            </div>
+
+            <!-- Production Capacity Metric -->
+            <div class="operational-metric">
+              <div class="operational-metric-header">
+                <div class="operational-metric-title">Production Capacity Util.</div>
+              </div>
+              <div class="operational-metric-value">92.7%</div>
+              <div class="operational-metric-trend trend-up">
+                <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M18 9L12 3M12 3L6 9M12 3V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                +4.2% vs. Last Quarter
+              </div>
+              <div class="benchmark-comparison">
+                <div class="benchmark-label">Industry Avg.</div>
+                <div class="benchmark-bar">
+                  <div class="benchmark-value" style="width: 92.7%;"></div>
+                  <div class="benchmark-marker" style="left: 80%;"></div>
+                </div>
+                <div class="benchmark-value-text">80.0%</div>
+              </div>
+            </div>
+
+            <!-- Inventory Turnover Metric -->
+            <div class="operational-metric">
+              <div class="operational-metric-header">
+                <div class="operational-metric-title">Inventory Turnover</div>
+              </div>
+              <div class="operational-metric-value">6.8x</div>
+              <div class="operational-metric-trend trend-neutral">
+                <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                +0.1x vs. Last Quarter
+              </div>
+              <div class="benchmark-comparison">
+                <div class="benchmark-label">Industry Avg.</div>
+                <div class="benchmark-bar">
+                  <div class="benchmark-value" style="width: 68%;"></div>
+                  <div class="benchmark-marker" style="left: 90%;"></div>
+                </div>
+                <div class="benchmark-value-text">9.0x</div>
+              </div>
+            </div>
+
+            <!-- Cycle Time Metric -->
+            <div class="operational-metric">
+              <div class="operational-metric-header">
+                <div class="operational-metric-title">Avg. Production Cycle Time</div>
+              </div>
+              <div class="operational-metric-value">3.2 days</div>
+              <div class="operational-metric-trend trend-down">
+                <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M18 15L12 21M12 21L6 15M12 21V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                -0.5 days vs. Last Quarter
+              </div>
+              <div class="benchmark-comparison">
+                <div class="benchmark-label">Industry Avg.</div>
+                <div class="benchmark-bar">
+                  <div class="benchmark-value" style="width: 80%;"></div>
+                  <div class="benchmark-marker" style="left: 60%;"></div>
+                </div>
+                <div class="benchmark-value-text">4.0 days</div>
+              </div>
+            </div>
+
+            <!-- On-time Delivery Metric -->
+            <div class="operational-metric">
+              <div class="operational-metric-header">
+                <div class="operational-metric-title">On-time Delivery Rate</div>
+              </div>
+              <div class="operational-metric-value">94.8%</div>
+              <div class="operational-metric-trend trend-up">
+                <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M18 9L12 3M12 3L6 9M12 3V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                +1.3% vs. Last Quarter
+              </div>
+              <div class="benchmark-comparison">
+                <div class="benchmark-label">Industry Avg.</div>
+                <div class="benchmark-bar">
+                  <div class="benchmark-value" style="width: 94.8%;"></div>
+                  <div class="benchmark-marker" style="left: 88%;"></div>
+                </div>
+                <div class="benchmark-value-text">88.0%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Key Operational Insights -->
+        <div class="insight-group">
+          <div class="insight-group-header">
+            <h3 class="section-title">Key Operational Insights</h3>
+            <button class="button tertiary">View All</button>
+          </div>
+
+          <!-- AI Insight Card - High Priority -->
+          <div class="ai-insight-card danger">
+            <div class="ai-insight-header">
+              <div class="ai-insight-title-wrapper">
+                <svg class="ai-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 3.5V2M14.5 3.5V2M9 21.5V20M14.5 21.5V20M3.5 9H2M3.5 14.5H2M21.5 9H20M21.5 14.5H20M7 16.5H17M7 12H17M12 7.5V16.5M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="ai-insight-title">Critical Equipment Maintenance Risk</div>
+              </div>
+              <div class="ai-confidence">
+                Confidence:
+                <span class="ai-confidence-level">High (94%)</span>
+              </div>
+            </div>
+            <div class="ai-insight-body">
+              <div class="impact-indicator high">
+                <svg class="impact-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0378 2.66667 10.268 4L3.33978 16C2.56998 17.3333 3.53223 19 5.07183 19Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                High Impact
+              </div>
+              <div class="tags">
+                <div class="tag">Operational Risk</div>
+                <div class="tag">Equipment</div>
+                <div class="tag">Manufacturing</div>
+              </div>
+              <div class="ai-insight-content">
+                <p>Analysis of equipment maintenance logs shows that 3 critical production line components have exceeded their recommended maintenance intervals by 35-47%. Based on manufacturer specifications and historical failure data, there is a 68% probability of equipment failure within the next 60 days, which could result in 3-5 days of production downtime. The affected equipment includes the primary injection molding machine (Line 2), central conveyor system, and packaging automation unit.</p>
+              </div>
+              <div class="key-points">
+                <div class="key-point">
+                  <svg class="key-point-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 12L11 14L15 10M20.6179 5.98434C20.4132 5.99472 20.2072 5.99997 20 5.99997C16.9265 5.99997 14.123 4.84453 12.0004 2.95598C9.87787 4.84446 7.07418 5.99985 4 5.99985C3.79277 5.99985 3.58678 5.9946 3.38213 5.98422C3.1327 6.94783 3 7.95842 3 9.00001C3 14.5915 6.82432 19.2898 12 20.622C17.1757 19.2898 21 14.5915 21 9.00001C21 7.95847 20.8673 6.94791 20.6179 5.98434Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <div class="key-point-text">Injection molding machine (Line 2) last maintained 47% beyond recommended interval</div>
+                </div>
+                <div class="key-point">
+                  <svg class="key-point-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 12L11 14L15 10M20.6179 5.98434C20.4132 5.99472 20.2072 5.99997 20 5.99997C16.9265 5.99997 14.123 4.84453 12.0004 2.95598C9.87787 4.84446 7.07418 5.99985 4 5.99985C3.79277 5.99985 3.58678 5.9946 3.38213 5.98422C3.1327 6.94783 3 7.95842 3 9.00001C3 14.5915 6.82432 19.2898 12 20.622C17.1757 19.2898 21 14.5915 21 9.00001C21 7.95847 20.8673 6.94791 20.6179 5.98434Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <div class="key-point-text">68% probability of equipment failure within 60 days based on historical patterns</div>
+                </div>
+                <div class="key-point">
+                  <svg class="key-point-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 12L11 14L15 10M20.6179 5.98434C20.4132 5.99472 20.2072 5.99997 20 5.99997C16.9265 5.99997 14.123 4.84453 12.0004 2.95598C9.87787 4.84446 7.07418 5.99985 4 5.99985C3.79277 5.99985 3.58678 5.9946 3.38213 5.98422C3.1327 6.94783 3 7.95842 3 9.00001C3 14.5915 6.82432 19.2898 12 20.622C17.1757 19.2898 21 14.5915 21 9.00001C21 7.95847 20.8673 6.94791 20.6179 5.98434Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <div class="key-point-text">Potential 3-5 days of production downtime if failure occurs (est. $120-180K impact)</div>
+                </div>
+              </div>
+              <div class="document-link">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M14 2V8H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M16 13H8M16 17H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Equipment Maintenance Logs (2023-2025)
+              </div>
+              <div class="ai-insight-footer">
+                <div class="ai-insight-metadata">
+                  Generated: Apr 28, 2025 • Last updated: Apr 30, 2025
+                </div>
+                <div class="ai-insight-actions">
+                  <button class="button tertiary">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M7 8L17 8M7 12H17M7 16H13M4 4H20V20C20 20.5523 19.5523 21 19 21H5C4.44772 21 4 20.5523 4 20V4Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Add to Report
+                  </button>
+                  <button class="button tertiary">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M15 10L12 13M12 13L9 10M12 13V3M9.2 21H14.8C16.9201 21 17.9802 21 18.8284 20.5641C19.5779 20.1805 20.1805 19.5779 20.5641 18.8284C21 17.9802 21 16.9201 21 14.8V14.2C21 12.0799 21 11.0198 20.5641 10.1716C20.1805 9.42215 19.5779 8.81948 18.8284 8.43597C17.9802 8 16.9201 8 14.8 8H9.2C7.07989 8 6.01984 8 5.17157 8.43597C4.42215 8.81948 3.81948 9.42215 3.43597 10.1716C3 11.0198 3 12.0799 3 14.2V14.8C3 16.9201 3 17.9802 3.43597 18.8284C3.81948 19.5779 4.42215 20.1805 5.17157 20.5641C6.01984 21 7.07989 21 9.2 21Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Share
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- AI Insight Card - Positive -->
+          <div class="ai-insight-card success">
+            <div class="ai-insight-header">
+              <div class="ai-insight-title-wrapper">
+                <svg class="ai-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 3.5V2M14.5 3.5V2M9 21.5V20M14.5 21.5V20M3.5 9H2M3.5 14.5H2M21.5 9H20M21.5 14.5H20M7 16.5H17M7 12H17M12 7.5V16.5M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="ai-insight-title">Supply Chain Optimization Opportunity</div>
+              </div>
+              <div class="ai-confidence">
+                Confidence:
+                <span class="ai-confidence-level">High (91%)</span>
+              </div>
+            </div>
+            <div class="ai-insight-body">
+              <div class="impact-indicator low">
+                <svg class="impact-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Positive Impact
+              </div>
+              <div class="tags">
+                <div class="tag">Supply Chain</div>
+                <div class="tag">Cost Reduction</div>
+                <div class="tag">Inventory</div>
+              </div>
+              <div class="ai-insight-content">
+                <p>Based on analysis of purchasing patterns, supplier contracts, and inventory levels, we've identified a significant opportunity to optimize ABC Corp's supply chain. Current inventory levels for key raw materials are consistently 35-40% above optimal, resulting in approximately $1.8M in excess working capital tied up in inventory. Additionally, by consolidating purchases across 3 duplicate suppliers, we estimate annual procurement savings of $420-550K while maintaining supplier redundancy for critical components.</p>
+              </div>
+
+              <div class="ai-metrics">
+                <div class="ai-metric">
+                  <div class="ai-metric-label">Excess Inventory Value</div>
+                  <div class="ai-metric-value">$1.8M</div>
+                </div>
+                <div class="ai-metric">
+                  <div class="ai-metric-label">Potential Annual Savings</div>
+                  <div class="ai-metric-value">$420-550K</div>
+                </div>
+                <div class="ai-metric">
+                  <div class="ai-metric-label">Implementation Timeline</div>
+                  <div class="ai-metric-value">4-6 months</div>
+                </div>
+              </div>
+              
+              <div class="key-points">
+                <div class="key-point">
+                  <svg class="key-point-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 12L11 14L15 10M20.6179 5.98434C20.4132 5.99472 20.2072 5.99997 20 5.99997C16.9265 5.99997 14.123 4.84453 12.0004 2.95598C9.87787 4.84446 7.07418 5.99985 4 5.99985C3.79277 5.99985 3.58678 5.9946 3.38213 5.98422C3.1327 6.94783 3 7.95842 3 9.00001C3 14.5915 6.82432 19.2898 12 20.622C17.1757 19.2898 21 14.5915 21 9.00001C21 7.95847 20.8673 6.94791 20.6179 5.98434Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <div class="key-point-text">Raw material inventory levels 35-40% above optimal levels (primarily resins and packaging)</div>
+                </div>
+                <div class="key-point">
+                  <svg class="key-point-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 12L11 14L15 10M20.6179 5.98434C20.4132 5.99472 20.2072 5.99997 20 5.99997C16.9265 5.99997 14.123 4.84453 12.0004 2.95598C9.87787 4.84446 7.07418 5.99985 4 5.99985C3.79277 5.99985 3.58678 5.9946 3.38213 5.98422C3.1327 6.94783 3 7.95842 3 9.00001C3 14.5915 6.82432 19.2898 12 20.622C17.1757 19.2898 21 14.5915 21 9.00001C21 7.95847 20.8673 6.94791 20.6179 5.98434Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <div class="key-point-text">3 duplicate suppliers identified for non-critical components (electronics, fasteners, labels)</div>
+                </div>
+                <div class="key-point">
+                  <svg class="key-point-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 12L11 14L15 10M20.6179 5.98434C20.4132 5.99472 20.2072 5.99997 20 5.99997C16.9265 5.99997 14.123 4.84453 12.0004 2.95598C9.87787 4.84446 7.07418 5.99985 4 5.99985C3.79277 5.99985 3.58678 5.9946 3.38213 5.98422C3.1327 6.94783 3 7.95842 3 9.00001C3 14.5915 6.82432 19.2898 12 20.622C17.1757 19.2898 21 14.5915 21 9.00001C21 7.95847 20.8673 6.94791 20.6179 5.98434Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <div class="key-point-text">17% reduction in safety stock possible with improved forecasting system implementation</div>
+                </div>
+              </div>
+              
+              <div class="document-link">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M14 2V8H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M16 13H8M16 17H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Inventory Management Report (Full Document)
+              </div>
+              
+              <div class="ai-insight-footer">
+                <div class="ai-insight-metadata">
+                  Generated: Apr 29, 2025 • Last updated: Apr 30, 2025
+                </div>
+                <div class="ai-insight-actions">
+                  <button class="button tertiary">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M7 8L17 8M7 12H17M7 16H13M4 4H20V20C20 20.5523 19.5523 21 19 21H5C4.44772 21 4 20.5523 4 20V4Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Add to Report
+                  </button>
+                  <button class="button tertiary">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M15 10L12 13M12 13L9 10M12 13V3M9.2 21H14.8C16.9201 21 17.9802 21 18.8284 20.5641C19.5779 20.1805 20.1805 19.5779 20.5641 18.8284C21 17.9802 21 16.9201 21 14.8V14.2C21 12.0799 21 11.0198 20.5641 10.1716C20.1805 9.42215 19.5779 8.81948 18.8284 8.43597C17.9802 8 16.9201 8 14.8 8H9.2C7.07989 8 6.01984 8 5.17157 8.43597C4.42215 8.81948 3.81948 9.42215 3.43597 10.1716C3 11.0198 3 12.0799 3 14.2V14.8C3 16.9201 3 17.9802 3.43597 18.8284C3.81948 19.5779 4.42215 20.1805 5.17157 20.5641C6.01984 21 7.07989 21 9.2 21Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Share
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Process Flow Analysis -->
+          <div class="insight-group">
+            <div class="insight-group-header">
+              <h3 class="section-title">Manufacturing Process Flow Analysis</h3>
+              <button class="button tertiary">View Details</button>
+            </div>
+
+            <div class="ai-insight-card">
+              <div class="ai-insight-header">
+                <div class="ai-insight-title-wrapper">
+                  <svg class="ai-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 3.5V2M14.5 3.5V2M9 21.5V20M14.5 21.5V20M3.5 9H2M3.5 14.5H2M21.5 9H20M21.5 14.5H20M7 16.5H17M7 12H17M12 7.5V16.5M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <div class="ai-insight-title">Manufacturing Process Bottleneck Analysis</div>
+                </div>
+              </div>
+              <div class="ai-insight-body">
+                <div class="ai-insight-content">
+                  <p>Our AI analysis of production line throughput and cycle times has identified a significant bottleneck in the assembly and testing phases. The current workflow creates idle time in downstream processes and contributes to inconsistent quality outcomes. By rebalancing workstation tasks and implementing two specific process improvements, we estimate a 14% increase in overall throughput and a 9% reduction in total manufacturing cycle time.</p>
+                </div>
+                
+                <div class="process-flow-diagram">
+                  <!-- Simplified manufacturing process flow visualization -->
+                  <svg width="100%" height="100%" viewBox="0 0 800 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Title -->
+                    <text x="400" y="30" text-anchor="middle" font-size="16" font-weight="600" fill="#0A2342">Manufacturing Process Flow - Current State</text>
+
+                    <!-- Process Flow Stages -->
+                    <!-- Raw Materials -->
+                    <rect x="50" y="100" width="100" height="60" rx="4" fill="#E1F5FE" stroke="#2D72D9" stroke-width="1.5"/>
+                    <text x="100" y="135" text-anchor="middle" font-size="12" fill="#0A2342">Raw Materials</text>
+                    <text x="100" y="150" text-anchor="middle" font-size="10" fill="#3C4858">2.1 days</text>
+
+                    <!-- Production -->
+                    <rect x="200" y="100" width="100" height="60" rx="4" fill="#E1F5FE" stroke="#2D72D9" stroke-width="1.5"/>
+                    <text x="250" y="135" text-anchor="middle" font-size="12" fill="#0A2342">Production</text>
+                    <text x="250" y="150" text-anchor="middle" font-size="10" fill="#3C4858">1.4 days</text>
+
+                    <!-- Assembly -->
+                    <rect x="350" y="100" width="100" height="60" rx="4" fill="#FFEBEE" stroke="#FF5252" stroke-width="2"/>
+                    <text x="400" y="135" text-anchor="middle" font-size="12" fill="#0A2342">Assembly</text>
+                    <text x="400" y="150" text-anchor="middle" font-size="10" fill="#FF5252">3.8 days</text>
+                    <text x="400" y="170" text-anchor="middle" font-size="10" font-weight="600" fill="#FF5252">BOTTLENECK</text>
+
+                    <!-- Quality Testing -->
+                    <rect x="500" y="100" width="100" height="60" rx="4" fill="#FFF8E1" stroke="#FFC107" stroke-width="1.5"/>
+                    <text x="550" y="135" text-anchor="middle" font-size="12" fill="#0A2342">Quality Testing</text>
+                    <text x="550" y="150" text-anchor="middle" font-size="10" fill="#FFC107">2.9 days</text>
+
+                    <!-- Packaging & Shipping -->
+                    <rect x="650" y="100" width="100" height="60" rx="4" fill="#E1F5FE" stroke="#2D72D9" stroke-width="1.5"/>
+                    <text x="700" y="135" text-anchor="middle" font-size="12" fill="#0A2342">Packaging</text>
+                    <text x="700" y="150" text-anchor="middle" font-size="10" fill="#3C4858">1.0 days</text>
+
+                    <!-- Arrows -->
+                    <line x1="150" y1="130" x2="200" y2="130" stroke="#3C4858" stroke-width="1.5"/>
+                    <polygon points="195,125 200,130 195,135" fill="#3C4858"/>
+                    
+                    <line x1="300" y1="130" x2="350" y2="130" stroke="#3C4858" stroke-width="1.5"/>
+                    <polygon points="345,125 350,130 345,135" fill="#3C4858"/>
+                    
+                    <line x1="450" y1="130" x2="500" y2="130" stroke="#3C4858" stroke-width="1.5"/>
+                    <polygon points="495,125 500,130 495,135" fill="#3C4858"/>
+                    
+                    <line x1="600" y1="130" x2="650" y2="130" stroke="#3C4858" stroke-width="1.5"/>
+                    <polygon points="645,125 650,130 645,135" fill="#3C4858"/>
+
+                    <!-- Optimized Flow (dotted line) -->
+                    <text x="400" y="210" text-anchor="middle" font-size="14" font-weight="500" fill="#00BFA5">Proposed Optimized Process</text>
+                    
+                    <!-- Dotted flow line -->
+                    <path d="M50 230 H750" stroke="#00BFA5" stroke-width="2" stroke-dasharray="6 4"/>
+                    
+                    <!-- Time markers -->
+                    <line x1="50" y1="230" x2="50" y2="240" stroke="#00BFA5" stroke-width="1.5"/>
+                    <text x="50" y="255" text-anchor="middle" font-size="10" fill="#00BFA5">0</text>
+                    
+                    <line x1="150" y1="230" x2="150" y2="240" stroke="#00BFA5" stroke-width="1.5"/>
+                    <text x="150" y="255" text-anchor="middle" font-size="10" fill="#00BFA5">2d</text>
+                    
+                    <line x1="270" y1="230" x2="270" y2="240" stroke="#00BFA5" stroke-width="1.5"/>
+                    <text x="270" y="255" text-anchor="middle" font-size="10" fill="#00BFA5">3.3d</text>
+                    
+                    <line x1="420" y1="230" x2="420" y2="240" stroke="#00BFA5" stroke-width="1.5"/>
+                    <text x="420" y="255" text-anchor="middle" font-size="10" fill="#00BFA5">5.5d</text>
+                    
+                    <line x1="580" y1="230" x2="580" y2="240" stroke="#00BFA5" stroke-width="1.5"/>
+                    <text x="580" y="255" text-anchor="middle" font-size="10" fill="#00BFA5">7.9d</text>
+                    
+                    <line x1="650" y1="230" x2="650" y2="240" stroke="#00BFA5" stroke-width="1.5"/>
+                    <text x="650" y="255" text-anchor="middle" font-size="10" fill="#00BFA5">8.9d</text>
+                    
+                    <!-- Improvement summary -->
+                    <text x="700" y="255" text-anchor="start" font-size="12" font-weight="600" fill="#00BFA5">2.3 days saved</text>
+                  </svg>
+                </div>
+                
+                <div class="key-points">
+                  <div class="key-point">
+                    <svg class="key-point-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9 12L11 14L15 10M20.6179 5.98434C20.4132 5.99472 20.2072 5.99997 20 5.99997C16.9265 5.99997 14.123 4.84453 12.0004 2.95598C9.87787 4.84446 7.07418 5.99985 4 5.99985C3.79277 5.99985 3.58678 5.9946 3.38213 5.98422C3.1327 6.94783 3 7.95842 3 9.00001C3 14.5915 6.82432 19.2898 12 20.622C17.1757 19.2898 21 14.5915 21 9.00001C21 7.95847 20.8673 6.94791 20.6179 5.98434Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <div class="key-point-text">Assembly is the primary bottleneck at 3.8 days vs. optimal 2.2 days</div>
+                  </div>
+                  <div class="key-point">
+                    <svg class="key-point-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9 12L11 14L15 10M20.6179 5.98434C20.4132 5.99472 20.2072 5.99997 20 5.99997C16.9265 5.99997 14.123 4.84453 12.0004 2.95598C9.87787 4.84446 7.07418 5.99985 4 5.99985C3.79277 5.99985 3.58678 5.9946 3.38213 5.98422C3.1327 6.94783 3 7.95842 3 9.00001C3 14.5915 6.82432 19.2898 12 20.622C17.1757 19.2898 21 14.5915 21 9.00001C21 7.95847 20.8673 6.94791 20.6179 5.98434Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <div class="key-point-text">Rebalancing assembly tasks and adding parallel quality testing can reduce cycle time by 2.3 days</div>
+                  </div>
+                  <div class="key-point">
+                    <svg class="key-point-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9 12L11 14L15 10M20.6179 5.98434C20.4132 5.99472 20.2072 5.99997 20 5.99997C16.9265 5.99997 14.123 4.84453 12.0004 2.95598C9.87787 4.84446 7.07418 5.99985 4 5.99985C3.79277 5.99985 3.58678 5.9946 3.38213 5.98422C3.1327 6.94783 3 7.95842 3 9.00001C3 14.5915 6.82432 19.2898 12 20.622C17.1757 19.2898 21 14.5915 21 9.00001C21 7.95847 20.8673 6.94791 20.6179 5.98434Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <div class="key-point-text">Estimated implementation cost: $280-350K with ROI within 6 months</div>
+                  </div>
+                </div>
+                
+                <div class="ai-insight-footer">
+                  <div class="ai-insight-metadata">
+                    Generated: Apr 30, 2025 • Last updated: May 1, 2025
+                  </div>
+                  <div class="ai-insight-actions">
+                    <button class="button tertiary">
+                      <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 8L17 8M7 12H17M7 16H13M4 4H20V20C20 20.5523 19.5523 21 19 21H5C4.44772 21 4 20.5523 4 20V4Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      Add to Report
+                    </button>
+                    <button class="button tertiary">
+                      <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15 10L12 13M12 13L9 10M12 13V3M9.2 21H14.8C16.9201 21 17.9802 21 18.8284 20.5641C19.5779 20.1805 20.1805 19.5779 20.5641 18.8284C21 17.9802 21 16.9201 21 14.8V14.2C21 12.0799 21 11.0198 20.5641 10.1716C20.1805 9.42215 19.5779 8.81948 18.8284 8.43597C17.9802 8 16.9201 8 14.8 8H9.2C7.07989 8 6.01984 8 5.17157 8.43597C4.42215 8.81948 3.81948 9.42215 3.43597 10.1716C3 11.0198 3 12.0799 3 14.2V14.8C3 16.9201 3 17.9802 3.43597 18.8284C3.81948 19.5779 4.42215 20.1805 5.17157 20.5641C6.01984 21 7.07989 21 9.2 21Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      Share
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="ai-insight-footer">
+                <div class="ai-insight-metadata">
+                  Generated: Apr 30, 2025 • Last updated: May 1, 2025
+                </div>
+                <div class="ai-insight-actions">
+                  <button class="button tertiary">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M7 8L17 8M7 12H17M7 16H13M4 4H20V20C20 20.5523 19.5523 21 19 21H5C4.44772 21 4 20.5523 4 20V4Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Add to Report
+                  </button>
+                  <button class="button tertiary">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M15 10L12 13M12 13L9 10M12 13V3M9.2 21H14.8C16.9201 21 17.9802 21 18.8284 20.5641C19.5779 20.1805 20.1805 19.5779 20.5641 18.8284C21 17.9802 21 16.9201 21 14.8V14.2C21 12.0799 21 11.0198 20.5641 10.1716C20.1805 9.42215 19.5779 8.81948 18.8284 8.43597C17.9802 8 16.9201 8 14.8 8H9.2C7.07989 8 6.01984 8 5.17157 8.43597C4.42215 8.81948 3.81948 9.42215 3.43597 10.1716C3 11.0198 3 12.0799 3 14.2V14.8C3 16.9201 3 17.9802 3.43597 18.8284C3.81948 19.5779 4.42215 20.1805 5.17157 20.5641C6.01984 21 7.07989 21 9.2 21Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Share
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <h4 style="margin-bottom: var(--space-lg);">Project Overview</h4>
+        
+        <div class="card" style="margin-bottom: var(--space-xl);">
+          <div class="card-header">
+            <div class="card-title">Operational Assessment</div>
+          </div>
+          <div class="card-body">
+            <div style="margin-bottom: var(--space-md);">
+              <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-xs);">
+                <div style="font-size: 14px;">Documents Analyzed</div>
+                <div style="font-weight: 600;">18/24</div>
+              </div>
+              <div style="height: 8px; background-color: var(--light-gray); border-radius: 4px; overflow: hidden;">
+                <div style="height: 100%; width: 75%; background-color: var(--azure-blue);"></div>
+              </div>
+            </div>
+            
+            <div style="margin-bottom: var(--space-md);">
+              <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-xs);">
+                <div style="font-size: 14px;">Insights Generated</div>
+                <div style="font-weight: 600;">12</div>
+              </div>
+              <div style="height: 8px; background-color: var(--light-gray); border-radius: 4px; overflow: hidden;">
+                <div style="height: 100%; width: 85%; background-color: var(--mint-green);"></div>
+              </div>
+            </div>
+            
+            <div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-xs);">
+                <div style="font-size: 14px;">Actions Recommended</div>
+                <div style="font-weight: 600;">7</div>
+              </div>
+              <div style="height: 8px; background-color: var(--light-gray); border-radius: 4px; overflow: hidden;">
+                <div style="height: 100%; width: 65%; background-color: var(--amber-yellow);"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card" style="margin-bottom: var(--space-xl);">
+          <div class="card-header">
+            <div class="card-title">Recent Documents</div>
+          </div>
+          <div class="card-body">
+            <div class="document-link">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 2V8H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16 13H8M16 17H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Production Metrics Q1 2025
+            </div>
+            <div class="document-link">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 2V8H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16 13H8M16 17H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Equipment Maintenance Logs
+            </div>
+            <div class="document-link">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 2V8H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16 13H8M16 17H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Inventory Management Report
+            </div>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Operational Benchmarks</div>
+          </div>
+          <div class="card-body">
+            <div style="margin-bottom: var(--space-md);">
+              <div style="font-size: 14px; margin-bottom: var(--space-xs);">Overall Equipment Effectiveness</div>
+              <div style="display: flex; align-items: center;">
+                <div style="font-weight: 600; margin-right: var(--space-md);">84.3%</div>
+                <div style="height: 8px; background-color: var(--light-gray); border-radius: 4px; flex-grow: 1; position: relative;">
+                  <div style="position: absolute; height: 100%; width: 84.3%; background-color: var(--mint-green); border-radius: 4px;"></div>
+                  <div style="position: absolute; height: 16px; width: 2px; background-color: var(--slate-gray); top: -4px; left: 75%;"></div>
+                </div>
+                <div style="font-size: 12px; margin-left: var(--space-md); color: var(--medium-gray);">75% Ind. Avg</div>
+              </div>
+            </div>
+            
+            <div style="margin-bottom: var(--space-md);">
+              <div style="font-size: 14px; margin-bottom: var(--space-xs);">Inventory Turnover</div>
+              <div style="display: flex; align-items: center;">
+                <div style="font-weight: 600; margin-right: var(--space-md);">6.8x</div>
+                <div style="height: 8px; background-color: var(--light-gray); border-radius: 4px; flex-grow: 1; position: relative;">
+                  <div style="position: absolute; height: 100%; width: 75.5%; background-color: var(--amber-yellow); border-radius: 4px;"></div>
+                  <div style="position: absolute; height: 16px; width: 2px; background-color: var(--slate-gray); top: -4px; left: 90%;"></div>
+                </div>
+                <div style="font-size: 12px; margin-left: var(--space-md); color: var(--medium-gray);">9.0x Ind. Avg</div>
+              </div>
+            </div>
+            
+            <div style="margin-bottom: var(--space-md);">
+              <div style="font-size: 14px; margin-bottom: var(--space-xs);">Production Cycle Time</div>
+              <div style="display: flex; align-items: center;">
+                <div style="font-weight: 600; margin-right: var(--space-md);">3.2d</div>
+                <div style="height: 8px; background-color: var(--light-gray); border-radius: 4px; flex-grow: 1; position: relative;">
+                  <div style="position: absolute; height: 100%; width: 80%; background-color: var(--mint-green); border-radius: 4px;"></div>
+                  <div style="position: absolute; height: 16px; width: 2px; background-color: var(--slate-gray); top: -4px; left: 60%;"></div>
+                </div>
+                <div style="font-size: 12px; margin-left: var(--space-md); color: var(--medium-gray);">4.0d Ind. Avg</div>
+              </div>
+            </div>
+            
+            <button class="button secondary" style="width: 100%;">
+              View All Benchmarks
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

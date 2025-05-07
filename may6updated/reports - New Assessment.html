@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DueDiligenceAI - New Assessment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Color System */
+    :root {
+      --deep-navy: #0A2342;
+      --azure-blue: #2D72D9;
+      --slate-gray: #3C4858;
+      --mint-green: #00BFA5;
+      --coral-red: #FF5252;
+      --amber-yellow: #FFC107;
+      --light-blue: #E1F5FE;
+      --sky-blue: #81D4FA;
+      --dark-blue: #01579B;
+      --charcoal: #263238;
+      --medium-gray: #78909C;
+      --light-gray: #ECEFF1;
+      --white: #FFFFFF;
+      --risk-severe: #d32f2f;
+      --risk-high: #f44336;
+      --risk-medium: #ff9800;
+      --risk-low: #4caf50;
+      --risk-minimal: #81c784;
+      
+      /* Typography */
+      --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-display: 'Manrope', var(--font-primary);
+      --font-mono: 'JetBrains Mono', SFMono-Regular, Consolas, monospace;
+      
+      /* Spacing */
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 12px;
+      --space-lg: 16px;
+      --space-xl: 24px;
+      --space-2xl: 32px;
+      --space-3xl: 48px;
+      
+      /* Shadows */
+      --shadow-sm: 0px 1px 3px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0px 2px 6px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      
+      /* Border Radius */
+      --radius-sm: 2px;
+      --radius-md: 4px;
+      --radius-lg: 8px;
+    }
+
+    /* Global Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-primary);
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--slate-gray);
+      background-color: var(--light-gray);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-display);
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      line-height: 1.2;
+      font-weight: 800;
+      color: var(--deep-navy);
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      line-height: 1.2;
+      font-weight: 700;
+      color: var(--slate-gray);
+    }
+
+    h4 {
+      font-size: 1.125rem;
+      line-height: 1.4;
+      font-weight: 600;
+      color: var(--deep-navy);
+    }
+
+    /* Top Navigation */
+    .top-nav {
+      background-color: var(--white);
+      height: 64px;
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 var(--space-xl);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .top-nav-left, .top-nav-right {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--deep-navy);
+      margin-right: var(--space-2xl);
+    }
+
+    .logo svg {
+      margin-right: var(--space-sm);
+    }
+
+    .nav-items {
+      display: flex;
+    }
+
+    .nav-item {
+      padding: 0 var(--space-lg);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      color: var(--slate-gray);
+      cursor: pointer;
+      transition: color 0.15s;
+      position: relative;
+    }
+
+    .nav-item:hover {
+      color: var(--azure-blue);
+    }
+
+    .nav-item.active {
+      color: var(--azure-blue);
+    }
+
+    .nav-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--azure-blue);
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      background-color: var(--light-gray);
+      border-radius: 4px;
+      padding: 0 var(--space-md);
+      margin-right: var(--space-lg);
+      height: 36px;
+      width: 240px;
+    }
+
+    .search-bar input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 14px;
+      width: 100%;
+      margin-left: var(--space-xs);
+    }
+
+    .notifications, .user-profile {
+      margin-left: var(--space-lg);
+      cursor: pointer;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      background-color: var(--azure-blue);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    /* Main Layout */
+    .container {
+      padding: var(--space-xl);
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    /* Page Header */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-xl);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: var(--space-md);
+    }
+
+    /* Button Styles */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      border-radius: var(--radius-md);
+      font-weight: 500;
+      font-size: 14px;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .button .icon {
+      width: 18px;
+      height: 18px;
+      margin-right: var(--space-xs);
+    }
+
+    .primary {
+      background-color: var(--azure-blue);
+      color: var(--white);
+    }
+
+    .primary:hover {
+      background-color: #1A5DC7;
+    }
+
+    .secondary {
+      background-color: var(--white);
+      color: var(--azure-blue);
+      border: 1px solid var(--azure-blue);
+    }
+
+    .secondary:hover {
+      background-color: var(--light-blue);
+    }
+
+    .tertiary {
+      background-color: transparent;
+      color: var(--azure-blue);
+      padding: 8px 12px;
+    }
+
+    .tertiary:hover {
+      background-color: var(--light-blue);
+    }
+
+    .danger {
+      background-color: var(--coral-red);
+      color: var(--white);
+    }
+
+    .danger:hover {
+      background-color: #D32F2F;
+    }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      stroke-width: 1.5;
+    }
+
+    /* Form Styles */
+    .form-container {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      margin-bottom: var(--space-2xl);
+      overflow: hidden;
+    }
+
+    .form-header {
+      padding: var(--space-xl);
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .form-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--deep-navy);
+    }
+
+    .form-body {
+      padding: var(--space-xl);
+    }
+
+    .form-section {
+      margin-bottom: var(--space-2xl);
+    }
+
+    .form-section-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-lg);
+      padding-bottom: var(--space-xs);
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-xl);
+      margin-bottom: var(--space-lg);
+    }
+
+    .form-group {
+      margin-bottom: var(--space-lg);
+    }
+
+    .form-label {
+      display: block;
+      font-weight: 500;
+      font-size: 14px;
+      margin-bottom: var(--space-xs);
+      color: var(--slate-gray);
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 10px 12px;
+      background-color: var(--white);
+      border: 1px solid var(--light-gray);
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      color: var(--slate-gray);
+      transition: border-color 0.15s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--azure-blue);
+    }
+
+    .form-input:hover {
+      border-color: var(--medium-gray);
+    }
+
+    textarea.form-input {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .form-select {
+      width: 100%;
+      padding: 10px 12px;
+      background-color: var(--white);
+      border: 1px solid var(--light-gray);
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      color: var(--slate-gray);
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233C4858' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 16px;
+      padding-right: 36px;
+    }
+
+    .form-footer {
+      background-color: var(--light-gray);
+      padding: var(--space-lg) var(--space-xl);
+      display: flex;
+      justify-content: flex-end;
+      gap: var(--space-md);
+    }
+
+    /* Risk Factors Section */
+    .risk-factors-container {
+      margin-bottom: var(--space-xl);
+    }
+
+    .risk-factors-list {
+      border: 1px solid var(--light-gray);
+      border-radius: var(--radius-md);
+      margin-bottom: var(--space-md);
+    }
+
+    .risk-factor-item {
+      display: flex;
+      align-items: center;
+      padding: var(--space-md);
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .risk-factor-item:last-child {
+      border-bottom: none;
+    }
+
+    .risk-factor-controls {
+      display: flex;
+      align-items: center;
+      margin-left: auto;
+      gap: var(--space-sm);
+    }
+
+    .risk-level-select {
+      width: 120px;
+      padding: 6px 10px;
+      font-size: 13px;
+    }
+
+    .add-risk-factor {
+      display: flex;
+      align-items: center;
+      margin-top: var(--space-md);
+    }
+
+    .add-input {
+      flex: 1;
+      margin-right: var(--space-md);
+    }
+
+    /* Toggle Switch */
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      margin-bottom: var(--space-md);
+    }
+
+    .toggle-label {
+      font-size: 14px;
+      margin-left: var(--space-md);
+    }
+
+    .toggle {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 22px;
+    }
+
+    .toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--light-gray);
+      transition: .4s;
+      border-radius: 22px;
+    }
+
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 3px;
+      bottom: 3px;
+      background-color: var(--white);
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .toggle-slider {
+      background-color: var(--azure-blue);
+    }
+
+    input:checked + .toggle-slider:before {
+      transform: translateX(22px);
+    }
+
+    /* Responsive Breakpoints */
+    @media (max-width: 1024px) {
+      .form-row {
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .top-nav {
+        padding: 0 var(--space-md);
+      }
+      
+      .nav-items {
+        display: none;
+      }
+      
+      .search-bar {
+        width: 160px;
+      }
+      
+      .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-md);
+      }
+      
+      .header-actions {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <div class="top-nav-left">
+      <div class="logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 8H16C20.4183 8 24 11.5817 24 16C24 20.4183 20.4183 24 16 24H8V8Z" fill="#0A2342"/>
+          <path d="M16 8H24V16C24 20.4183 20.4183 24 16 24V8Z" fill="#2D72D9"/>
+        </svg>
+        <span>DueDiligenceAI</span>
+      </div>
+      <div class="nav-items">
+        <div class="nav-item">Dashboard</div>
+        <div class="nav-item">Documents</div>
+        <div class="nav-item">Analysis</div>
+        <div class="nav-item active">Reports</div>
+      </div>
+    </div>
+    <div class="top-nav-right">
+      <div class="search-bar">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <input type="text" placeholder="Search..." />
+      </div>
+      <div class="notifications">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 17H9M12 3V4M12 21V20M5.6 5.6L6.3 6.3M18.4 5.6L17.7 6.3M3 12H4M20 12H21M6 17.4V12C6 8.7 8.7 6 12 6C15.3 6 18 8.7 18 12V17.4H6Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="user-profile">
+        <div class="avatar">SK</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1>New Risk Assessment</h1>
+      <div class="header-actions">
+        <button class="button secondary">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 19L8 12L15 5" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Back to Assessments
+        </button>
+      </div>
+    </div>
+
+    <!-- Assessment Form -->
+    <form class="form-container">
+      <div class="form-header">
+        <h3 class="form-title">Assessment Details</h3>
+      </div>
+      
+      <div class="form-body">
+        <!-- Basic Information Section -->
+        <div class="form-section">
+          <h4 class="form-section-title">Basic Information</h4>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="assessment-title">Assessment Title*</label>
+              <input type="text" id="assessment-title" class="form-input" placeholder="Enter assessment title" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="assessment-type">Assessment Type*</label>
+              <select id="assessment-type" class="form-select" required>
+                <option value="" disabled selected>Select assessment type</option>
+                <option value="pre-investment">Pre-investment Analysis</option>
+                <option value="acquisition">Acquisition Target</option>
+                <option value="annual-review">Annual Review</option>
+                <option value="compliance">Compliance Review</option>
+                <option value="market-entry">Market Entry Analysis</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="assessment-description">Description</label>
+            <textarea id="assessment-description" class="form-input" placeholder="Enter a detailed description of this assessment"></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="company-name">Company Name*</label>
+              <input type="text" id="company-name" class="form-input" placeholder="Enter company name" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="industry">Industry*</label>
+              <select id="industry" class="form-select" required>
+                <option value="" disabled selected>Select industry</option>
+                <option value="technology">Technology</option>
+                <option value="finance">Finance & Banking</option>
+                <option value="healthcare">Healthcare</option>
+                <option value="manufacturing">Manufacturing</option>
+                <option value="retail">Retail</option>
+                <option value="energy">Energy</option>
+                <option value="logistics">Logistics & Transportation</option>
+                <option value="media">Media & Entertainment</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="assessment-date">Assessment Date</label>
+              <input type="date" id="assessment-date" class="form-input">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="due-date">Due Date</label>
+              <input type="date" id="due-date" class="form-input">
+            </div>
+          </div>
+        </div>
+        
+        <!-- Risk Categories Section -->
+        <div class="form-section">
+          <h4 class="form-section-title">Risk Categories</h4>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <div class="toggle-container">
+                <label class="toggle">
+                  <input type="checkbox" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+                <span class="toggle-label">Financial Risk</span>
+              </div>
+              <div class="toggle-container">
+                <label class="toggle">
+                  <input type="checkbox" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+                <span class="toggle-label">Market Risk</span>
+              </div>
+              <div class="toggle-container">
+                <label class="toggle">
+                  <input type="checkbox" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+                <span class="toggle-label">Operational Risk</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="toggle-container">
+                <label class="toggle">
+                  <input type="checkbox" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+                <span class="toggle-label">Compliance Risk</span>
+              </div>
+              <div class="toggle-container">
+                <label class="toggle">
+                  <input type="checkbox">
+                  <span class="toggle-slider"></span>
+                </label>
+                <span class="toggle-label">Strategic Risk</span>
+              </div>
+              <div class="toggle-container">
+                <label class="toggle">
+                  <input type="checkbox">
+                  <span class="toggle-slider"></span>
+                </label>
+                <span class="toggle-label">Reputation Risk</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Risk Factors Section -->
+        <div class="form-section">
+          <h4 class="form-section-title">Risk Factors</h4>
+          
+          <div class="risk-factors-container">
+            <div class="risk-factors-list">
+              <div class="risk-factor-item">
+                <div>Liquidity Issues</div>
+                <div class="risk-factor-controls">
+                  <select class="form-select risk-level-select">
+                    <option value="severe">Severe</option>
+                    <option value="high">High</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="low">Low</option>
+                    <option value="minimal">Minimal</option>
+                  </select>
+                  <button type="button" class="button tertiary">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M19 7L18.1327 19.1425C18.0579 20.1891 17.187 21 16.1378 21H7.86224C6.81296 21 5.94208 20.1891 5.86732 19.1425L5 7M10 11V17M14 11V17M15 7V4C15 3.44772 14.5523 3 14 3H10C9.44772 3 9 3.44772 9 4V7M4 7H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="risk-factor-item">
+                <div>Regulatory Compliance Gaps</div>
+                <div class="risk-factor-controls">
+                  <select class="form-select risk-level-select">
+                    <option value="severe">Severe</option>
+                    <option value="high" selected>High</option>
+                    <option value="medium">Medium</option>
+                    <option value="low">Low</option>
+                    <option value="minimal">Minimal</option>
+                  </select>
+                  <button type="button" class="button tertiary">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M19 7L18.1327 19.1425C18.0579 20.1891 17.187 21 16.1378 21H7.86224C6.81296 21 5.94208 20.1891 5.86732 19.1425L5 7M10 11V17M14 11V17M15 7V4C15 3.44772 14.5523 3 14 3H10C9.44772 3 9 3.44772 9 4V7M4 7H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="risk-factor-item">
+                <div>Market Volatility</div>
+                <div class="risk-factor-controls">
+                  <select class="form-select risk-level-select">
+                    <option value="severe">Severe</option>
+                    <option value="high">High</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="low">Low</option>
+                    <option value="minimal">Minimal</option>
+                  </select>
+                  <button type="button" class="button tertiary">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M19 7L18.1327 19.1425C18.0579 20.1891 17.187 21 16.1378 21H7.86224C6.81296 21 5.94208 20.1891 5.86732 19.1425L5 7M10 11V17M14 11V17M15 7V4C15 3.44772 14.5523 3 14 3H10C9.44772 3 9 3.44772 9 4V7M4 7H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <div class="add-risk-factor">
+              <input type="text" class="form-input add-input" placeholder="Add a new risk factor">
+              <button type="button" class="button secondary">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Add Factor
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Assessment Settings Section -->
+        <div class="form-section">
+          <h4 class="form-section-title">Assessment Settings</h4>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="confidence-threshold">Confidence Threshold (%)</label>
+              <input type="number" id="confidence-threshold" class="form-input" value="85" min="0" max="100">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="priority-level">Priority Level</label>
+              <select id="priority-level" class="form-select">
+                <option value="high">High</option>
+                <option value="medium" selected>Medium</option>
+                <option value="low">Low</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="toggle-container">
+              <label class="toggle">
+                <input type="checkbox" checked>
+                <span class="toggle-slider"></span>
+              </label>
+              <span class="toggle-label">Run industry benchmark comparison</span>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="toggle-container">
+              <label class="toggle">
+                <input type="checkbox" checked>
+                <span class="toggle-slider"></span>
+              </label>
+              <span class="toggle-label">Enable automatic document scanning</span>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="toggle-container">
+              <label class="toggle">
+                <input type="checkbox">
+                <span class="toggle-slider"></span>
+              </label>
+              <span class="toggle-label">Schedule periodic reassessment</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Document Sources Section -->
+        <div class="form-section">
+          <h4 class="form-section-title">Document Sources</h4>
+          
+          <div class="form-group">
+            <label class="form-label">Upload Documents</label>
+            <input type="file" multiple class="form-input">
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="document-urls">External Document URLs</label>
+            <textarea id="document-urls" class="form-input" placeholder="Enter URLs, one per line"></textarea>
+          </div>
+        </div>
+        
+        <!-- Notes Section -->
+        <div class="form-section">
+          <h4 class="form-section-title">Additional Notes</h4>
+          
+          <div class="form-group">
+            <textarea class="form-input" placeholder="Enter any additional notes or context for this assessment" rows="4"></textarea>
+          </div>
+        </div>
+      </div>
+      
+      <div class="form-footer">
+        <button type="button" class="button secondary">Save as Draft</button>
+        <button type="button" class="button danger">Cancel</button>
+        <button type="submit" class="button primary">Create Assessment</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html> 

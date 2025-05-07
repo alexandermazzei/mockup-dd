@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DueDiligenceAI - Initial Review Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Color System */
+    :root {
+      --deep-navy: #0A2342;
+      --azure-blue: #2D72D9;
+      --slate-gray: #3C4858;
+      --mint-green: #00BFA5;
+      --coral-red: #FF5252;
+      --amber-yellow: #FFC107;
+      --light-blue: #E1F5FE;
+      --sky-blue: #81D4FA;
+      --dark-blue: #01579B;
+      --charcoal: #263238;
+      --medium-gray: #78909C;
+      --light-gray: #ECEFF1;
+      --white: #FFFFFF;
+      
+      /* Typography */
+      --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-display: 'Manrope', var(--font-primary);
+      --font-mono: 'JetBrains Mono', SFMono-Regular, Consolas, monospace;
+      
+      /* Spacing */
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 12px;
+      --space-lg: 16px;
+      --space-xl: 24px;
+      --space-2xl: 32px;
+      --space-3xl: 48px;
+      
+      /* Shadows */
+      --shadow-sm: 0px 1px 3px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0px 2px 6px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      
+      /* Border Radius */
+      --radius-sm: 2px;
+      --radius-md: 4px;
+      --radius-lg: 8px;
+    }
+
+    /* Global Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-primary);
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--slate-gray);
+      background-color: var(--light-gray);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-display);
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      line-height: 1.2;
+      font-weight: 800;
+      color: var(--deep-navy);
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      line-height: 1.2;
+      font-weight: 700;
+      color: var(--slate-gray);
+    }
+
+    h4 {
+      font-size: 1.125rem;
+      line-height: 1.4;
+      font-weight: 600;
+      color: var(--deep-navy);
+    }
+
+    /* Top Navigation */
+    .top-nav {
+      background-color: var(--white);
+      height: 64px;
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 var(--space-xl);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .top-nav-left, .top-nav-right {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--deep-navy);
+      margin-right: var(--space-2xl);
+    }
+
+    .logo svg {
+      margin-right: var(--space-sm);
+    }
+
+    .nav-items {
+      display: flex;
+    }
+
+    .nav-item {
+      padding: 0 var(--space-lg);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      color: var(--slate-gray);
+      cursor: pointer;
+      transition: color 0.15s;
+      position: relative;
+    }
+
+    .nav-item:hover {
+      color: var(--azure-blue);
+    }
+
+    .nav-item.active {
+      color: var(--azure-blue);
+    }
+
+    .nav-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--azure-blue);
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      background-color: var(--light-gray);
+      border-radius: 4px;
+      padding: 0 var(--space-md);
+      margin-right: var(--space-lg);
+      height: 36px;
+      width: 240px;
+    }
+
+    .search-bar input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 14px;
+      width: 100%;
+      margin-left: var(--space-xs);
+    }
+
+    .notifications, .user-profile {
+      margin-left: var(--space-lg);
+      cursor: pointer;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      background-color: var(--azure-blue);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    /* Main Layout */
+    .container {
+      display: flex;
+      flex: 1;
+      height: calc(100vh - 64px);
+      overflow: hidden;
+    }
+
+    /* Side Navigation */
+    .side-nav {
+      width: 240px;
+      background-color: var(--white);
+      border-right: 1px solid var(--light-gray);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    .side-nav-section {
+      padding: var(--space-lg) 0;
+    }
+
+    .side-nav-header {
+      padding: 0 var(--space-lg);
+      margin-bottom: var(--space-md);
+      font-size: 12px;
+      text-transform: uppercase;
+      color: var(--medium-gray);
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    .side-nav-item {
+      display: flex;
+      align-items: center;
+      padding: var(--space-md) var(--space-lg);
+      color: var(--slate-gray);
+      font-weight: 500;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.15s;
+    }
+
+    .side-nav-item:hover {
+      background-color: var(--light-blue);
+      color: var(--azure-blue);
+    }
+
+    .side-nav-item.active {
+      background-color: var(--light-blue);
+      color: var(--azure-blue);
+      border-left: 3px solid var(--azure-blue);
+      padding-left: calc(var(--space-lg) - 3px);
+    }
+
+    .side-nav-item .icon {
+      margin-right: var(--space-md);
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    .side-nav-item .badge {
+      margin-left: auto;
+      background-color: var(--light-gray);
+      color: var(--slate-gray);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 12px;
+    }
+
+    .side-nav-item.active .badge {
+      background-color: var(--azure-blue);
+      color: var(--white);
+    }
+
+    /* Content Area */
+    .content-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Page Header */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-xl);
+      border-bottom: 1px solid var(--light-gray);
+      background-color: var(--white);
+    }
+
+    .page-title {
+      flex: 1;
+    }
+
+    .page-subtitle {
+      font-size: 14px;
+      color: var(--medium-gray);
+      margin-top: var(--space-xs);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: var(--space-md);
+    }
+
+    /* Button Styles */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      border-radius: var(--radius-md);
+      font-weight: 500;
+      font-size: 14px;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .button .icon {
+      width: 18px;
+      height: 18px;
+      margin-right: var(--space-xs);
+    }
+
+    .primary {
+      background-color: var(--azure-blue);
+      color: var(--white);
+    }
+
+    .primary:hover {
+      background-color: #1A5DC7;
+    }
+
+    .secondary {
+      background-color: var(--white);
+      color: var(--azure-blue);
+      border: 1px solid var(--azure-blue);
+    }
+
+    .secondary:hover {
+      background-color: var(--light-blue);
+    }
+
+    /* Tabs Navigation */
+    .tabs {
+      display: flex;
+      background-color: var(--white);
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .tab {
+      padding: var(--space-md) var(--space-xl);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--slate-gray);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .tab:hover {
+      background-color: var(--light-blue);
+    }
+
+    .tab.active {
+      color: var(--azure-blue);
+    }
+
+    .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--azure-blue);
+    }
+
+    /* Content */
+    .content {
+      flex: 1;
+      padding: var(--space-xl);
+      overflow-y: auto;
+    }
+
+    /* Dashboard Grid */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-xl);
+    }
+
+    .dashboard-column {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xl);
+    }
+
+    /* Card */
+    .card {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-header {
+      padding: var(--space-lg);
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+    }
+
+    .card-body {
+      padding: var(--space-lg);
+      flex: 1;
+    }
+
+    /* Metrics */
+    .metrics-row {
+      display: flex;
+      gap: var(--space-lg);
+      margin-bottom: var(--space-lg);
+    }
+
+    .metric {
+      background-color: var(--light-gray);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      flex: 1;
+    }
+
+    .metric-value {
+      font-family: var(--font-mono);
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--deep-navy);
+    }
+
+    .metric-label {
+      font-size: 12px;
+      color: var(--medium-gray);
+      margin-top: 4px;
+    }
+
+    .metric-trend {
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    .metric-trend.positive {
+      color: var(--mint-green);
+    }
+
+    .metric-trend.negative {
+      color: var(--coral-red);
+    }
+
+    .metric-trend .icon {
+      width: 14px;
+      height: 14px;
+      margin-right: 4px;
+    }
+
+    /* Chart placeholder */
+    .chart {
+      width: 100%;
+      height: 200px;
+      background-color: var(--light-gray);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--medium-gray);
+      font-size: 14px;
+    }
+
+    /* Data Table */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .data-table th,
+    .data-table td {
+      padding: var(--space-sm) var(--space-md);
+      text-align: left;
+      font-size: 14px;
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .data-table th {
+      font-weight: 600;
+      color: var(--deep-navy);
+      background-color: var(--light-blue);
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .status-badge.high {
+      background-color: rgba(255, 82, 82, 0.1);
+      color: var(--coral-red);
+    }
+
+    .status-badge.medium {
+      background-color: rgba(255, 193, 7, 0.1);
+      color: var(--amber-yellow);
+    }
+
+    .status-badge.low {
+      background-color: rgba(0, 191, 165, 0.1);
+      color: var(--mint-green);
+    }
+
+    /* AI Insights */
+    .ai-insight {
+      background-color: rgba(45, 114, 217, 0.05);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      margin-bottom: var(--space-md);
+    }
+
+    .ai-insight-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: var(--space-sm);
+    }
+
+    .ai-insight-header .icon {
+      width: 18px;
+      height: 18px;
+      margin-right: var(--space-sm);
+      color: var(--azure-blue);
+    }
+
+    .ai-insight-title {
+      font-weight: 600;
+      color: var(--deep-navy);
+      font-size: 14px;
+    }
+
+    .ai-insight-content {
+      font-size: 14px;
+      color: var(--slate-gray);
+    }
+
+    /* Documents List */
+    .documents-list {
+      list-style: none;
+    }
+
+    .document-item {
+      display: flex;
+      align-items: center;
+      padding: var(--space-md) 0;
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .document-icon {
+      width: 32px;
+      height: 32px;
+      background-color: var(--light-blue);
+      color: var(--azure-blue);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: var(--space-md);
+    }
+
+    .document-details {
+      flex: 1;
+    }
+
+    .document-title {
+      font-weight: 500;
+      color: var(--deep-navy);
+      font-size: 14px;
+    }
+
+    .document-meta {
+      font-size: 12px;
+      color: var(--medium-gray);
+      margin-top: 2px;
+    }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      stroke-width: 1.5;
+    }
+
+    /* Progress */
+    .progress {
+      width: 100%;
+      height: 8px;
+      background-color: var(--light-gray);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: var(--space-md);
+    }
+
+    .progress-bar {
+      height: 100%;
+      background-color: var(--azure-blue);
+    }
+
+    /* Timeline */
+    .timeline {
+      margin-top: var(--space-lg);
+    }
+
+    .timeline-item {
+      display: flex;
+      position: relative;
+      padding-bottom: var(--space-lg);
+    }
+
+    .timeline-item:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      top: 32px;
+      left: 16px;
+      bottom: 0;
+      width: 2px;
+      background-color: var(--light-gray);
+    }
+
+    .timeline-icon {
+      width: 32px;
+      height: 32px;
+      background-color: var(--light-blue);
+      color: var(--azure-blue);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: var(--space-md);
+      position: relative;
+      z-index: 1;
+    }
+
+    .timeline-content {
+      flex: 1;
+    }
+
+    .timeline-title {
+      font-weight: 500;
+      color: var(--deep-navy);
+      font-size: 14px;
+    }
+
+    .timeline-date {
+      font-size: 12px;
+      color: var(--medium-gray);
+      margin-top: 2px;
+    }
+
+    .timeline-description {
+      font-size: 14px;
+      color: var(--slate-gray);
+      margin-top: var(--space-sm);
+    }
+
+    /* Stage Indicator */
+    .stage-indicator {
+      display: flex;
+      margin-bottom: var(--space-xl);
+    }
+
+    .stage {
+      flex: 1;
+      position: relative;
+    }
+
+    .stage-line {
+      height: 4px;
+      background-color: var(--light-gray);
+      position: relative;
+      margin-bottom: var(--space-md);
+    }
+
+    .stage.completed .stage-line {
+      background-color: var(--azure-blue);
+    }
+
+    .stage.active .stage-line {
+      background-color: var(--azure-blue);
+    }
+
+    .stage:not(:last-child) .stage-line::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background-color: var(--white);
+      border: 2px solid var(--light-gray);
+      border-radius: 50%;
+      top: 50%;
+      right: -8px;
+      transform: translateY(-50%);
+      z-index: 1;
+    }
+
+    .stage.completed:not(:last-child) .stage-line::after {
+      background-color: var(--azure-blue);
+      border-color: var(--azure-blue);
+    }
+
+    .stage.active:not(:last-child) .stage-line::after {
+      background-color: var(--white);
+      border-color: var(--azure-blue);
+    }
+
+    .stage-label {
+      font-size: 12px;
+      color: var(--medium-gray);
+      text-align: center;
+    }
+
+    .stage.completed .stage-label {
+      color: var(--azure-blue);
+      font-weight: 500;
+    }
+
+    .stage.active .stage-label {
+      color: var(--azure-blue);
+      font-weight: 500;
+    }
+
+    /* Suitability rating and fit score */
+    .suitability-rating {
+      display: flex;
+      align-items: center;
+      margin-bottom: var(--space-sm);
+    }
+
+    .rating-stars {
+      display: flex;
+      margin-right: var(--space-md);
+    }
+
+    .star {
+      color: var(--amber-yellow);
+      margin-right: 2px;
+    }
+
+    .fit-score {
+      height: 8px;
+      background-color: var(--light-gray);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: var(--space-xs);
+      margin-bottom: var(--space-sm);
+    }
+
+    .fit-score-bar {
+      height: 100%;
+    }
+
+    .fit-score-bar.excellent {
+      background-color: var(--mint-green);
+      width: 90%;
+    }
+
+    .fit-score-bar.good {
+      background-color: var(--azure-blue);
+      width: 75%;
+    }
+
+    .fit-score-bar.average {
+      background-color: var(--amber-yellow);
+      width: 60%;
+    }
+
+    .fit-score-bar.poor {
+      background-color: var(--coral-red);
+      width: 40%;
+    }
+
+    .fit-score-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--medium-gray);
+    }
+
+    /* Target card */
+    .target-info {
+      display: flex;
+      margin-bottom: var(--space-md);
+    }
+
+    .target-logo {
+      width: 64px;
+      height: 64px;
+      background-color: var(--light-blue);
+      color: var(--azure-blue);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: var(--space-md);
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .target-details {
+      flex: 1;
+    }
+
+    .target-name {
+      font-weight: 600;
+      color: var(--deep-navy);
+      font-size: 18px;
+    }
+
+    .target-meta {
+      font-size: 14px;
+      color: var(--medium-gray);
+      margin-top: 2px;
+    }
+
+    .target-description {
+      font-size: 14px;
+      color: var(--slate-gray);
+      margin-top: var(--space-sm);
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+      background-color: var(--light-gray);
+      color: var(--slate-gray);
+      margin-right: 4px;
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <div class="top-nav-left">
+      <div class="logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 8H16C20.4183 8 24 11.5817 24 16C24 20.4183 20.4183 24 16 24H8V8Z" fill="#0A2342"/>
+          <path d="M16 8H24V16C24 20.4183 20.4183 24 16 24V8Z" fill="#2D72D9"/>
+        </svg>
+        <span>DueDiligenceAI</span>
+      </div>
+      <div class="nav-items">
+        <div class="nav-item">Dashboard</div>
+        <div class="nav-item active">Data Room</div>
+        <div class="nav-item">Analysis</div>
+        <div class="nav-item">Reports</div>
+      </div>
+    </div>
+    <div class="top-nav-right">
+      <div class="search-bar">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <input type="text" placeholder="Search..." />
+      </div>
+      <div class="notifications">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 17H9M12 3V4M12 21V20M5.6 5.6L6.3 6.3M18.4 5.6L17.7 6.3M3 12H4M20 12H21M6 17.4V12C6 8.7 8.7 6 12 6C15.3 6 18 8.7 18 12V17.4H6Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="user-profile">
+        <div class="avatar">SK</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <div class="container">
+    <!-- Side Navigation -->
+    <div class="side-nav">
+      <div class="side-nav-section">
+        <div class="side-nav-header">Deal Stages</div>
+        <div class="side-nav-item active">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 7V3M16 7V3M7 11H17M5 21H19C20.1046 21 21 20.1046 21 19V7C21 5.89543 20.1046 5 19 5H5C3.89543 5 3 5.89543 3 7V19C3 20.1046 3.89543 21 5 21Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Initial Review
+          <span class="badge">In Progress</span>
+        </div>
+        <div class="side-nav-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 12H15M12 9V15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Due Diligence
+          <span class="badge">Upcoming</span>
+        </div>
+        <div class="side-nav-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M11 16L7 12M7 12L11 8M7 12L21 12M16 16V17C16 18.6569 14.6569 20 13 20H6C4.34315 20 3 18.6569 3 17V7C3 5.34315 4.34315 4 6 4H13C14.6569 4 16 5.34315 16 7V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Negotiation
+          <span class="badge">Upcoming</span>
+        </div>
+        <div class="side-nav-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 12L11 14L15 10M12 3L4 7L12 11L20 7L12 3ZM4 17L12 21L20 17M4 12L12 16L20 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Closing
+          <span class="badge">Upcoming</span>
+        </div>
+      </div>
+
+      <div class="side-nav-section">
+        <div class="side-nav-header">Potential Targets</div>
+        <div class="side-nav-item active">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 12V22H4V12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M22 7H2V12H22V7Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 22V7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 7H16.5C17.8807 7 19 5.88071 19 4.5V4.5C19 3.11929 17.8807 2 16.5 2H7.5C6.11929 2 5 3.11929 5 4.5V4.5C5 5.88071 6.11929 7 7.5 7H12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          ABC Corp
+          <span class="badge">High Fit</span>
+        </div>
+        <div class="side-nav-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 12V22H4V12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M22 7H2V12H22V7Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 22V7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 7H16.5C17.8807 7 19 5.88071 19 4.5V4.5C19 3.11929 17.8807 2 16.5 2H7.5C6.11929 2 5 3.11929 5 4.5V4.5C5 5.88071 6.11929 7 7.5 7H12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          XYZ Technologies
+          <span class="badge">Medium Fit</span>
+        </div>
+        <div class="side-nav-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 12V22H4V12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M22 7H2V12H22V7Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 22V7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 7H16.5C17.8807 7 19 5.88071 19 4.5V4.5C19 3.11929 17.8807 2 16.5 2H7.5C6.11929 2 5 3.11929 5 4.5V4.5C5 5.88071 6.11929 7 7.5 7H12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          GlobalTech Solutions
+          <span class="badge">Low Fit</span>
+        </div>
+      </div>
+
+      <div class="side-nav-section">
+        <div class="side-nav-header">Review Categories</div>
+        <div class="side-nav-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 7H5C3.89543 7 3 7.89543 3 9V18C3 19.1046 3.89543 20 5 20H19C20.1046 20 21 19.1046 21 18V9C21 7.89543 20.1046 7 19 7H15M9 7V5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7M9 7H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Financial Overview
+          <span class="badge">Completed</span>
+        </div>
+        <div class="side-nav-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 5H7C5.89543 5 5 5.89543 5 7V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V7C19 5.89543 18.1046 5 17 5H15M9 5C9 6.10457 9.89543 7 11 7H13C14.1046 7 15 6.10457 15 5M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Market Analysis
+          <span class="badge">In Progress</span>
+        </div>
+        <div class="side-nav-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 6H6C4.89543 6 4 6.89543 4 8V18C4 19.1046 4.89543 20 6 20H16C17.1046 20 18 19.1046 18 18V14M10 6H14C15.1046 6 16 6.89543 16 8V10M10 6V4C10 2.89543 10.8954 2 12 2C13.1046 2 14 2.89543 14 4V6M14 11L18 15M18 15L22 11M18 15V3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Business Model
+          <span class="badge">In Progress</span>
+        </div>
+        <div class="side-nav-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 14C8.13401 14 5 17.134 5 21H19C19 17.134 15.866 14 12 14Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Management Team
+          <span class="badge">Pending</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content Area -->
+    <div class="content-area">
+      <!-- Page Header -->
+      <div class="page-header">
+        <div class="page-title">
+          <h1>ABC Corp Acquisition</h1>
+          <div class="page-subtitle">Initial Review Dashboard</div>
+        </div>
+        <div class="header-actions">
+          <button class="button secondary">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 15L12 3M12 3L16 7M12 3L8 7M3 15V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V15" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Export Summary
+          </button>
+          <button class="button primary">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5 12H19M12 5V19" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Move to Due Diligence
+          </button>
+        </div>
+      </div>
+
+      <!-- Tabs Navigation -->
+      <div class="tabs">
+        <div class="tab active">Overview</div>
+        <div class="tab">Financial</div>
+        <div class="tab">Market</div>
+        <div class="tab">Business</div>
+        <div class="tab">Management</div>
+        <div class="tab">AI Insights</div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <!-- Initial Review Progress -->
+        <div class="card" style="margin-bottom: var(--space-xl);">
+          <div class="card-header">
+            <div class="card-title">Acquisition Process</div>
+          </div>
+          <div class="card-body">
+            <!-- Stage Indicator -->
+            <div class="stage-indicator">
+              <div class="stage active">
+                <div class="stage-line"></div>
+                <div class="stage-label">Initial Review</div>
+              </div>
+              <div class="stage">
+                <div class="stage-line"></div>
+                <div class="stage-label">Due Diligence</div>
+              </div>
+              <div class="stage">
+                <div class="stage-line"></div>
+                <div class="stage-label">Negotiation</div>
+              </div>
+              <div class="stage">
+                <div class="stage-line"></div>
+                <div class="stage-label">Closing</div>
+              </div>
+            </div>
+            
+            <div class="metrics-row">
+              <div class="metric">
+                <div class="metric-value">78%</div>
+                <div class="metric-label">Review Completion</div>
+              </div>
+              <div class="metric">
+                <div class="metric-value">92%</div>
+                <div class="metric-label">Strategic Fit</div>
+                <div class="metric-trend positive">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  High Match
+                </div>
+              </div>
+              <div class="metric">
+                <div class="metric-value">$42.5M</div>
+                <div class="metric-label">Estimated Value</div>
+              </div>
+              <div class="metric">
+                <div class="metric-value">May 15</div>
+                <div class="metric-label">Target Decision Date</div>
+              </div>
+            </div>
+            
+            <div class="progress">
+              <div class="progress-bar" style="width: 78%;"></div>
+            </div>
+            
+            <div style="display: flex; justify-content: space-between; margin-top: 8px; font-size: 12px;">
+              <div>78% Complete</div>
+              <div>4 of 24 tasks remaining</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Dashboard -->
+        <div class="dashboard-grid">
+          <div class="dashboard-column">
+            <!-- Target Overview -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Target Overview</div>
+              </div>
+              <div class="card-body">
+                <div class="target-info">
+                  <div class="target-logo">ABC</div>
+                  <div class="target-details">
+                    <div class="target-name">ABC Corporation</div>
+                    <div class="target-meta">Software Solutions • Founded 2015 • San Francisco, CA</div>
+                  </div>
+                </div>
+                
+                <div class="target-description">
+                  ABC Corp is a B2B SaaS provider specializing in supply chain optimization solutions. Their flagship product, SupplyChainIQ, serves mid-market manufacturing companies.
+                </div>
+                
+                <div style="margin-top: var(--space-md);">
+                  <span class="tag">B2B SaaS</span>
+                  <span class="tag">Supply Chain</span>
+                  <span class="tag">Manufacturing</span>
+                  <span class="tag">AI-Powered</span>
+                  <span class="tag">Mid-Market</span>
+                </div>
+                
+                <h4 style="margin-top: var(--space-xl); margin-bottom: var(--space-md);">Strategic Fit Rating</h4>
+                
+                <div class="suitability-rating">
+                  <div class="rating-stars">
+                    <div class="star">★</div>
+                    <div class="star">★</div>
+                    <div class="star">★</div>
+                    <div class="star">★</div>
+                    <div class="star">★</div>
+                  </div>
+                  <span style="font-weight: 600; color: var(--mint-green);">Excellent Match</span>
+                </div>
+                
+                <div class="fit-score">
+                  <div class="fit-score-bar excellent"></div>
+                </div>
+                
+                <div class="fit-score-label">
+                  <span>Poor</span>
+                  <span>Average</span>
+                  <span>Good</span>
+                  <span>Excellent</span>
+                </div>
+                
+                <div class="ai-insight" style="margin-top: var(--space-lg);">
+                  <div class="ai-insight-header">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9 3.5V2M14.5 3.5V2M9 21.5V20M14.5 21.5V20M3.5 9H2M3.5 14.5H2M21.5 9H20M21.5 14.5H20" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <div class="ai-insight-title">Strategic Alignment</div>
+                  </div>
+                  <div class="ai-insight-content">
+                    ABC Corp's supply chain expertise directly complements our manufacturing analytics platform, creating significant cross-selling opportunities. Their customer base has minimal overlap (12%) with our existing clients, enabling immediate market expansion.
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Key Documents -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Key Documents</div>
+              </div>
+              <div class="card-body">
+                <ul class="documents-list">
+                  <li class="document-item">
+                    <div class="document-icon">
+                      <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M14 2V8H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M16 13H8M16 17H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </div>
+                    <div class="document-details">
+                      <div class="document-title">ABC Corp Executive Summary</div>
+                      <div class="document-meta">Added April 24, 2025 • Overview • 12 pages</div>
+                    </div>
+                  </li>
+                  <li class="document-item">
+                    <div class="document-icon">
+                      <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M14 2V8H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 18V12M9 15H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </div>
+                    <div class="document-details">
+                      <div class="document-title">2024 Annual Financial Statement</div>
+                      <div class="document-meta">Added April 25, 2025 • Financial • 34 pages</div>
+                    </div>
+                  </li>
+                  <li class="document-item">
+                    <div class="document-icon">
+                      <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M14 2V8H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M8 13.5H16M8 17.5H16M10.5 9.5H13.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </div>
+                    <div class="document-details">
+                      <div class="document-title">Market Analysis Report</div>
+                      <div class="document-meta">Added April 28, 2025 • Market • 21 pages</div>
+                    </div>
+                  </li>
+                  <li class="document-item">
+                    <div class="document-icon">
+                      <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M14 2V8H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M16 13H8M16 17H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </div>
+                    <div class="document-details">
+                      <div class="document-title">Product Roadmap 2025-2026</div>
+                      <div class="document-meta">Added May 1, 2025 • Strategy • 16 pages</div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <div class="dashboard-column">
+            <!-- Financial Highlights -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Financial Highlights</div>
+              </div>
+              <div class="card-body">
+                <div class="metrics-row">
+                  <div class="metric">
+                    <div class="metric-value">$38.7M</div>
+                    <div class="metric-label">Annual Revenue (2024)</div>
+                    <div class="metric-trend positive">
+                      <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      18.4% YoY
+                    </div>
+                  </div>
+                  <div class="metric">
+                    <div class="metric-value">26.2%</div>
+                    <div class="metric-label">Gross Margin</div>
+                    <div class="metric-trend positive">
+                      <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      2.1% YoY
+                    </div>
+                  </div>
+                </div>
+                <div class="metrics-row">
+                  <div class="metric">
+                    <div class="metric-value">$8.2M</div>
+                    <div class="metric-label">EBITDA</div>
+                    <div class="metric-trend positive">
+                      <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      24.3% YoY
+                    </div>
+                  </div>
+                  <div class="metric">
+                    <div class="metric-value">92%</div>
+                    <div class="metric-label">Recurring Revenue</div>
+                    <div class="metric-trend positive">
+                      <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      3.8% YoY
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="chart">Revenue Growth Trend (2020-2024)</div>
+                
+                <div class="ai-insight" style="margin-top: var(--space-lg);">
+                  <div class="ai-insight-header">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9 3.5V2M14.5 3.5V2M9 21.5V20M14.5 21.5V20M3.5 9H2M3.5 14.5H2M21.5 9H20M21.5 14.5H20" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <div class="ai-insight-title">Financial Growth Potential</div>
+                  </div>
+                  <div class="ai-insight-content">
+                    ABC Corp's consistent revenue growth (18-20% CAGR over 3 years) and expanding margins indicate solid product-market fit. The high recurring revenue percentage demonstrates strong customer retention and provides predictable future cash flows.
+                  </div>
+                </div>
+                
+                <div class="ai-insight">
+                  <div class="ai-insight-header">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9 3.5V2M14.5 3.5V2M9 21.5V20M14.5 21.5V20M3.5 9H2M3.5 14.5H2M21.5 9H20M21.5 14.5H20" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <div class="ai-insight-title">Cost Synergy Opportunity</div>
+                  </div>
+                  <div class="ai-insight-content">
+                    Analysis identifies potential $3.2M in annual cost synergies through consolidation of cloud infrastructure, sales operations, and marketing functions. Primary areas include 65% overlap in AWS infrastructure and 42% in marketing spend categories.
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Market Position -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Market Position Analysis</div>
+              </div>
+              <div class="card-body">
+                <div class="chart">Competitive Landscape Matrix</div>
+                
+                <table class="data-table" style="margin-top: var(--space-lg);">
+                  <thead>
+                    <tr>
+                      <th>Category</th>
+                      <th>Rating</th>
+                      <th>Trend</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Market Share</td>
+                      <td>12.4%</td>
+                      <td>+1.8% YoY</td>
+                    </tr>
+                    <tr>
+                      <td>Customer Growth</td>
+                      <td>24.3%</td>
+                      <td>+6.7% YoY</td>
+                    </tr>
+                    <tr>
+                      <td>Product Leadership</td>
+                      <td><span class="status-badge high">Strong</span></td>
+                      <td>Improving</td>
+                    </tr>
+                    <tr>
+                      <td>Tech Innovation</td>
+                      <td><span class="status-badge high">Strong</span></td>
+                      <td>Stable</td>
+                    </tr>
+                    <tr>
+                      <td>Market Perception</td>
+                      <td><span class="status-badge medium">Moderate</span></td>
+                      <td>Improving</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          
+          <div class="dashboard-column">
+            <!-- Review Progress -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Review Progress</div>
+              </div>
+              <div class="card-body">
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <div class="timeline-icon">
+                      <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 13L9 17L19 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </div>
+                    <div class="timeline-content">
+                      <div class="timeline-title">Financial Overview Completed</div>
+                      <div class="timeline-date">May 2, 2025 - 10:30 AM</div>
+                      <div class="timeline-description">Financial team completed analysis of revenue streams, profitability metrics, and growth projections.</div>
+                    </div>
+                  </div>
+                  
+                  <div class="timeline-item">
+                    <div class="timeline-icon">
+                      <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 13L9 17L19 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </div>
+                    <div class="timeline-content">
+                      <div class="timeline-title">Market Analysis Updated</div>
+                      <div class="timeline-date">May 1, 2025 - 3:15 PM</div>
+                      <div class="timeline-description">Market research team added competitive landscape analysis and updated growth projections.</div>
+                    </div>
+                  </div>
+                  
+                  <div class="timeline-item">
+                    <div class="timeline-icon">
+                      <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 13L9 17L19 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </div>
+                    <div class="timeline-content">
+                      <div class="timeline-title">Business Model Assessment</div>
+                      <div class="timeline-date">April 29, 2025 - 11:45 AM</div>
+                      <div class="timeline-description">Strategic analysis team completed evaluation of core business model, pricing structure, and scalability.</div>
+                    </div>
+                  </div>
+                  
+                  <div class="timeline-item">
+                    <div class="timeline-icon">
+                      <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 9V12L14 14M12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </div>
+                    <div class="timeline-content">
+                      <div class="timeline-title">Management Team Review</div>
+                      <div class="timeline-date">Pending</div>
+                      <div class="timeline-description">Scheduled for May 8, 2025. Will include leadership assessment, organizational structure analysis, and cultural alignment.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- AI Recommendations -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">AI Recommendations</div>
+              </div>
+              <div class="card-body">
+                <div class="ai-insight">
+                  <div class="ai-insight-header">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 9V12L14 14M12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21Z" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <div class="ai-insight-title">Proceed to Due Diligence</div>
+                  </div>
+                  <div class="ai-insight-content">
+                    Based on strong strategic fit, solid financial performance, and market position, recommend proceeding to comprehensive due diligence phase. High priority areas include customer concentration, IP assessment, and churn analysis.
+                  </div>
+                </div>
+                
+                <div class="ai-insight">
+                  <div class="ai-insight-header">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 9V12L14 14M12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21Z" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <div class="ai-insight-title">Valuation Range</div>
+                  </div>
+                  <div class="ai-insight-content">
+                    Initial valuation range of $40-45M based on 5x ARR multiple, aligned with current market comparables. Recommend detailed profitability analysis in due diligence to refine this range.
+                  </div>
+                </div>
+                
+                <div class="ai-insight">
+                  <div class="ai-insight-header">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 9V12L14 14M12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21Z" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <div class="ai-insight-title">Integration Strategy</div>
+                  </div>
+                  <div class="ai-insight-content">
+                    Recommend partial integration approach focused on back-office functions while maintaining separate product brands and sales teams initially. Full platform integration roadmap should be developed over 18-24 month period.
+                  </div>
+                </div>
+                
+                <div class="ai-insight">
+                  <div class="ai-insight-header">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 9V12L14 14M12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21Z" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <div class="ai-insight-title">Technology Assessment</div>
+                  </div>
+                  <div class="ai-insight-content">
+                    Initial code review suggests modern technology stack with minimal technical debt. Recommend detailed security audit and architecture assessment during due diligence to validate scalability and compliance status.
+                  </div>
+                </div>
+
+                <div class="ai-insight">
+                  <div class="ai-insight-header">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 9V12L14 14M12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21Z" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <div class="ai-insight-title">Potential Risks</div>
+                  </div>
+                  <div class="ai-insight-content">
+                    Key risks identified: 1) Top 3 customers represent 32% of revenue, 2) Potential product overlap in inventory management features, 3) Employee retention uncertainty, particularly in engineering leadership.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

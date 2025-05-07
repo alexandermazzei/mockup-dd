@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DueDiligenceAI - Financial Insights</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Color System */
+    :root {
+      --deep-navy: #0A2342;
+      --azure-blue: #2D72D9;
+      --slate-gray: #3C4858;
+      --mint-green: #00BFA5;
+      --coral-red: #FF5252;
+      --amber-yellow: #FFC107;
+      --light-blue: #E1F5FE;
+      --sky-blue: #81D4FA;
+      --dark-blue: #01579B;
+      --charcoal: #263238;
+      --medium-gray: #78909C;
+      --light-gray: #ECEFF1;
+      --white: #FFFFFF;
+      
+      /* Typography */
+      --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-display: 'Manrope', var(--font-primary);
+      --font-mono: 'JetBrains Mono', SFMono-Regular, Consolas, monospace;
+      
+      /* Spacing */
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 12px;
+      --space-lg: 16px;
+      --space-xl: 24px;
+      --space-2xl: 32px;
+      --space-3xl: 48px;
+      
+      /* Shadows */
+      --shadow-sm: 0px 1px 3px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0px 2px 6px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      
+      /* Border Radius */
+      --radius-sm: 2px;
+      --radius-md: 4px;
+      --radius-lg: 8px;
+    }
+
+    /* Global Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-primary);
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--slate-gray);
+      background-color: var(--light-gray);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-display);
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      line-height: 1.2;
+      font-weight: 800;
+      color: var(--deep-navy);
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      line-height: 1.2;
+      font-weight: 700;
+      color: var(--slate-gray);
+    }
+
+    h4 {
+      font-size: 1.125rem;
+      line-height: 1.4;
+      font-weight: 600;
+      color: var(--deep-navy);
+    }
+
+    /* Top Navigation */
+    .top-nav {
+      background-color: var(--white);
+      height: 64px;
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 var(--space-xl);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .top-nav-left, .top-nav-right {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--deep-navy);
+      margin-right: var(--space-2xl);
+    }
+
+    .logo svg {
+      margin-right: var(--space-sm);
+    }
+
+    .nav-items {
+      display: flex;
+    }
+
+    .nav-item {
+      padding: 0 var(--space-lg);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      color: var(--slate-gray);
+      cursor: pointer;
+      transition: color 0.15s;
+      position: relative;
+    }
+
+    .nav-item:hover {
+      color: var(--azure-blue);
+    }
+
+    .nav-item.active {
+      color: var(--azure-blue);
+    }
+
+    .nav-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--azure-blue);
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      background-color: var(--light-gray);
+      border-radius: 4px;
+      padding: 0 var(--space-md);
+      margin-right: var(--space-lg);
+      height: 36px;
+      width: 240px;
+    }
+
+    .search-bar input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 14px;
+      width: 100%;
+      margin-left: var(--space-xs);
+    }
+
+    .notifications, .user-profile {
+      margin-left: var(--space-lg);
+      cursor: pointer;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      background-color: var(--azure-blue);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    /* Main Layout */
+    .container {
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 64px);
+    }
+
+    /* Breadcrumbs */
+    .breadcrumbs {
+      display: flex;
+      padding: var(--space-md) var(--space-xl);
+      background-color: var(--white);
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .breadcrumb-item {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: var(--medium-gray);
+    }
+
+    .breadcrumb-item:not(:last-child)::after {
+      content: '';
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2378909C' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 18l6-6-6-6'%3E%3C/path%3E%3C/svg%3E");
+      background-position: center;
+      background-repeat: no-repeat;
+      margin: 0 var(--space-sm);
+    }
+
+    .breadcrumb-item:last-child {
+      color: var(--charcoal);
+      font-weight: 500;
+    }
+
+    /* Two Column Layout */
+    .two-column-layout {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .main-content {
+      flex: 7;
+      padding: var(--space-xl);
+      overflow-y: auto;
+    }
+
+    .sidebar {
+      flex: 3;
+      width: 320px;
+      min-width: 320px;
+      max-width: 320px;
+      background-color: var(--white);
+      border-left: 1px solid var(--light-gray);
+      padding: var(--space-xl);
+      overflow-y: auto;
+    }
+
+    /* Button Styles */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      border-radius: var(--radius-md);
+      font-weight: 500;
+      font-size: 14px;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .button .icon {
+      width: 18px;
+      height: 18px;
+      margin-right: var(--space-xs);
+    }
+
+    .primary {
+      background-color: var(--azure-blue);
+      color: var(--white);
+    }
+
+    .primary:hover {
+      background-color: #1A5DC7;
+    }
+
+    .secondary {
+      background-color: var(--white);
+      color: var(--azure-blue);
+      border: 1px solid var(--azure-blue);
+    }
+
+    .secondary:hover {
+      background-color: var(--light-blue);
+    }
+
+    .tertiary {
+      background-color: transparent;
+      color: var(--azure-blue);
+      padding: 8px 12px;
+    }
+
+    .tertiary:hover {
+      background-color: var(--light-blue);
+    }
+
+    .icon-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-md);
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+    }
+
+    .icon-button:hover {
+      background-color: var(--light-gray);
+    }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      stroke-width: 1.5;
+    }
+
+    /* Page Header */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-xl);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: var(--space-md);
+    }
+
+    /* Cards and Sections */
+    .card {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      margin-bottom: var(--space-xl);
+    }
+
+    .card-header {
+      padding: var(--space-lg);
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+    }
+
+    .card-body {
+      padding: var(--space-lg);
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-lg);
+    }
+
+    /* AI Insights Styles */
+    .ai-insight-card {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      margin-bottom: var(--space-xl);
+      border-left: 4px solid var(--azure-blue);
+      overflow: hidden;
+    }
+
+    .ai-insight-card.warning {
+      border-left-color: var(--amber-yellow);
+    }
+
+    .ai-insight-card.danger {
+      border-left-color: var(--coral-red);
+    }
+
+    .ai-insight-card.success {
+      border-left-color: var(--mint-green);
+    }
+
+    .ai-insight-header {
+      padding: var(--space-lg);
+      background-color: rgba(45, 114, 217, 0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .ai-insight-card.warning .ai-insight-header {
+      background-color: rgba(255, 193, 7, 0.05);
+    }
+
+    .ai-insight-card.danger .ai-insight-header {
+      background-color: rgba(255, 82, 82, 0.05);
+    }
+
+    .ai-insight-card.success .ai-insight-header {
+      background-color: rgba(0, 191, 165, 0.05);
+    }
+
+    .ai-insight-title-wrapper {
+      display: flex;
+      align-items: center;
+    }
+
+    .ai-icon {
+      width: 24px;
+      height: 24px;
+      margin-right: var(--space-md);
+      color: var(--azure-blue);
+    }
+
+    .ai-insight-card.warning .ai-icon {
+      color: var(--amber-yellow);
+    }
+
+    .ai-insight-card.danger .ai-icon {
+      color: var(--coral-red);
+    }
+
+    .ai-insight-card.success .ai-icon {
+      color: var(--mint-green);
+    }
+
+    .ai-insight-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+    }
+
+    .ai-confidence {
+      font-size: 12px;
+      color: var(--medium-gray);
+      padding: 4px 8px;
+      background-color: var(--light-gray);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+    }
+
+    .ai-confidence-level {
+      margin-left: 4px;
+      font-weight: 600;
+    }
+
+    .ai-insight-body {
+      padding: var(--space-lg);
+    }
+
+    .ai-insight-content {
+      margin-bottom: var(--space-lg);
+    }
+
+    .data-visualization {
+      height: 200px;
+      background-color: var(--light-gray);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--space-lg);
+    }
+
+    .ai-insight-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: var(--space-md);
+      border-top: 1px solid var(--light-gray);
+    }
+
+    .ai-insight-metadata {
+      font-size: 12px;
+      color: var(--medium-gray);
+    }
+
+    .ai-insight-actions {
+      display: flex;
+      gap: var(--space-md);
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: var(--space-lg);
+    }
+
+    .tag {
+      font-size: 12px;
+      color: var(--slate-gray);
+      background-color: var(--light-gray);
+      padding: 4px 8px;
+      border-radius: 16px;
+    }
+
+    .impact-indicator {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: var(--space-lg);
+    }
+
+    .impact-indicator.high {
+      color: var(--coral-red);
+    }
+
+    .impact-indicator.medium {
+      color: var(--amber-yellow);
+    }
+
+    .impact-indicator.low {
+      color: var(--mint-green);
+    }
+
+    .impact-icon {
+      margin-right: var(--space-xs);
+    }
+
+    .ai-metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: var(--space-lg);
+      margin-bottom: var(--space-lg);
+    }
+
+    .ai-metric {
+      background-color: var(--light-gray);
+      padding: var(--space-md);
+      border-radius: var(--radius-md);
+    }
+
+    .ai-metric-label {
+      font-size: 12px;
+      color: var(--medium-gray);
+      margin-bottom: 4px;
+    }
+
+    .ai-metric-value {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--deep-navy);
+      font-family: var(--font-mono);
+    }
+
+    .insight-filters {
+      display: flex;
+      gap: var(--space-md);
+      margin-bottom: var(--space-xl);
+      flex-wrap: wrap;
+    }
+
+    .filter-chip {
+      display: flex;
+      align-items: center;
+      background-color: var(--white);
+      border: 1px solid var(--light-gray);
+      padding: 6px 12px;
+      border-radius: 16px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .filter-chip:hover {
+      border-color: var(--azure-blue);
+    }
+
+    .filter-chip.active {
+      background-color: var(--azure-blue);
+      color: var(--white);
+      border-color: var(--azure-blue);
+    }
+
+    /* Financial specific styles */
+    .financial-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: var(--space-lg);
+      margin-bottom: var(--space-xl);
+    }
+
+    .kpi-card {
+      background-color: var(--white);
+      border-radius: var(--radius-md);
+      padding: var(--space-lg);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .kpi-title {
+      font-size: 14px;
+      color: var(--medium-gray);
+      margin-bottom: var(--space-xs);
+    }
+
+    .kpi-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-xs);
+    }
+
+    .kpi-change {
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+      margin-top: auto;
+    }
+
+    .kpi-change.positive {
+      color: var(--mint-green);
+    }
+
+    .kpi-change.negative {
+      color: var(--coral-red);
+    }
+
+    .trend-chart {
+      height: 100px;
+      margin-top: var(--space-md);
+      background-color: var(--light-gray);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .trend-line {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .key-points {
+      margin-bottom: var(--space-lg);
+    }
+
+    .key-point {
+      display: flex;
+      margin-bottom: var(--space-md);
+    }
+
+    .key-point-icon {
+      width: 20px;
+      height: 20px;
+      margin-right: var(--space-md);
+      color: var(--azure-blue);
+      flex-shrink: 0;
+    }
+
+    .key-point-text {
+      font-size: 14px;
+    }
+
+    .document-link {
+      display: flex;
+      align-items: center;
+      padding: var(--space-md);
+      background-color: var(--light-gray);
+      border-radius: var(--radius-md);
+      color: var(--deep-navy);
+      text-decoration: none;
+      margin-bottom: var(--space-md);
+    }
+
+    .document-link .icon {
+      margin-right: var(--space-md);
+      color: var(--azure-blue);
+    }
+
+    .document-link:hover {
+      background-color: var(--light-blue);
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <div class="top-nav-left">
+      <div class="logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 8H16C20.4183 8 24 11.5817 24 16C24 20.4183 20.4183 24 16 24H8V8Z" fill="#0A2342"/>
+          <path d="M16 8H24V16C24 20.4183 20.4183 24 16 24V8Z" fill="#2D72D9"/>
+        </svg>
+        <span>DueDiligenceAI</span>
+      </div>
+      <div class="nav-items">
+        <div class="nav-item">Dashboard</div>
+        <div class="nav-item">Documents</div>
+        <div class="nav-item active">Analysis</div>
+        <div class="nav-item">Reports</div>
+      </div>
+    </div>
+    <div class="top-nav-right">
+      <div class="search-bar">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <input type="text" placeholder="Search..." />
+      </div>
+      <div class="notifications">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 17H9M12 3V4M12 21V20M5.6 5.6L6.3 6.3M18.4 5.6L17.7 6.3M3 12H4M20 12H21M6 17.4V12C6 8.7 8.7 6 12 6C15.3 6 18 8.7 18 12V17.4H6Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="user-profile">
+        <div class="avatar">SK</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Breadcrumbs -->
+  <div class="breadcrumbs">
+    <div class="breadcrumb-item">Dashboard</div>
+    <div class="breadcrumb-item">Projects</div>
+    <div class="breadcrumb-item">ABC Corp Acquisition</div>
+    <div class="breadcrumb-item">Financial Insights</div>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="container">
+    <div class="two-column-layout">
+      <!-- Main Content -->
+      <div class="main-content">
+        <!-- Page Header -->
+        <div class="page-header">
+          <h1>ABC Corp Financial Insights</h1>
+          <div class="header-actions">
+            <button class="button secondary">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 16.5V18.75C3 19.9926 4.00736 21 5.25 21H18.75C19.9926 21 21 19.9926 21 18.75V16.5M16.5 12L12 16.5M12 16.5L7.5 12M12 16.5V3" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Export Insights
+            </button>
+            <button class="button primary">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 3.5V2M14.5 3.5V2M9 21.5V20M14.5 21.5V20M3.5 9H2M3.5 14.5H2M21.5 9H20M21.5 14.5H20" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Generate Financial Analysis
+            </button>
+          </div>
+        </div>
+
+        <!-- Financial Overview Section -->
+        <div class="info-box">
+          <svg class="icon info-box-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 16V12M12 8H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div class="info-box-content">
+            <h4>Financial Health Summary</h4>
+            <p>Our AI has analyzed ABC Corp's financial statements from the past 3 years and identified key trends and anomalies. The company shows strong revenue growth and improving margins, but has several potential risk factors related to debt structure and working capital management.</p>
+          </div>
+        </div>
+
+        <!-- Finance Specific Filters -->
+        <div class="insight-filters">
+          <div class="filter-chip active">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 12V3M15.5 5.5L8.5 5.5M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            All Financial
+          </div>
+          <div class="filter-chip">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16 8V16M12 11V16M8 14V16M6 20H18C19.1046 20 20 19.1046 20 18V6C20 4.89543 19.1046 4 18 4H6C4.89543 4 4 4.89543 4 6V18C4 19.1046 4.89543 20 6 20Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Revenue
+          </div>
+          <div class="filter-chip">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 12V3M15.5 5.5L8.5 5.5M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Profitability
+          </div>
+          <div class="filter-chip">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0378 2.66667 10.268 4L3.33978 16C2.56998 17.3333 3.53223 19 5.07183 19Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Debt &amp; Leverage
+          </div>
+          <div class="filter-chip">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15.5 13.5L12 17M12 17L8.5 13.5M12 17V7M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Cash Flow
+          </div>
+          <div class="filter-chip">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 11L12 14L22 4M21 12V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V5C3 3.89543 3.89543 3 5 3H16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Action Items
+          </div>
+        </div>
+
+        <!-- Financial KPIs -->
+        <div class="financial-kpi-grid">
+          <!-- KPI 1 -->
+          <div class="kpi-card">
+            <div class="kpi-title">Annual Revenue</div>
+            <div class="kpi-value">$32.4M</div>
+            <div class="kpi-change positive">
+              <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 10L12 5M12 5L17 10M12 5V19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              +18.5% YoY
+            </div>
+          </div>
+          
+          <!-- KPI 2 -->
+          <div class="kpi-card">
+            <div class="kpi-title">Gross Margin</div>
+            <div class="kpi-value">42.8%</div>
+            <div class="kpi-change positive">
+              <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 10L12 5M12 5L17 10M12 5V19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              +2.3% YoY
+            </div>
+          </div>
+          
+          <!-- KPI 3 -->
+          <div class="kpi-card">
+            <div class="kpi-title">EBITDA</div>
+            <div class="kpi-value">$7.8M</div>
+            <div class="kpi-change positive">
+              <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 10L12 5M12 5L17 10M12 5V19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              +24.1% YoY
+            </div>
+          </div>
+          
+          <!-- KPI 4 -->
+          <div class="kpi-card">
+            <div class="kpi-title">Debt/EBITDA</div>
+            <div class="kpi-value">2.8x</div>
+            <div class="kpi-change negative">
+              <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 14L12 19M12 19L17 14M12 19V5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              +0.4x YoY
+            </div>
+          </div>
+        </div>
+
+        <!-- Financial Insights Section -->
+        <div class="insight-group">
+          <div class="insight-group-header">
+            <h3 class="section-title">Key Financial Insights</h3>
+            <button class="button tertiary">View All</button>
+          </div>
+
+          <!-- Financial Insight Card 1 - Revenue Anomaly -->
+          <div class="ai-insight-card warning">
+            <div class="ai-insight-header">
+              <div class="ai-insight-title-wrapper">
+                <svg class="ai-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 3.5V2M14.5 3.5V2M9 21.5V20M14.5 21.5V20M3.5 9H2M3.5 14.5H2M21.5 9H20M21.5 14.5H20M7 16.5H17M7 12H17M12 7.5V16.5M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="ai-insight-title">One-Time Revenue Anomaly</div>
+              </div>
+              <div class="ai-confidence">
+                Confidence:
+                <span class="ai-confidence-level">High (89%)</span>
+              </div>
+            </div>
+            <div class="ai-insight-body">
+              <div class="impact-indicator medium">
+                <svg class="impact-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0378 2.66667 10.268 4L3.33978 16C2.56998 17.3333 3.53223 19 5.07183 19Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Requires Attention
+              </div>
+              <div class="tags">
+                <div class="tag">Revenue</div>
+                <div class="tag">Financial Reporting</div>
+                <div class="tag">Data Anomaly</div>
+              </div>
+              <div class="ai-insight-content">
+                <p>Our analysis detected a significant anomaly in the Q4 2024 revenue reporting. While the reported growth was 18.5% YoY, our segment-by-segment breakdown suggests organic growth was actually closer to 9.3%. The difference appears attributable to a one-time technology licensing deal worth approximately $3.2M that was not explicitly called out in financial reports. Future projections should be adjusted to account for this non-recurring revenue.</p>
+              </div>
+              
+              <div class="data-visualization">
+                <!-- Chart placeholder -->
+                <svg width="90%" height="90%" viewBox="0 0 800 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Chart Title and Legend -->
+                  <text x="400" y="20" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#263238">Quarterly Revenue Breakdown (in $M)</text>
+                  
+                  <!-- Legend -->
+                  <rect x="600" y="35" width="12" height="12" fill="#2D72D9" rx="2"/>
+                  <text x="620" y="45" font-family="Inter, sans-serif" font-size="12" fill="#3C4858">Reported Revenue</text>
+                  
+                  <rect x="600" y="55" width="12" height="12" fill="#FF5252" rx="2"/>
+                  <text x="620" y="65" font-family="Inter, sans-serif" font-size="12" fill="#3C4858">One-Time Deal</text>
+                  
+                  <rect x="600" y="75" width="12" height="12" stroke-dasharray="4,2" stroke="#78909C" fill-opacity="0.1" rx="2"/>
+                  <text x="620" y="85" font-family="Inter, sans-serif" font-size="12" fill="#3C4858">Organic Growth Trend</text>
+                  
+                  <!-- X and Y Axes -->
+                  <line x1="50" y1="150" x2="550" y2="150" stroke="#ECEFF1" stroke-width="2"/>
+                  <line x1="50" y1="50" x2="50" y2="150" stroke="#ECEFF1" stroke-width="2"/>
+                  
+                  <!-- X-Axis Labels -->
+                  <text x="100" y="170" font-family="Inter, sans-serif" font-size="12" text-anchor="middle" fill="#78909C">Q1 2024</text>
+                  <text x="200" y="170" font-family="Inter, sans-serif" font-size="12" text-anchor="middle" fill="#78909C">Q2 2024</text>
+                  <text x="300" y="170" font-family="Inter, sans-serif" font-size="12" text-anchor="middle" fill="#78909C">Q3 2024</text>
+                  <text x="400" y="170" font-family="Inter, sans-serif" font-size="12" text-anchor="middle" fill="#78909C">Q4 2024</text>
+                  <text x="500" y="170" font-family="Inter, sans-serif" font-size="12" text-anchor="middle" fill="#78909C">Q1 2025</text>
+                  
+                  <!-- Revenue Bars -->
+                  <rect x="80" y="110" width="40" height="40" fill="#2D72D9" rx="2"/>
+                  <rect x="180" y="100" width="40" height="50" fill="#2D72D9" rx="2"/>
+                  <rect x="280" y="90" width="40" height="60" fill="#2D72D9" rx="2"/>
+                  <rect x="380" y="70" width="40" height="80" fill="#2D72D9" rx="2"/>
+                  <rect x="480" y="65" width="40" height="85" fill="#2D72D9" rx="2"/>
+                  
+                  <!-- One-time Revenue Highlight -->
+                  <rect x="380" y="70" width="40" height="20" fill="#FF5252" rx="2"/> 
+                  
+                  <!-- Organic Growth Trend Line -->
+                  <path d="M100 110 L200 100 L300 90 L400 85 L500 80" stroke="#78909C" stroke-width="2" stroke-dasharray="4,4" fill="none"/>
+                  
+                  <!-- Anomaly Indicator -->
+                  <circle cx="400" cy="70" r="8" fill="#FFC107" stroke="#FFFFFF" stroke-width="2"/>
+                  <text x="400" y="70" font-family="Inter, sans-serif" font-size="12" text-anchor="middle" fill="#FFFFFF" dy="4">!</text>
+                </svg>
+              </div>
+              
+              <div class="key-points">
+                <div class="key-point">
+                  <svg class="key-point-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 12L11 14L15 10M20.6179 5.98434C20.4132 5.99472 20.2072 5.99997 20 5.99997C16.9265 5.99997 14.123 4.84453 12.0004 2.95598C9.87787 4.84446 7.07418 5.99985 4 5.99985C3.79277 5.99985 3.58678 5.9946 3.38213 5.98422C3.1327 6.94783 3 7.95842 3 9.00001C3 14.5915 6.82432 19.2898 12 20.622C17.1757 19.2898 21 14.5915 21 9.00001C21 7.95847 20.8673 6.94791 20.6179 5.98434Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <div class="key-point-text">Reported growth: 18.5% YoY vs. Organic growth: ~9.3% YoY</div>
+                </div>
+                <div class="key-point">
+                  <svg class="key-point-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 12L11 14L15 10M20.6179 5.98434C20.4132 5.99472 20.2072 5.99997 20 5.99997C16.9265 5.99997 14.123 4.84453 12.0004 2.95598C9.87787 4.84446 7.07418 5.99985 4 5.99985C3.79277 5.99985 3.58678 5.9946 3.38213 5.98422C3.1327 6.94783 3 7.95842 3 9.00001C3 14.5915 6.82432 19.2898 12 20.622C17.1757 19.2898 21 14.5915 21 9.00001C21 7.95847 20.8673 6.94791 20.6179 5.98434Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <div class="key-point-text">One-time licensing deal: ~$3.2M (not explicitly disclosed)</div>
+                </div>
+                <div class="key-point">
+                  <svg class="key-point-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 12L11 14L15 10M20.6179 5.98434C20.4132 5.99472 20.2072 5.99997 20 5.99997C16.9265 5.99997 14.123 4.84453 12.0004 2.95598C9.87787 4.84446 7.07418 5.99985 4 5.99985C3.79277 5.99985 3.58678 5.9946 3.38213 5.98422C3.1327 6.94783 3 7.95842 3 9.00001C3 14.5915 6.82432 19.2898 12 20.622C17.1757 19.2898 21 14.5915 21 9.00001C21 7.95847 20.8673 6.94791 20.6179 5.98434Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <div class="key-point-text">Future projections should be adjusted by ~9% to account for non-recurring revenue</div>
+                </div>
+              </div>
+              
+              <div class="document-link">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M14 2V8H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M16 13H8M16 17H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Q4 2024 Financial Statement (Pages 8-10)
+              </div>
+              
+              <div class="ai-insight-footer">
+                <div class="ai-insight-metadata">
+                  Generated: Apr 29, 2025 • Last updated: Apr 30, 2025
+                </div>
+                <div class="ai-insight-actions">
+                  <button class="button tertiary">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M7 8L17 8M7 12H17M7 16H13M4 4H20V20C20 20.5523 19.5523 21 19 21H5C4.44772 21 4 20.5523 4 20V4Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Add to Report
+                  </button>
+                  <button class="button tertiary">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M15 10L12 13M12 13L9 10M12 13V3M9.2 21H14.8C16.9201 21 17.9802 21 18.8284 20.5641C19.5779 20.1805 20.1805 19.5779 20.5641 18.8284C21 17.9802 21 16.9201 21 14.8V14.2C21 12.0799 21 11.0198 20.5641 10.1716C20.1805 9.42215 19.5779 8.81948 18.8284 8.43597C17.9802 8 16.9201 8 14.8 8H9.2C7.07989 8 6.01984 8 5.17157 8.43597C4.42215 8.81948 3.81948 9.42215 3.43597 10.1716C3 11.0198 3 12.0799 3 14.2V14.8C3 16.9201 3 17.9802 3.43597 18.8284C3.81948 19.5779 4.42215 20.1805 5.17157 20.5641C6.01984 21 7.07989 21 9.2 21Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Share
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- More financial insights will be added in subsequent edits -->
+        
+        <!-- Financial Insight Card 2 - Debt Risk -->
+        <div class="ai-insight-card danger">
+          <div class="ai-insight-header">
+            <div class="ai-insight-title-wrapper">
+              <svg class="ai-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0378 2.66667 10.268 4L3.33978 16C2.56998 17.3333 3.53223 19 5.07183 19Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <div class="ai-insight-title">Covenant Risk in Debt Structure</div>
+            </div>
+            <div class="ai-confidence">
+              Confidence:
+              <span class="ai-confidence-level">High (94%)</span>
+            </div>
+          </div>
+          <div class="ai-insight-body">
+            <div class="impact-indicator high">
+              <svg class="impact-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0378 2.66667 10.268 4L3.33978 16C2.56998 17.3333 3.53223 19 5.07183 19Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              High Risk
+            </div>
+            <div class="ai-insight-content" style="margin-bottom: 12px;">
+              <p>Analysis of the current debt agreements reveals that ABC Corp's Debt-to-EBITDA ratio has increased to 2.8x, approaching dangerously close to the covenant threshold of 3.0x. This creates significant risk as even a minor decrease in performance or increase in debt could trigger covenant breaches on multiple loan agreements. Our sensitivity analysis shows that a 7% decrease in EBITDA would push the ratio above the covenant threshold.</p>
+            </div>
+            <div class="ai-insight-footer" style="padding-top: 8px;">
+              <button class="button tertiary" style="padding: 4px 8px; font-size: 12px;">
+                View Details
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Debt Analysis Section -->
+        <div class="insight-group">
+          <div class="insight-group-header">
+            <h3 class="section-title">Debt Analysis</h3>
+            <button class="button tertiary">View All</button>
+          </div>
+          
+          <!-- Debt Analysis Cards - Grid Layout -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px;">
+            <!-- Debt Card 1 -->
+            <div class="ai-insight-card warning" style="margin-bottom: 0;">
+              <div class="ai-insight-header">
+                <div class="ai-insight-title-wrapper">
+                  <svg class="ai-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0378 2.66667 10.268 4L3.33978 16C2.56998 17.3333 3.53223 19 5.07183 19Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <div class="ai-insight-title">Interest Rate Exposure</div>
+                </div>
+              </div>
+              <div class="ai-insight-body">
+                <div class="impact-indicator medium">
+                  <svg class="impact-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0378 2.66667 10.268 4L3.33978 16C2.56998 17.3333 3.53223 19 5.07183 19Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Medium Risk
+                </div>
+                <div class="ai-insight-content" style="margin-bottom: 12px;">
+                  <p>60% of debt is variable rate, creating significant interest rate risk. A 1% rate increase would add $560K in annual interest expense.</p>
+                </div>
+                <div class="ai-insight-footer" style="padding-top: 8px;">
+                  <button class="button tertiary" style="padding: 4px 8px; font-size: 12px;">
+                    View Details
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Debt Card 2 -->
+            <div class="ai-insight-card danger" style="margin-bottom: 0;">
+              <div class="ai-insight-header">
+                <div class="ai-insight-title-wrapper">
+                  <svg class="ai-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0378 2.66667 10.268 4L3.33978 16C2.56998 17.3333 3.53223 19 5.07183 19Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <div class="ai-insight-title">Debt Maturity Wall</div>
+                </div>
+              </div>
+              <div class="ai-insight-body">
+                <div class="impact-indicator high">
+                  <svg class="impact-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0378 2.66667 10.268 4L3.33978 16C2.56998 17.3333 3.53223 19 5.07183 19Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  High Risk
+                </div>
+                <div class="ai-insight-content" style="margin-bottom: 12px;">
+                  <p>65% of total debt ($14.8M) matures within 18 months, creating refinancing risk in a potentially higher rate environment.</p>
+                </div>
+                <div class="ai-insight-footer" style="padding-top: 8px;">
+                  <button class="button tertiary" style="padding: 4px 8px; font-size: 12px;">
+                    View Details
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Debt Card 3 -->
+            <div class="ai-insight-card success" style="margin-bottom: 0;">
+              <div class="ai-insight-header">
+                <div class="ai-insight-title-wrapper">
+                  <svg class="ai-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <div class="ai-insight-title">Debt Capacity</div>
+                </div>
+              </div>
+              <div class="ai-insight-body">
+                <div class="impact-indicator low">
+                  <svg class="impact-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Opportunity
+                </div>
+                <div class="ai-insight-content" style="margin-bottom: 12px;">
+                  <p>Undrawn revolving credit facility of $5M available with favorable terms. Provides liquidity buffer for operations.</p>
+                </div>
+                <div class="ai-insight-footer" style="padding-top: 8px;">
+                  <button class="button tertiary" style="padding: 4px 8px; font-size: 12px;">
+                    View Details
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <h4 style="margin-bottom: var(--space-lg);">Financial Overview</h4>
+        
+        <div class="card" style="margin-bottom: var(--space-xl);">
+          <div class="card-header">
+            <div class="card-title">Key Financial Ratios</div>
+          </div>
+          <div class="card-body">
+            <div style="margin-bottom: var(--space-lg);">
+              <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-xs);">
+                <div style="font-size: 14px;">Current Ratio</div>
+                <div style="font-weight: 600;">1.8x</div>
+              </div>
+              <div style="height: 8px; background-color: var(--light-gray); border-radius: 4px; overflow: hidden;">
+                <div style="height: 100%; width: 60%; background-color: var(--azure-blue);"></div>
+              </div>
+            </div>
+            
+            <div style="margin-bottom: var(--space-lg);">
+              <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-xs);">
+                <div style="font-size: 14px;">Quick Ratio</div>
+                <div style="font-weight: 600;">1.2x</div>
+              </div>
+              <div style="height: 8px; background-color: var(--light-gray); border-radius: 4px; overflow: hidden;">
+                <div style="height: 100%; width: 40%; background-color: var(--amber-yellow);"></div>
+              </div>
+            </div>
+            
+            <div style="margin-bottom: var(--space-lg);">
+              <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-xs);">
+                <div style="font-size: 14px;">ROA</div>
+                <div style="font-weight: 600;">8.2%</div>
+              </div>
+              <div style="height: 8px; background-color: var(--light-gray); border-radius: 4px; overflow: hidden;">
+                <div style="height: 100%; width: 82%; background-color: var(--mint-green);"></div>
+              </div>
+            </div>
+            
+            <div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-xs);">
+                <div style="font-size: 14px;">ROE</div>
+                <div style="font-weight: 600;">18.5%</div>
+              </div>
+              <div style="height: 8px; background-color: var(--light-gray); border-radius: 4px; overflow: hidden;">
+                <div style="height: 100%; width: 75%; background-color: var(--mint-green);"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card" style="margin-bottom: var(--space-xl);">
+          <div class="card-header">
+            <div class="card-title">Financial Documents</div>
+          </div>
+          <div class="card-body">
+            <div class="document-link">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 2V8H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16 13H8M16 17H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Annual Financial Statement 2024
+            </div>
+            <div class="document-link">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 2V8H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16 13H8M16 17H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Quarterly Report Q1 2025
+            </div>
+            <div class="document-link">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 2V8H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16 13H8M16 17H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Debt Structure Analysis
+            </div>
+            <div class="document-link">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 2V8H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16 13H8M16 17H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Cash Flow Statement
+            </div>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Financial Risk Assessment</div>
+          </div>
+          <div class="card-body">
+            <div style="display: flex; margin-bottom: var(--space-lg);">
+              <div style="flex: 1; text-align: center;">
+                <div style="font-size: 24px; font-weight: 700; color: var(--coral-red);">2</div>
+                <div style="font-size: 12px; color: var(--medium-gray);">High Risk</div>
+              </div>
+              <div style="flex: 1; text-align: center;">
+                <div style="font-size: 24px; font-weight: 700; color: var(--amber-yellow);">3</div>
+                <div style="font-size: 12px; color: var(--medium-gray);">Medium Risk</div>
+              </div>
+              <div style="flex: 1; text-align: center;">
+                <div style="font-size: 24px; font-weight: 700; color: var(--mint-green);">5</div>
+                <div style="font-size: 12px; color: var(--medium-gray);">Low Risk</div>
+              </div>
+            </div>
+            
+            <button class="button secondary" style="width: 100%;">
+              View Financial Risk Matrix
+            </button>
+            
+            <div style="margin-top: var(--space-lg);">
+              <div style="font-size: 14px; font-weight: 500; margin-bottom: var(--space-sm);">Top Financial Risks:</div>
+              <ul style="padding-left: var(--space-lg); font-size: 14px;">
+                <li style="margin-bottom: var(--space-xs);">Debt covenant compliance (High)</li>
+                <li style="margin-bottom: var(--space-xs);">Customer concentration (High)</li>
+                <li style="margin-bottom: var(--space-xs);">Interest rate exposure (Medium)</li>
+                <li style="margin-bottom: var(--space-xs);">Working capital management (Medium)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

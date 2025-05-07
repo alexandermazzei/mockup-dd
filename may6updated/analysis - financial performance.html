@@ -1,0 +1,1915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DueDiligenceAI - Financial Performance</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Color System */
+    :root {
+      --deep-navy: #0A2342;
+      --azure-blue: #2D72D9;
+      --slate-gray: #3C4858;
+      --mint-green: #00BFA5;
+      --coral-red: #FF5252;
+      --amber-yellow: #FFC107;
+      --light-blue: #E1F5FE;
+      --sky-blue: #81D4FA;
+      --dark-blue: #01579B;
+      --charcoal: #263238;
+      --medium-gray: #78909C;
+      --light-gray: #ECEFF1;
+      --white: #FFFFFF;
+      
+      /* Typography */
+      --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-display: 'Manrope', var(--font-primary);
+      --font-mono: 'JetBrains Mono', SFMono-Regular, Consolas, monospace;
+      
+      /* Spacing */
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 12px;
+      --space-lg: 16px;
+      --space-xl: 24px;
+      --space-2xl: 32px;
+      --space-3xl: 48px;
+      
+      /* Shadows */
+      --shadow-sm: 0px 1px 3px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0px 2px 6px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      
+      /* Border Radius */
+      --radius-sm: 2px;
+      --radius-md: 4px;
+      --radius-lg: 8px;
+    }
+
+    /* Global Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-primary);
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--slate-gray);
+      background-color: var(--light-gray);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-display);
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      line-height: 1.2;
+      font-weight: 800;
+      color: var(--deep-navy);
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      line-height: 1.2;
+      font-weight: 700;
+      color: var(--slate-gray);
+    }
+
+    h4 {
+      font-size: 1.125rem;
+      line-height: 1.4;
+      font-weight: 600;
+      color: var(--deep-navy);
+    }
+
+    /* Top Navigation */
+    .top-nav {
+      background-color: var(--white);
+      height: 64px;
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 var(--space-xl);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .top-nav-left, .top-nav-right {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--deep-navy);
+      margin-right: var(--space-2xl);
+    }
+
+    .logo svg {
+      margin-right: var(--space-sm);
+    }
+
+    .nav-items {
+      display: flex;
+    }
+
+    .nav-item {
+      padding: 0 var(--space-lg);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      color: var(--slate-gray);
+      cursor: pointer;
+      transition: color 0.15s;
+      position: relative;
+    }
+
+    .nav-item:hover {
+      color: var(--azure-blue);
+    }
+
+    .nav-item.active {
+      color: var(--azure-blue);
+    }
+
+    .nav-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--azure-blue);
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      background-color: var(--light-gray);
+      border-radius: 4px;
+      padding: 0 var(--space-md);
+      margin-right: var(--space-lg);
+      height: 36px;
+      width: 240px;
+    }
+
+    .search-bar input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 14px;
+      width: 100%;
+      margin-left: var(--space-xs);
+    }
+
+    .notifications, .user-profile {
+      margin-left: var(--space-lg);
+      cursor: pointer;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      background-color: var(--azure-blue);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    /* Main Layout */
+    .container {
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 64px);
+    }
+
+    /* Breadcrumbs */
+    .breadcrumbs {
+      display: flex;
+      padding: var(--space-md) var(--space-xl);
+      background-color: var(--white);
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .breadcrumb-item {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: var(--medium-gray);
+    }
+
+    .breadcrumb-item:not(:last-child)::after {
+      content: '';
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2378909C' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 18l6-6-6-6'%3E%3C/path%3E%3C/svg%3E");
+      background-position: center;
+      background-repeat: no-repeat;
+      margin: 0 var(--space-sm);
+    }
+
+    .breadcrumb-item:last-child {
+      color: var(--charcoal);
+      font-weight: 500;
+    }
+
+    /* Two Column Layout */
+    .two-column-layout {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .main-content {
+      flex: 7;
+      padding: var(--space-xl);
+      overflow-y: auto;
+    }
+
+    .sidebar {
+      flex: 3;
+      width: 320px;
+      min-width: 320px;
+      max-width: 320px;
+      background-color: var(--white);
+      border-left: 1px solid var(--light-gray);
+      padding: var(--space-xl);
+      overflow-y: auto;
+    }
+
+    /* Button Styles */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      border-radius: var(--radius-md);
+      font-weight: 500;
+      font-size: 14px;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .button .icon {
+      width: 18px;
+      height: 18px;
+      margin-right: var(--space-xs);
+    }
+
+    .primary {
+      background-color: var(--azure-blue);
+      color: var(--white);
+    }
+
+    .primary:hover {
+      background-color: #1A5DC7;
+    }
+
+    .secondary {
+      background-color: var(--white);
+      color: var(--azure-blue);
+      border: 1px solid var(--azure-blue);
+    }
+
+    .secondary:hover {
+      background-color: var(--light-blue);
+    }
+
+    .tertiary {
+      background-color: transparent;
+      color: var(--azure-blue);
+      padding: 8px 12px;
+    }
+
+    .tertiary:hover {
+      background-color: var(--light-blue);
+    }
+
+    .icon-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-md);
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+    }
+
+    .icon-button:hover {
+      background-color: var(--light-gray);
+    }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      stroke-width: 1.5;
+    }
+
+    /* Tab Panel */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--light-gray);
+      margin-bottom: var(--space-xl);
+    }
+
+    .tab {
+      padding: var(--space-md) var(--space-xl);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--slate-gray);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .tab:hover {
+      background-color: var(--light-blue);
+    }
+
+    .tab.active {
+      color: var(--azure-blue);
+    }
+
+    .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--azure-blue);
+    }
+
+    /* Page Header */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-xl);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: var(--space-md);
+    }
+
+    /* Cards and Sections */
+    .card {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      margin-bottom: var(--space-xl);
+    }
+
+    .card-header {
+      padding: var(--space-lg);
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+    }
+
+    .card-body {
+      padding: var(--space-lg);
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-lg);
+    }
+
+    /* Charts */
+    .chart-container {
+      height: 300px;
+      margin-bottom: var(--space-xl);
+      position: relative;
+    }
+    
+    .chart-container.half-height {
+      height: 200px;
+    }
+
+    .chart {
+      width: 100%;
+      height: 100%;
+    }
+    
+    /* Two-column chart layout */
+    .chart-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-xl);
+      margin-bottom: var(--space-xl);
+    }
+
+    /* Financial Metrics */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: var(--space-lg);
+      margin-bottom: var(--space-xl);
+    }
+
+    .metric-card {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: var(--space-lg);
+    }
+
+    .metric-label {
+      font-size: 14px;
+      color: var(--slate-gray);
+      margin-bottom: var(--space-xs);
+    }
+
+    .metric-value {
+      font-family: var(--font-mono);
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--deep-navy);
+    }
+
+    .metric-trend {
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+      margin-top: var(--space-xs);
+    }
+
+    .metric-trend.positive {
+      color: var(--mint-green);
+    }
+
+    .metric-trend.negative {
+      color: var(--coral-red);
+    }
+
+    .metric-trend .icon {
+      width: 16px;
+      height: 16px;
+      margin-right: 4px;
+    }
+
+    /* Financial Table */
+    .financial-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: var(--space-xl);
+      font-size: 14px;
+    }
+
+    .financial-table th,
+    .financial-table td {
+      padding: var(--space-md);
+      text-align: right;
+      border-bottom: 1px solid var(--light-gray);
+    }
+    
+    .financial-table th:first-child,
+    .financial-table td:first-child {
+      text-align: left;
+      font-weight: 500;
+    }
+
+    .financial-table th {
+      font-weight: 600;
+      color: var(--slate-gray);
+      background-color: var(--light-gray);
+    }
+    
+    .financial-table tr.total-row {
+      font-weight: 600;
+      background-color: rgba(45, 114, 217, 0.05);
+    }
+    
+    .financial-table tr.subtotal-row {
+      background-color: rgba(236, 239, 241, 0.5);
+    }
+
+    .financial-table tbody tr:hover {
+      background-color: var(--light-blue);
+    }
+    
+    /* Benchmark comparison */
+    .benchmark-comparison {
+      display: flex;
+      margin-bottom: var(--space-xl);
+      gap: var(--space-lg);
+    }
+    
+    .benchmark-card {
+      flex: 1;
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: var(--space-lg);
+    }
+    
+    .benchmark-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-md);
+    }
+    
+    .benchmark-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-md);
+    }
+    
+    .benchmark-metric {
+      margin-bottom: var(--space-md);
+    }
+    
+    .benchmark-label {
+      font-size: 12px;
+      color: var(--slate-gray);
+      margin-bottom: 2px;
+    }
+    
+    .benchmark-value {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--deep-navy);
+      display: flex;
+      align-items: center;
+    }
+    
+    .benchmark-value.better {
+      color: var(--mint-green);
+    }
+    
+    .benchmark-value.worse {
+      color: var(--coral-red);
+    }
+    
+    .benchmark-value .icon {
+      width: 16px;
+      height: 16px;
+      margin-right: 4px;
+    }
+    
+    /* Segment Analysis */
+    .segment-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-xl);
+      margin-bottom: var(--space-xl);
+    }
+    
+    /* Data Table */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: var(--space-xl);
+    }
+
+    .data-table th,
+    .data-table td {
+      padding: var(--space-md);
+      text-align: left;
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .data-table th {
+      font-weight: 600;
+      color: var(--slate-gray);
+      background-color: var(--light-gray);
+    }
+
+    .data-table tbody tr:hover {
+      background-color: var(--light-blue);
+    }
+
+    /* AI Insights */
+    .ai-insight {
+      background-color: rgba(45, 114, 217, 0.05);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      margin-bottom: var(--space-md);
+    }
+
+    .ai-insight-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: var(--space-sm);
+    }
+
+    .ai-insight-header .icon {
+      width: 18px;
+      height: 18px;
+      margin-right: var(--space-sm);
+      color: var(--azure-blue);
+    }
+
+    .ai-insight-title {
+      font-weight: 600;
+      color: var(--deep-navy);
+      font-size: 14px;
+    }
+
+    .ai-insight-content {
+      font-size: 14px;
+      color: var(--slate-gray);
+    }
+
+    /* Sidebar Components */
+    .sidebar-section {
+      margin-bottom: var(--space-xl);
+    }
+
+    .sidebar-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-md);
+    }
+
+    .sidebar-card {
+      background-color: var(--light-gray);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      margin-bottom: var(--space-md);
+    }
+
+    .sidebar-card-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-xs);
+    }
+
+    .sidebar-card-content {
+      font-size: 14px;
+      color: var(--slate-gray);
+    }
+
+    .sidebar-list {
+      list-style: none;
+    }
+
+    .sidebar-list-item {
+      display: flex;
+      align-items: center;
+      padding: var(--space-sm) 0;
+      font-size: 14px;
+      color: var(--slate-gray);
+    }
+
+    .sidebar-list-item .icon {
+      width: 16px;
+      height: 16px;
+      margin-right: var(--space-sm);
+      color: var(--azure-blue);
+    }
+    
+    /* Toggle controls */
+    .toggle-controls {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: var(--space-lg);
+    }
+    
+    .toggle-group {
+      display: flex;
+      background-color: var(--light-gray);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    
+    .toggle-option {
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    
+    .toggle-option.active {
+      background-color: var(--white);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 1024px) {
+      .two-column-layout {
+        /* Don't change to column layout until smaller screens */
+        display: flex;
+      }
+
+      .sidebar {
+        width: 280px;
+        min-width: 280px;
+        max-width: 280px;
+      }
+      
+      .chart-grid, .segment-layout {
+        grid-template-columns: 1fr;
+      }
+      
+      .benchmark-comparison {
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .two-column-layout {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
+        border-left: none;
+        border-top: 1px solid var(--light-gray);
+      }
+      
+      .top-nav {
+        padding: 0 var(--space-md);
+      }
+      
+      .nav-items {
+        display: none;
+      }
+      
+      .search-bar {
+        width: 160px;
+      }
+
+      .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-md);
+      }
+
+      .header-actions {
+        width: 100%;
+      }
+
+      .metrics-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <div class="top-nav-left">
+      <div class="logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 8H16C20.4183 8 24 11.5817 24 16C24 20.4183 20.4183 24 16 24H8V8Z" fill="#0A2342"/>
+          <path d="M16 8H24V16C24 20.4183 20.4183 24 16 24V8Z" fill="#2D72D9"/>
+        </svg>
+        <span>DueDiligenceAI</span>
+      </div>
+      <div class="nav-items">
+        <div class="nav-item">Dashboard</div>
+        <div class="nav-item">Documents</div>
+        <div class="nav-item active">Analysis</div>
+        <div class="nav-item">Reports</div>
+      </div>
+    </div>
+    <div class="top-nav-right">
+      <div class="search-bar">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <input type="text" placeholder="Search..." />
+      </div>
+      <div class="notifications">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 17H9M12 3V4M12 21V20M5.6 5.6L6.3 6.3M18.4 5.6L17.7 6.3M3 12H4M20 12H21M6 17.4V12C6 8.7 8.7 6 12 6C15.3 6 18 8.7 18 12V17.4H6Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="user-profile">
+        <div class="avatar">SK</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Breadcrumbs -->
+  <div class="breadcrumbs">
+    <div class="breadcrumb-item">Dashboard</div>
+    <div class="breadcrumb-item">Projects</div>
+    <div class="breadcrumb-item">ABC Corp Acquisition</div>
+    <div class="breadcrumb-item">Financial Performance</div>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="container">
+    <div class="two-column-layout">
+      <!-- Main Content -->
+      <div class="main-content">
+        <!-- Page Header -->
+        <div class="page-header">
+          <h1>ABC Corp Financial Performance</h1>
+          <div class="header-actions">
+            <button class="button secondary">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 16.5V18.75C3 19.9926 4.00736 21 5.25 21H18.75C19.9926 21 21 19.9926 21 18.75V16.5M16.5 12L12 16.5M12 16.5L7.5 12M12 16.5V3" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Export
+            </button>
+            <button class="button primary">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 12H12M16 12H12M12 12V8M12 12V16M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Compare with Competitor
+            </button>
+          </div>
+        </div>
+
+        <!-- Tabs Navigation -->
+        <div class="tabs">
+          <div class="tab">Overview</div>
+          <div class="tab active">Financial Performance</div>
+          <div class="tab">Risk Assessment</div>
+          <div class="tab">AI Insights</div>
+          <div class="tab">Documents</div>
+        </div>
+
+        <!-- AI Summary Callout -->
+        <div class="callout">
+          <div class="callout-title">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 3.5V2M14.5 3.5V2M9 21.5V20M14.5 21.5V20M3.5 9H2M3.5 14.5H2M21.5 9H20M21.5 14.5H20M7 16.5H17M7 12H17M12 7.5V16.5M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2Z" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Financial Performance Summary
+          </div>
+          <div class="callout-content">
+            ABC Corp demonstrates strong and consistent financial growth with revenue increasing at a CAGR of 14.7% over the last 3 years. Q1 2025 results show acceleration with revenue up 22.3% YoY, driven primarily by the SaaS product line (+35.4%). Profitability metrics have improved with EBITDA margin expanding from 21.5% to 23.4% YoY due to economies of scale and operational efficiencies. Cash conversion remains healthy at 87% though inventory turnover has slowed slightly in Q1 2025.
+          </div>
+        </div>
+        
+        <!-- Period Toggle -->
+        <div class="toggle-controls">
+          <div class="toggle-group">
+            <div class="toggle-option">Quarterly</div>
+            <div class="toggle-option active">Annual</div>
+            <div class="toggle-option">3-Year</div>
+          </div>
+        </div>
+
+        <!-- Key Performance Metrics -->
+        <h3 class="section-title">Key Performance Metrics</h3>
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-label">Revenue (FY 2024)</div>
+            <div class="metric-value">$45.2M</div>
+            <div class="metric-trend positive">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              12.5% YoY
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Gross Margin (FY 2024)</div>
+            <div class="metric-value">68.3%</div>
+            <div class="metric-trend positive">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              2.1% YoY
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">EBITDA (FY 2024)</div>
+            <div class="metric-value">$10.6M</div>
+            <div class="metric-trend positive">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              18.2% YoY
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">EBITDA Margin (FY 2024)</div>
+            <div class="metric-value">23.4%</div>
+            <div class="metric-trend positive">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              1.2% YoY
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Operating Cash Flow (FY 2024)</div>
+            <div class="metric-value">$12.5M</div>
+            <div class="metric-trend positive">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              8.7% YoY
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Net Income (FY 2024)</div>
+            <div class="metric-value">$7.8M</div>
+            <div class="metric-trend positive">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              15.3% YoY
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Return on Assets (FY 2024)</div>
+            <div class="metric-value">14.2%</div>
+            <div class="metric-trend positive">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              0.8% YoY
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Debt-to-EBITDA (FY 2024)</div>
+            <div class="metric-value">2.8x</div>
+            <div class="metric-trend negative">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 7L17 17M17 17V7M17 17H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              0.4x YoY
+            </div>
+          </div>
+        </div>
+
+        <!-- Revenue Trend Chart -->
+        <h3 class="section-title">Revenue Trend (2020-2024)</h3>
+        <div class="chart-container">
+          <!-- This is a placeholder for an actual chart that would be rendered with a library like Chart.js -->
+          <svg class="chart" viewBox="0 0 800 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Axes -->
+            <line x1="50" y1="250" x2="750" y2="250" stroke="#ECEFF1" stroke-width="2"/>
+            <line x1="50" y1="50" x2="50" y2="250" stroke="#ECEFF1" stroke-width="2"/>
+            
+            <!-- X-Axis Labels -->
+            <text x="120" y="270" font-size="12" text-anchor="middle" fill="#78909C">2020</text>
+            <text x="260" y="270" font-size="12" text-anchor="middle" fill="#78909C">2021</text>
+            <text x="400" y="270" font-size="12" text-anchor="middle" fill="#78909C">2022</text>
+            <text x="540" y="270" font-size="12" text-anchor="middle" fill="#78909C">2023</text>
+            <text x="680" y="270" font-size="12" text-anchor="middle" fill="#78909C">2024</text>
+            
+            <!-- Y-Axis Labels -->
+            <text x="40" y="250" font-size="12" text-anchor="end" fill="#78909C">0</text>
+            <text x="40" y="210" font-size="12" text-anchor="end" fill="#78909C">10M</text>
+            <text x="40" y="170" font-size="12" text-anchor="end" fill="#78909C">20M</text>
+            <text x="40" y="130" font-size="12" text-anchor="end" fill="#78909C">30M</text>
+            <text x="40" y="90" font-size="12" text-anchor="end" fill="#78909C">40M</text>
+            <text x="40" y="50" font-size="12" text-anchor="end" fill="#78909C">50M</text>
+            
+            <!-- Grid Lines -->
+            <line x1="50" y1="210" x2="750" y2="210" stroke="#ECEFF1" stroke-width="1"/>
+            <line x1="50" y1="170" x2="750" y2="170" stroke="#ECEFF1" stroke-width="1"/>
+            <line x1="50" y1="130" x2="750" y2="130" stroke="#ECEFF1" stroke-width="1"/>
+            <line x1="50" y1="90" x2="750" y2="90" stroke="#ECEFF1" stroke-width="1"/>
+            <line x1="50" y1="50" x2="750" y2="50" stroke="#ECEFF1" stroke-width="1"/>
+            
+            <!-- Actual Revenue Line -->
+            <path d="M120,230 L260,200 L400,160 L540,120 L680,90" 
+                  stroke="#2D72D9" stroke-width="3" fill="none"/>
+            
+            <!-- Revenue Area Fill -->
+            <path d="M120,230 L260,200 L400,160 L540,120 L680,90 L680,250 L120,250 Z" 
+                  fill="#2D72D9" fill-opacity="0.1"/>
+            
+            <!-- Data Points -->
+            <circle cx="120" cy="230" r="5" fill="#2D72D9"/>
+            <circle cx="260" cy="200" r="5" fill="#2D72D9"/>
+            <circle cx="400" cy="160" r="5" fill="#2D72D9"/>
+            <circle cx="540" cy="120" r="5" fill="#2D72D9"/>
+            <circle cx="680" cy="90" r="5" fill="#2D72D9"/>
+            
+            <!-- Industry Average Line -->
+            <path d="M120,235 L260,215 L400,190 L540,165 L680,145" 
+                  stroke="#78909C" stroke-width="2" stroke-dasharray="5,5" fill="none"/>
+            
+            <!-- Legend -->
+            <rect x="600" y="20" width="15" height="3" fill="#2D72D9"/>
+            <text x="620" y="24" font-size="12" fill="#3C4858">ABC Corp Revenue</text>
+            
+            <line x1="600" y1="40" x2="615" y2="40" stroke="#78909C" stroke-width="2" stroke-dasharray="5,5"/>
+            <text x="620" y="44" font-size="12" fill="#3C4858">Industry Average</text>
+          </svg>
+        </div>
+        
+        <!-- Profitability Metrics Charts -->
+        <h3 class="section-title">Profitability Metrics</h3>
+        <div class="chart-grid">
+          <!-- Gross Margin Chart -->
+          <div class="chart-container half-height">
+            <h4 style="margin-bottom: 8px;">Gross Margin (%)</h4>
+            <svg class="chart" viewBox="0 0 400 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Axes -->
+              <line x1="40" y1="150" x2="380" y2="150" stroke="#ECEFF1" stroke-width="2"/>
+              <line x1="40" y1="30" x2="40" y2="150" stroke="#ECEFF1" stroke-width="2"/>
+              
+              <!-- X-Axis Labels -->
+              <text x="80" y="165" font-size="10" text-anchor="middle" fill="#78909C">2020</text>
+              <text x="145" y="165" font-size="10" text-anchor="middle" fill="#78909C">2021</text>
+              <text x="210" y="165" font-size="10" text-anchor="middle" fill="#78909C">2022</text>
+              <text x="275" y="165" font-size="10" text-anchor="middle" fill="#78909C">2023</text>
+              <text x="340" y="165" font-size="10" text-anchor="middle" fill="#78909C">2024</text>
+              
+              <!-- Y-Axis Labels -->
+              <text x="35" y="150" font-size="10" text-anchor="end" fill="#78909C">50%</text>
+              <text x="35" y="120" font-size="10" text-anchor="end" fill="#78909C">55%</text>
+              <text x="35" y="90" font-size="10" text-anchor="end" fill="#78909C">60%</text>
+              <text x="35" y="60" font-size="10" text-anchor="end" fill="#78909C">65%</text>
+              <text x="35" y="30" font-size="10" text-anchor="end" fill="#78909C">70%</text>
+              
+              <!-- Grid Lines -->
+              <line x1="40" y1="120" x2="380" y2="120" stroke="#ECEFF1" stroke-width="1"/>
+              <line x1="40" y1="90" x2="380" y2="90" stroke="#ECEFF1" stroke-width="1"/>
+              <line x1="40" y1="60" x2="380" y2="60" stroke="#ECEFF1" stroke-width="1"/>
+              <line x1="40" y1="30" x2="380" y2="30" stroke="#ECEFF1" stroke-width="1"/>
+              
+              <!-- Gross Margin Line -->
+              <path d="M80,110 L145,95 L210,80 L275,70 L340,60" 
+                    stroke="#00BFA5" stroke-width="2" fill="none"/>
+              
+              <!-- Data Points -->
+              <circle cx="80" cy="110" r="4" fill="#00BFA5"/>
+              <circle cx="145" cy="95" r="4" fill="#00BFA5"/>
+              <circle cx="210" cy="80" r="4" fill="#00BFA5"/>
+              <circle cx="275" cy="70" r="4" fill="#00BFA5"/>
+              <circle cx="340" cy="60" r="4" fill="#00BFA5"/>
+              
+              <!-- Data Values -->
+              <text x="80" y="100" font-size="9" text-anchor="middle" fill="#3C4858">58.2%</text>
+              <text x="145" y="85" font-size="9" text-anchor="middle" fill="#3C4858">61.5%</text>
+              <text x="210" y="70" font-size="9" text-anchor="middle" fill="#3C4858">64.8%</text>
+              <text x="275" y="60" font-size="9" text-anchor="middle" fill="#3C4858">66.2%</text>
+              <text x="340" y="50" font-size="9" text-anchor="middle" fill="#3C4858">68.3%</text>
+            </svg>
+          </div>
+          
+          <!-- EBITDA Margin Chart -->
+          <div class="chart-container half-height">
+            <h4 style="margin-bottom: 8px;">EBITDA Margin (%)</h4>
+            <svg class="chart" viewBox="0 0 400 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Axes -->
+              <line x1="40" y1="150" x2="380" y2="150" stroke="#ECEFF1" stroke-width="2"/>
+              <line x1="40" y1="30" x2="40" y2="150" stroke="#ECEFF1" stroke-width="2"/>
+              
+              <!-- X-Axis Labels -->
+              <text x="80" y="165" font-size="10" text-anchor="middle" fill="#78909C">2020</text>
+              <text x="145" y="165" font-size="10" text-anchor="middle" fill="#78909C">2021</text>
+              <text x="210" y="165" font-size="10" text-anchor="middle" fill="#78909C">2022</text>
+              <text x="275" y="165" font-size="10" text-anchor="middle" fill="#78909C">2023</text>
+              <text x="340" y="165" font-size="10" text-anchor="middle" fill="#78909C">2024</text>
+              
+              <!-- Y-Axis Labels -->
+              <text x="35" y="150" font-size="10" text-anchor="end" fill="#78909C">15%</text>
+              <text x="35" y="120" font-size="10" text-anchor="end" fill="#78909C">18%</text>
+              <text x="35" y="90" font-size="10" text-anchor="end" fill="#78909C">21%</text>
+              <text x="35" y="60" font-size="10" text-anchor="end" fill="#78909C">24%</text>
+              <text x="35" y="30" font-size="10" text-anchor="end" fill="#78909C">27%</text>
+              
+              <!-- Grid Lines -->
+              <line x1="40" y1="120" x2="380" y2="120" stroke="#ECEFF1" stroke-width="1"/>
+              <line x1="40" y1="90" x2="380" y2="90" stroke="#ECEFF1" stroke-width="1"/>
+              <line x1="40" y1="60" x2="380" y2="60" stroke="#ECEFF1" stroke-width="1"/>
+              <line x1="40" y1="30" x2="380" y2="30" stroke="#ECEFF1" stroke-width="1"/>
+              
+              <!-- EBITDA Margin Line -->
+              <path d="M80,130 L145,110 L210,100 L275,80 L340,65" 
+                    stroke="#2D72D9" stroke-width="2" fill="none"/>
+              
+              <!-- Data Points -->
+              <circle cx="80" cy="130" r="4" fill="#2D72D9"/>
+              <circle cx="145" cy="110" r="4" fill="#2D72D9"/>
+              <circle cx="210" cy="100" r="4" fill="#2D72D9"/>
+              <circle cx="275" cy="80" r="4" fill="#2D72D9"/>
+              <circle cx="340" cy="65" r="4" fill="#2D72D9"/>
+              
+              <!-- Data Values -->
+              <text x="80" y="120" font-size="9" text-anchor="middle" fill="#3C4858">17.2%</text>
+              <text x="145" y="100" font-size="9" text-anchor="middle" fill="#3C4858">19.5%</text>
+              <text x="210" y="90" font-size="9" text-anchor="middle" fill="#3C4858">20.8%</text>
+              <text x="275" y="70" font-size="9" text-anchor="middle" fill="#3C4858">22.2%</text>
+              <text x="340" y="55" font-size="9" text-anchor="middle" fill="#3C4858">23.4%</text>
+            </svg>
+          </div>
+        </div>
+        
+        <!-- Income Statement -->
+        <h3 class="section-title">Income Statement (in thousands)</h3>
+        <table class="financial-table">
+          <thead>
+            <tr>
+              <th>Line Item</th>
+              <th>FY 2022</th>
+              <th>FY 2023</th>
+              <th>FY 2024</th>
+              <th>YoY Change</th>
+              <th>% of Revenue</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Revenue</td>
+              <td>$32,450</td>
+              <td>$40,180</td>
+              <td>$45,200</td>
+              <td>+12.5%</td>
+              <td>100.0%</td>
+            </tr>
+            <tr>
+              <td>Cost of Revenue</td>
+              <td>$11,680</td>
+              <td>$13,580</td>
+              <td>$14,328</td>
+              <td>+5.5%</td>
+              <td>31.7%</td>
+            </tr>
+            <tr class="subtotal-row">
+              <td>Gross Profit</td>
+              <td>$20,770</td>
+              <td>$26,600</td>
+              <td>$30,872</td>
+              <td>+16.1%</td>
+              <td>68.3%</td>
+            </tr>
+            <tr>
+              <td>R&D Expenses</td>
+              <td>$4,250</td>
+              <td>$5,345</td>
+              <td>$5,875</td>
+              <td>+9.9%</td>
+              <td>13.0%</td>
+            </tr>
+            <tr>
+              <td>Sales & Marketing</td>
+              <td>$6,425</td>
+              <td>$7,835</td>
+              <td>$8,588</td>
+              <td>+9.6%</td>
+              <td>19.0%</td>
+            </tr>
+            <tr>
+              <td>G&A Expenses</td>
+              <td>$3,780</td>
+              <td>$4,545</td>
+              <td>$5,424</td>
+              <td>+19.3%</td>
+              <td>12.0%</td>
+            </tr>
+            <tr>
+              <td>Other Operating Expenses</td>
+              <td>$920</td>
+              <td>$1,040</td>
+              <td>$385</td>
+              <td>-63.0%</td>
+              <td>0.9%</td>
+            </tr>
+            <tr class="subtotal-row">
+              <td>Operating Income</td>
+              <td>$5,395</td>
+              <td>$7,835</td>
+              <td>$10,600</td>
+              <td>+35.3%</td>
+              <td>23.4%</td>
+            </tr>
+            <tr>
+              <td>Interest Expense</td>
+              <td>$845</td>
+              <td>$1,025</td>
+              <td>$1,428</td>
+              <td>+39.3%</td>
+              <td>3.2%</td>
+            </tr>
+            <tr>
+              <td>Other Income/(Expense)</td>
+              <td>$120</td>
+              <td>$185</td>
+              <td>$230</td>
+              <td>+24.3%</td>
+              <td>0.5%</td>
+            </tr>
+            <tr class="subtotal-row">
+              <td>Pre-tax Income</td>
+              <td>$4,670</td>
+              <td>$6,995</td>
+              <td>$9,402</td>
+              <td>+34.4%</td>
+              <td>20.8%</td>
+            </tr>
+            <tr>
+              <td>Income Tax</td>
+              <td>$980</td>
+              <td>$1,230</td>
+              <td>$1,602</td>
+              <td>+30.2%</td>
+              <td>3.5%</td>
+            </tr>
+            <tr class="total-row">
+              <td>Net Income</td>
+              <td>$3,690</td>
+              <td>$5,765</td>
+              <td>$7,800</td>
+              <td>+35.3%</td>
+              <td>17.3%</td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <!-- Segment Analysis -->
+        <h3 class="section-title">Revenue by Business Segment</h3>
+        <div class="segment-layout">
+          <!-- Segment Chart -->
+          <div class="chart-container">
+            <svg class="chart" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Segment Pie Chart -->
+              <circle cx="200" cy="150" r="100" fill="#ECEFF1"/>
+              
+              <!-- Pie Segments -->
+              <!-- SaaS Products - 45% -->
+              <path d="M200,150 L200,50 A100,100 0 0,1 286,200 L200,150 Z" fill="#2D72D9"/>
+              
+              <!-- Hardware - 30% -->
+              <path d="M200,150 L286,200 A100,100 0 0,1 120,223 L200,150 Z" fill="#00BFA5"/>
+              
+              <!-- Professional Services - 15% -->
+              <path d="M200,150 L120,223 A100,100 0 0,1 114,77 L200,150 Z" fill="#FFC107"/>
+              
+              <!-- Support & Maintenance - 10% -->
+              <path d="M200,150 L114,77 A100,100 0 0,1 200,50 L200,150 Z" fill="#FF5252"/>
+              
+              <!-- Legend -->
+              <rect x="260" y="40" width="12" height="12" fill="#2D72D9"/>
+              <text x="280" y="50" font-size="12" fill="#3C4858">SaaS Products (45%)</text>
+              
+              <rect x="260" y="60" width="12" height="12" fill="#00BFA5"/>
+              <text x="280" y="70" font-size="12" fill="#3C4858">Hardware (30%)</text>
+              
+              <rect x="260" y="80" width="12" height="12" fill="#FFC107"/>
+              <text x="280" y="90" font-size="12" fill="#3C4858">Prof. Services (15%)</text>
+              
+              <rect x="260" y="100" width="12" height="12" fill="#FF5252"/>
+              <text x="280" y="110" font-size="12" fill="#3C4858">Support (10%)</text>
+            </svg>
+          </div>
+          
+          <!-- Segment Table -->
+          <div>
+            <table class="financial-table">
+              <thead>
+                <tr>
+                  <th>Segment</th>
+                  <th>FY 2023</th>
+                  <th>FY 2024</th>
+                  <th>YoY Growth</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>SaaS Products</td>
+                  <td>$17,075</td>
+                  <td>$20,340</td>
+                  <td>+19.1%</td>
+                </tr>
+                <tr>
+                  <td>Hardware</td>
+                  <td>$12,455</td>
+                  <td>$13,560</td>
+                  <td>+8.9%</td>
+                </tr>
+                <tr>
+                  <td>Professional Services</td>
+                  <td>$6,230</td>
+                  <td>$6,780</td>
+                  <td>+8.8%</td>
+                </tr>
+                <tr>
+                  <td>Support & Maintenance</td>
+                  <td>$4,420</td>
+                  <td>$4,520</td>
+                  <td>+2.3%</td>
+                </tr>
+                <tr class="total-row">
+                  <td>Total Revenue</td>
+                  <td>$40,180</td>
+                  <td>$45,200</td>
+                  <td>+12.5%</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <div class="ai-insight" style="margin-top: 16px;">
+              <div class="ai-insight-header">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 3.5V2M14.5 3.5V2M9 21.5V20M14.5 21.5V20M3.5 9H2M3.5 14.5H2M21.5 9H20M21.5 14.5H20" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="ai-insight-title">Segment Growth Analysis</div>
+              </div>
+              <div class="ai-insight-content">
+                SaaS revenue is growing at nearly twice the rate of hardware, suggesting a successful transition to a software-focused business model. The low growth in Support & Maintenance indicates potential saturation in this segment and opportunity for improved retention strategies.
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Benchmark Comparison -->
+        <h3 class="section-title">Industry Benchmark Comparison</h3>
+        <div class="benchmark-comparison">
+          <div class="benchmark-card">
+            <div class="benchmark-title">Profitability</div>
+            <div class="benchmark-grid">
+                <div class="benchmark-metric">
+                    <div class="benchmark-label">Gross Margin</div>
+                    <div class="benchmark-value better">
+                      <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      68.3% vs 62.1%
+                    </div>
+                  </div>
+                  <div class="benchmark-metric">
+                    <div class="benchmark-label">EBITDA Margin</div>
+                    <div class="benchmark-value better">
+                      <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      23.4% vs 19.8%
+                    </div>
+                  </div>
+                  <div class="benchmark-metric">
+                    <div class="benchmark-label">Net Profit Margin</div>
+                    <div class="benchmark-value better">
+                      <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      17.3% vs 15.5%
+                    </div>
+                  </div>
+                  <div class="benchmark-metric">
+                    <div class="benchmark-label">Return on Assets</div>
+                    <div class="benchmark-value better">
+                      <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      14.2% vs 12.8%
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="benchmark-card">
+                <div class="benchmark-title">Growth</div>
+                <div class="benchmark-grid">
+                  <div class="benchmark-metric">
+                    <div class="benchmark-label">Revenue Growth</div>
+                    <div class="benchmark-value better">
+                      <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      12.5% vs 8.3%
+                    </div>
+                  </div>
+                  <div class="benchmark-metric">
+                    <div class="benchmark-label">EBITDA Growth</div>
+                    <div class="benchmark-value better">
+                      <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      18.2% vs 10.5%
+                    </div>
+                  </div>
+                  <div class="benchmark-metric">
+                    <div class="benchmark-label">SaaS Growth</div>
+                    <div class="benchmark-value better">
+                      <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      19.1% vs 17.2%
+                    </div>
+                  </div>
+                  <div class="benchmark-metric">
+                    <div class="benchmark-label">3-Year CAGR</div>
+                    <div class="benchmark-value better">
+                      <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      14.7% vs 11.2%
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="benchmark-card">
+                <div class="benchmark-title">Financial Health</div>
+                <div class="benchmark-grid">
+                  <div class="benchmark-metric">
+                    <div class="benchmark-label">Debt-to-EBITDA</div>
+                    <div class="benchmark-value worse">
+                      <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 7L17 17M17 17V7M17 17H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      2.8x vs 2.1x
+                    </div>
+                  </div>
+                  <div class="benchmark-metric">
+                    <div class="benchmark-label">Current Ratio</div>
+                    <div class="benchmark-value">
+                      2.1x vs 2.0x
+                    </div>
+                  </div>
+                  <div class="benchmark-metric">
+                    <div class="benchmark-label">Cash Conversion</div>
+                    <div class="benchmark-value better">
+                      <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      87% vs 82%
+                    </div>
+                  </div>
+                  <div class="benchmark-metric">
+                    <div class="benchmark-label">Days Sales Outstanding</div>
+                    <div class="benchmark-value better">
+                      <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      42 vs 48
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Balance Sheet Summary -->
+            <h3 class="section-title">Balance Sheet Summary (in thousands)</h3>
+            <table class="financial-table">
+              <thead>
+                <tr>
+                  <th>Line Item</th>
+                  <th>FY 2022</th>
+                  <th>FY 2023</th>
+                  <th>FY 2024</th>
+                  <th>YoY Change</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Assets -->
+                <tr class="subtotal-row">
+                  <td>Current Assets</td>
+                  <td>$18,350</td>
+                  <td>$22,680</td>
+                  <td>$27,450</td>
+                  <td>+21.0%</td>
+                </tr>
+                <tr>
+                  <td>Cash & Equivalents</td>
+                  <td>$6,780</td>
+                  <td>$8,450</td>
+                  <td>$10,850</td>
+                  <td>+28.4%</td>
+                </tr>
+                <tr>
+                  <td>Accounts Receivable</td>
+                  <td>$5,120</td>
+                  <td>$6,230</td>
+                  <td>$7,230</td>
+                  <td>+16.1%</td>
+                </tr>
+                <tr>
+                  <td>Inventory</td>
+                  <td>$4,650</td>
+                  <td>$5,790</td>
+                  <td>$6,370</td>
+                  <td>+10.0%</td>
+                </tr>
+                <tr>
+                  <td>Other Current Assets</td>
+                  <td>$1,800</td>
+                  <td>$2,210</td>
+                  <td>$3,000</td>
+                  <td>+35.7%</td>
+                </tr>
+                <tr class="subtotal-row">
+                  <td>Non-Current Assets</td>
+                  <td>$22,450</td>
+                  <td>$26,780</td>
+                  <td>$31,650</td>
+                  <td>+18.2%</td>
+                </tr>
+                <tr>
+                  <td>Property & Equipment</td>
+                  <td>$13,450</td>
+                  <td>$15,830</td>
+                  <td>$17,520</td>
+                  <td>+10.7%</td>
+                </tr>
+                <tr>
+                  <td>Intangible Assets</td>
+                  <td>$6,350</td>
+                  <td>$7,830</td>
+                  <td>$9,780</td>
+                  <td>+24.9%</td>
+                </tr>
+                <tr>
+                  <td>Other Non-Current Assets</td>
+                  <td>$2,650</td>
+                  <td>$3,120</td>
+                  <td>$4,350</td>
+                  <td>+39.4%</td>
+                </tr>
+                <tr class="total-row">
+                  <td>Total Assets</td>
+                  <td>$40,800</td>
+                  <td>$49,460</td>
+                  <td>$59,100</td>
+                  <td>+19.5%</td>
+                </tr>
+                
+                <!-- Liabilities & Equity -->
+                <tr class="subtotal-row">
+                  <td>Current Liabilities</td>
+                  <td>$9,850</td>
+                  <td>$11,230</td>
+                  <td>$13,070</td>
+                  <td>+16.4%</td>
+                </tr>
+                <tr class="subtotal-row">
+                  <td>Non-Current Liabilities</td>
+                  <td>$12,450</td>
+                  <td>$14,765</td>
+                  <td>$19,765</td>
+                  <td>+33.9%</td>
+                </tr>
+                <tr class="subtotal-row">
+                  <td>Total Equity</td>
+                  <td>$18,500</td>
+                  <td>$23,465</td>
+                  <td>$26,265</td>
+                  <td>+11.9%</td>
+                </tr>
+                <tr class="total-row">
+                  <td>Total Liabilities & Equity</td>
+                  <td>$40,800</td>
+                  <td>$49,460</td>
+                  <td>$59,100</td>
+                  <td>+19.5%</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <!-- Cash Flow Summary -->
+            <h3 class="section-title">Cash Flow Summary (in thousands)</h3>
+            <table class="financial-table">
+              <thead>
+                <tr>
+                  <th>Line Item</th>
+                  <th>FY 2022</th>
+                  <th>FY 2023</th>
+                  <th>FY 2024</th>
+                  <th>YoY Change</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Net Income</td>
+                  <td>$3,690</td>
+                  <td>$5,765</td>
+                  <td>$7,800</td>
+                  <td>+35.3%</td>
+                </tr>
+                <tr>
+                  <td>Depreciation & Amortization</td>
+                  <td>$1,850</td>
+                  <td>$2,150</td>
+                  <td>$2,480</td>
+                  <td>+15.3%</td>
+                </tr>
+                <tr>
+                  <td>Changes in Working Capital</td>
+                  <td>-$580</td>
+                  <td>-$720</td>
+                  <td>-$980</td>
+                  <td>+36.1%</td>
+                </tr>
+                <tr>
+                  <td>Other Operating Activities</td>
+                  <td>$920</td>
+                  <td>$1,150</td>
+                  <td>$3,200</td>
+                  <td>+178.3%</td>
+                </tr>
+                <tr class="subtotal-row">
+                  <td>Cash from Operations</td>
+                  <td>$5,880</td>
+                  <td>$8,345</td>
+                  <td>$12,500</td>
+                  <td>+49.8%</td>
+                </tr>
+                <tr class="subtotal-row">
+                  <td>Cash from Investing</td>
+                  <td>-$4,230</td>
+                  <td>-$5,780</td>
+                  <td>-$7,850</td>
+                  <td>+35.8%</td>
+                </tr>
+                <tr class="subtotal-row">
+                  <td>Cash from Financing</td>
+                  <td>$1,230</td>
+                  <td>-$895</td>
+                  <td>-$2,250</td>
+                  <td>+151.4%</td>
+                </tr>
+                <tr class="total-row">
+                  <td>Net Change in Cash</td>
+                  <td>$2,880</td>
+                  <td>$1,670</td>
+                  <td>$2,400</td>
+                  <td>+43.7%</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <!-- AI Financial Insights -->
+            <h3 class="section-title">AI Financial Insights</h3>
+            
+            <div class="ai-insight">
+              <div class="ai-insight-header">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 3.5V2M14.5 3.5V2M9 21.5V20M14.5 21.5V20M3.5 9H2M3.5 14.5H2M21.5 9H20M21.5 14.5H20" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="ai-insight-title">SaaS Transition Success</div>
+              </div>
+              <div class="ai-insight-content">
+                ABC Corp's successful transition to a SaaS-focused business model is evident in its financial performance. The SaaS segment's 19.1% YoY growth significantly outpaces hardware (8.9%) and now represents 45% of total revenue, up from 38% in FY 2022. This shift has contributed to expanding gross margins and improved cash flow stability, positioning the company well for future growth.
+              </div>
+            </div>
+            
+            <div class="ai-insight">
+              <div class="ai-insight-header">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 3.5V2M14.5 3.5V2M9 21.5V20M14.5 21.5V20M3.5 9H2M3.5 14.5H2M21.5 9H20M21.5 14.5H20" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="ai-insight-title">Debt Leverage Concern</div>
+              </div>
+              <div class="ai-insight-content">
+                While ABC Corp demonstrates strong growth and profitability, its increasing debt leverage warrants attention. The Debt-to-EBITDA ratio has risen from 2.4x in FY 2023 to 2.8x in FY 2024, above the industry average of 2.1x. This growth in leverage coincides with a significant 33.9% increase in non-current liabilities. Management should outline a clear debt management strategy to mitigate potential financial risk.
+              </div>
+            </div>
+            
+            <div class="ai-insight">
+              <div class="ai-insight-header">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 3.5V2M14.5 3.5V2M9 21.5V20M14.5 21.5V20M3.5 9H2M3.5 14.5H2M21.5 9H20M21.5 14.5H20" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="ai-insight-title">G&A Expense Growth</div>
+              </div>
+              <div class="ai-insight-content">
+                G&A expenses increased 19.3% YoY, outpacing revenue growth of 12.5%. This growth rate is significantly higher than R&D (9.9%) and Sales & Marketing (9.6%) expense growth. While some increase may be attributed to infrastructure scaling for future growth, management should address whether this trajectory is temporary or represents a structural change in cost structure.
+              </div>
+            </div>
+            
+            <div class="ai-insight">
+              <div class="ai-insight-header">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 3.5V2M14.5 3.5V2M9 21.5V20M14.5 21.5V20M3.5 9H2M3.5 14.5H2M21.5 9H20M21.5 14.5H20" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="ai-insight-title">Cash Flow Strength</div>
+              </div>
+              <div class="ai-insight-content">
+                The company's ability to generate cash from operations has improved substantially, with operating cash flow increasing 49.8% YoY to $12.5M. This growth significantly outpaces net income growth (35.3%), indicating improved operational efficiency and working capital management. With a cash conversion ratio of 87% (vs industry average of 82%), ABC Corp demonstrates strong cash generation capabilities that can support future growth initiatives.
+              </div>
+            </div>
+          </div>
+    
+          <!-- Sidebar -->
+          <div class="sidebar">
+            <!-- Analysis Info Section -->
+            <div class="sidebar-section">
+              <h4 class="sidebar-title">Analysis Information</h4>
+              <div class="sidebar-card">
+                <div class="sidebar-card-title">Analysis ID</div>
+                <div class="sidebar-card-content">AN-2025-0428-ABC</div>
+              </div>
+              <div class="sidebar-card">
+                <div class="sidebar-card-title">Run Date</div>
+                <div class="sidebar-card-content">April 28, 2025</div>
+              </div>
+              <div class="sidebar-card">
+                <div class="sidebar-card-title">Last Updated</div>
+                <div class="sidebar-card-content">April 30, 2025</div>
+              </div>
+              <div class="sidebar-card">
+                <div class="sidebar-card-title">Analysis Type</div>
+                <div class="sidebar-card-content">Financial Due Diligence</div>
+              </div>
+            </div>
+    
+            <!-- Key Ratios -->
+            <div class="sidebar-section">
+              <h4 class="sidebar-title">Key Financial Ratios</h4>
+              <ul class="sidebar-list">
+                <li class="sidebar-list-item">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Current Ratio: 2.1
+                </li>
+                <li class="sidebar-list-item">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Quick Ratio: 1.6
+                </li>
+                <li class="sidebar-list-item">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Debt-to-Equity: 0.75
+                </li>
+                <li class="sidebar-list-item">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Interest Coverage: 7.4
+                </li>
+                <li class="sidebar-list-item">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Return on Equity: 29.7%
+                </li>
+                <li class="sidebar-list-item">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Asset Turnover: 0.83
+                </li>
+                <li class="sidebar-list-item">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Days Sales Outstanding: 42
+                </li>
+                <li class="sidebar-list-item">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Inventory Turnover: 5.8
+                </li>
+              </ul>
+            </div>
+    
+            <!-- Documents Used -->
+            <div class="sidebar-section">
+              <h4 class="sidebar-title">Documents Analyzed</h4>
+              <ul class="sidebar-list">
+                <li class="sidebar-list-item">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M14 2V8H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M8 13.5H16M8 17.5H16M10.5 9.5H13.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Annual Reports 2020-2023
+                </li>
+                <li class="sidebar-list-item">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M14 2V8H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M16 13H8M16 17H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Industry Benchmark Report
+                </li>
+              </ul>
+              <button class="button tertiary" style="margin-top: 12px; width: 100%;">
+                View All Documents (12)
+              </button>
+            </div>
+    
+            <!-- Related Analyses -->
+            <div class="sidebar-section">
+              <h4 class="sidebar-title">Related Analyses</h4>
+              <ul class="sidebar-list">
+                <li class="sidebar-list-item">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 14L15 14M12 17L12 11M9 7H5C3.89543 7 3 7.89543 3 9V18C3 19.1046 3.89543 20 5 20H19C20.1046 20 21 19.1046 21 18V9C21 7.89543 20.1046 7 19 7H15M9 7V5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7M9 7H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Operational Performance
+                </li>
+                <li class="sidebar-list-item">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 14L15 14M12 17L12 11M9 7H5C3.89543 7 3 7.89543 3 9V18C3 19.1046 3.89543 20 5 20H19C20.1046 20 21 19.1046 21 18V9C21 7.89543 20.1046 7 19 7H15M9 7V5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7M9 7H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Market Share Analysis
+                </li>
+                <li class="sidebar-list-item">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 14L15 14M12 17L12 11M9 7H5C3.89543 7 3 7.89543 3 9V18C3 19.1046 3.89543 20 5 20H19C20.1046 20 21 19.1046 21 18V9C21 7.89543 20.1046 7 19 7H15M9 7V5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7M9 7H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Competitor Benchmarking
+                </li>
+              </ul>
+            </div>
+    
+            <!-- Financial Forecasts -->
+            <div class="sidebar-section">
+              <h4 class="sidebar-title">Financial Forecasts (FY 2025)</h4>
+              <ul class="sidebar-list">
+                <li class="sidebar-list-item">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7 11L12 6M12 6L17 11M12 6V18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Revenue: $50.8M - $53.3M
+                </li>
+                <li class="sidebar-list-item">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7 11L12 6M12 6L17 11M12 6V18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  EBITDA: $12.1M - $13.6M
+                </li>
+                <li class="sidebar-list-item">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7 11L12 6M12 6L17 11M12 6V18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  EBITDA Margin: 23.8% - 25.5%
+                </li>
+                <li class="sidebar-list-item">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7 11L12 6M12 6L17 11M12 6V18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Net Income: $8.9M - $10.2M
+                </li>
+                <li class="sidebar-list-item">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7 13L12 18M12 18L17 13M12 18V6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Debt-to-EBITDA: 2.3x - 2.5x
+                </li>
+              </ul>
+            </div>
+            
+            <!-- Activity Log -->
+            <div class="sidebar-section">
+              <h4 class="sidebar-title">Activity Log</h4>
+              <ul class="sidebar-list">
+                <li class="sidebar-list-item">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Analysis updated by Sarah Chen (Apr 30)
+                </li>
+                <li class="sidebar-list-item">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  New benchmark data added (Apr 29)
+                </li>
+                <li class="sidebar-list-item">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Analysis created by David Kim (Apr 28)
+                </li>
+              </ul>
+              <button class="button tertiary" style="margin-top: 12px; width: 100%;">
+                View Full Activity Log
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </body>
+</html>

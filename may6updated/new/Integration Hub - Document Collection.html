@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Due Diligence Document Collection Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --deep-navy: #0A2342;
+      --azure-blue: #2D72D9;
+      --slate-gray: #3C4858;
+      --mint-green: #00BFA5;
+      --coral-red: #FF5252;
+      --amber-yellow: #FFC107;
+      --light-blue: #E1F5FE;
+      --medium-gray: #78909C;
+      --light-gray: #ECEFF1;
+      --white: #FFFFFF;
+      
+      /* Spacing */
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 12px;
+      --space-lg: 16px;
+      --space-xl: 24px;
+      --space-2xl: 32px;
+      --space-3xl: 48px;
+      
+      /* Shadows */
+      --shadow-sm: 0px 1px 3px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0px 2px 6px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      
+      /* Border Radius */
+      --radius-sm: 2px;
+      --radius-md: 4px;
+      --radius-lg: 8px;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--slate-gray);
+      line-height: 1.5;
+      background-color: var(--light-gray);
+    }
+    
+    header {
+      background-color: var(--white);
+      box-shadow: var(--shadow-md);
+      padding: var(--space-lg) var(--space-xl);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--deep-navy);
+    }
+    
+    .logo svg {
+      margin-right: var(--space-sm);
+    }
+    
+    .header-actions {
+      display: flex;
+      gap: var(--space-md);
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--space-2xl);
+    }
+    
+    .page-title {
+      font-size: 1.75rem;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-lg);
+    }
+    
+    .progress-container {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
+      margin-bottom: var(--space-xl);
+      box-shadow: var(--shadow-md);
+    }
+    
+    .progress-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-md);
+    }
+    
+    .progress-title h2 {
+      font-size: 1.125rem;
+      color: var(--deep-navy);
+    }
+    
+    .progress-bar-container {
+      width: 100%;
+      height: 8px;
+      background-color: var(--light-gray);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    
+    .progress-bar {
+      height: 100%;
+      background-color: var(--mint-green);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    
+    .document-sections {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: var(--space-xl);
+    }
+    
+    .document-section {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+    }
+    
+    .section-header {
+      background-color: var(--light-blue);
+      padding: var(--space-lg);
+      border-bottom: 1px solid var(--light-gray);
+    }
+    
+    .section-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--deep-navy);
+      display: flex;
+      align-items: center;
+    }
+    
+    .section-title svg {
+      width: 20px;
+      height: 20px;
+      margin-right: var(--space-sm);
+    }
+    
+    .section-progress {
+      margin-top: var(--space-xs);
+      font-size: 0.875rem;
+      color: var(--medium-gray);
+    }
+    
+    .document-list {
+      padding: var(--space-md);
+    }
+    
+    .document-item {
+      padding: var(--space-md);
+      border-bottom: 1px solid var(--light-gray);
+    }
+    
+    .document-item:last-child {
+      border-bottom: none;
+    }
+    
+    .document-item-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: var(--space-xs);
+    }
+    
+    .document-name {
+      font-weight: 500;
+      color: var(--slate-gray);
+    }
+    
+    .document-status {
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-weight: 500;
+    }
+    
+    .status-pending {
+      background-color: rgba(255, 193, 7, 0.1);
+      color: var(--amber-yellow);
+    }
+    
+    .status-uploaded {
+      background-color: rgba(0, 191, 165, 0.1);
+      color: var(--mint-green);
+    }
+    
+    .document-actions {
+      display: flex;
+      gap: var(--space-sm);
+      margin-top: var(--space-sm);
+    }
+    
+    .button {
+      display: inline-flex;
+      align-items: center;
+      font-size: 0.875rem;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: var(--radius-md);
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    
+    .button svg {
+      width: 16px;
+      height: 16px;
+      margin-right: var(--space-xs);
+    }
+    
+    .button-primary {
+      background-color: var(--azure-blue);
+      color: var(--white);
+    }
+    
+    .button-primary:hover {
+      background-color: #1A5DC7;
+    }
+    
+    .button-secondary {
+      background-color: var(--white);
+      color: var(--azure-blue);
+      border: 1px solid var(--azure-blue);
+    }
+    
+    .button-secondary:hover {
+      background-color: var(--light-blue);
+    }
+    
+    .upload-area {
+      border: 2px dashed var(--medium-gray);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      margin-top: var(--space-sm);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--light-gray);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    
+    .upload-area:hover {
+      border-color: var(--azure-blue);
+      background-color: var(--light-blue);
+    }
+    
+    .upload-area svg {
+      width: 24px;
+      height: 24px;
+      color: var(--medium-gray);
+      margin-bottom: var(--space-xs);
+    }
+    
+    .upload-text {
+      font-size: 0.75rem;
+      color: var(--medium-gray);
+      text-align: center;
+    }
+    
+    .upload-input {
+      display: none;
+    }
+    
+    /* Page footer */
+    .page-footer {
+      display: flex;
+      justify-content: space-between;
+      margin-top: var(--space-3xl);
+      padding-top: var(--space-xl);
+      border-top: 1px solid var(--light-gray);
+    }
+    
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+      .document-sections {
+        grid-template-columns: 1fr;
+      }
+      
+      .container {
+        padding: var(--space-lg);
+      }
+      
+      .header-actions {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 8H16C20.4183 8 24 11.5817 24 16C24 20.4183 20.4183 24 16 24H8V8Z" fill="#0A2342"/>
+        <path d="M16 8H24V16C24 20.4183 20.4183 24 16 24V8Z" fill="#2D72D9"/>
+      </svg>
+      <span>DueDiligenceAI</span>
+    </div>
+    <div class="header-actions">
+      <button class="button button-secondary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12H3M3 12L10 19M3 12L10 5"/>
+        </svg>
+        Back to Dashboard
+      </button>
+      <button class="button button-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 5V19M5 12H19"/>
+        </svg>
+        Submit All Documents
+      </button>
+    </div>
+  </header>
+  
+  <div class="container">
+    <h1 class="page-title">Document Collection</h1>
+    
+    <div class="progress-container">
+      <div class="progress-title">
+        <h2>Your Progress</h2>
+        <span>0 of 45 documents uploaded</span>
+      </div>
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="overall-progress" style="width: 0%"></div>
+      </div>
+    </div>
+    
+    <div class="document-sections">
+      <!-- Corporate Documents Section -->
+      <div class="document-section">
+        <div class="section-header">
+          <div class="section-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+            </svg>
+            1. Corporate Documents
+          </div>
+          <div class="section-progress">0 of 7 documents</div>
+        </div>
+        <div class="document-list">
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Articles of Incorporation</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="corp-doc-1">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="corp-doc-1" class="upload-input">
+            </div>
+          </div>
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Corporate Bylaws/Operating Agreements</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="corp-doc-2">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="corp-doc-2" class="upload-input">
+            </div>
+          </div>
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Shareholder or Partnership Agreements</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="corp-doc-3">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="corp-doc-3" class="upload-input">
+            </div>
+          </div>
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Business Licenses and Permits</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="corp-doc-4">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="corp-doc-4" class="upload-input">
+            </div>
+          </div>
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Organizational Chart</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="corp-doc-5">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="corp-doc-5" class="upload-input">
+            </div>
+          </div>
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Client/Customer Lists</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="op-doc-2">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="op-doc-2" class="upload-input">
+            </div>
+          </div>
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Inventory Reports</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="op-doc-3">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="op-doc-3" class="upload-input">
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Human Resources Section -->
+      <div class="document-section">
+        <div class="section-header">
+          <div class="section-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+            5. Human Resources
+          </div>
+          <div class="section-progress">0 of 4 documents</div>
+        </div>
+        <div class="document-list">
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Employee Contracts and Offer Letters</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="hr-doc-1">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="hr-doc-1" class="upload-input">
+            </div>
+          </div>
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Employee Handbook</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="hr-doc-2">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="hr-doc-2" class="upload-input">
+            </div>
+          </div>
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Benefits Plans</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="hr-doc-3">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="hr-doc-3" class="upload-input">
+            </div>
+          </div>
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Compensation Structure and Payroll Information</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="hr-doc-4">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="hr-doc-4" class="upload-input">
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Intellectual Property Section -->
+      <div class="document-section">
+        <div class="section-header">
+          <div class="section-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 8v8M8 12h8"/>
+            </svg>
+            6. Intellectual Property
+          </div>
+          <div class="section-progress">0 of 3 documents</div>
+        </div>
+        <div class="document-list">
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Patents, Trademarks, Copyrights</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="ip-doc-1">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="ip-doc-1" class="upload-input">
+            </div>
+          </div>
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Proprietary Technology Documentation</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="ip-doc-2">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="ip-doc-2" class="upload-input">
+            </div>
+          </div>
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Software Licenses</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="ip-doc-3">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="ip-doc-3" class="upload-input">
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Sales and Marketing Section -->
+      <div class="document-section">
+        <div class="section-header">
+          <div class="section-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="20" x2="12" y2="10"/>
+              <line x1="18" y1="20" x2="18" y2="4"/>
+              <line x1="6" y1="20" x2="6" y2="16"/>
+            </svg>
+            7. Sales and Marketing
+          </div>
+          <div class="section-progress">0 of 4 documents</div>
+        </div>
+        <div class="document-list">
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Customer Lists</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="sales-doc-1">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="sales-doc-1" class="upload-input">
+            </div>
+          </div>
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Sales History</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="sales-doc-2">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="sales-doc-2" class="upload-input">
+            </div>
+          </div>
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Marketing Plans and Materials</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="sales-doc-3">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="sales-doc-3" class="upload-input">
+            </div>
+          </div>
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Advertising Campaigns</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="sales-doc-4">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="sales-doc-4" class="upload-input">
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Due Diligence Reports Section -->
+      <div class="document-section">
+        <div class="section-header">
+          <div class="section-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+              <polyline points="10 9 9 9 8 9"/>
+            </svg>
+            8. Due Diligence Reports
+          </div>
+          <div class="section-progress">0 of 3 documents</div>
+        </div>
+        <div class="document-list">
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Environmental Reports</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="dd-doc-1">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="dd-doc-1" class="upload-input">
+            </div>
+          </div>
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Risk Management Reports</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="dd-doc-2">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="dd-doc-2" class="upload-input">
+            </div>
+          </div>
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Third-Party Valuation or Appraisal Documents</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="dd-doc-3">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="dd-doc-3" class="upload-input">
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Compliance Section -->
+      <div class="document-section">
+        <div class="section-header">
+          <div class="section-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            9. Compliance
+          </div>
+          <div class="section-progress">0 of 2 documents</div>
+        </div>
+        <div class="document-list">
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Regulatory Filings and Permits</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="compliance-doc-1">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="compliance-doc-1" class="upload-input">
+            </div>
+          </div>
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Compliance Reports</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="compliance-doc-2">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="compliance-doc-2" class="upload-input">
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Miscellaneous Section -->
+      <div class="document-section">
+        <div class="section-header">
+          <div class="section-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+            </svg>
+            10. Miscellaneous
+          </div>
+          <div class="section-progress">0 of 1 documents</div>
+        </div>
+        <div class="document-list">
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Additional Requested Documents</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="misc-doc-1">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="misc-doc-1" class="upload-input">
+            </div>
+          </div>
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Additional Document</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="upload-area" id="drag-drop-area">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/>
+                <line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+              <div class="upload-text">Drag and drop files here or click to browse</div>
+              <input type="file" class="upload-input" multiple>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Additional Documents Section -->
+      <div class="document-section">
+        <div class="section-header">
+          <div class="section-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+              <polyline points="10 9 9 9 8 9"/>
+            </svg>
+            11. Additional Documents
+          </div>
+          <div class="section-progress">0 of 15 documents</div>
+        </div>
+        <div class="document-list">
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Articles of Incorporation</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="add-doc-1">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="add-doc-1" class="upload-input">
+            </div>
+          </div>
+          
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Corporate Bylaws/Operating Agreements</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="add-doc-2">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="add-doc-2" class="upload-input">
+            </div>
+          </div>
+          
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Shareholder or Partnership Agreements</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="add-doc-3">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="add-doc-3" class="upload-input">
+            </div>
+          </div>
+          
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Business Licenses and Permits</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="add-doc-4">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="add-doc-4" class="upload-input">
+            </div>
+          </div>
+          
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Organizational Chart</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="add-doc-5">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="add-doc-5" class="upload-input">
+            </div>
+          </div>
+          
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Historical Financial Statements (3-5 years)</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="add-doc-6">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="add-doc-6" class="upload-input">
+            </div>
+          </div>
+          
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Tax Returns (3-5 years)</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="add-doc-7">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="add-doc-7" class="upload-input">
+            </div>
+          </div>
+          
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Current Year-to-Date Financials</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="add-doc-8">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="add-doc-8" class="upload-input">
+            </div>
+          </div>
+          
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Profit & Loss Statements</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="add-doc-9">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="add-doc-9" class="upload-input">
+            </div>
+          </div>
+          
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Balance Sheets</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="add-doc-10">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="add-doc-10" class="upload-input">
+            </div>
+          </div>
+          
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Contracts and Agreements</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="add-doc-11">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="add-doc-11" class="upload-input">
+            </div>
+          </div>
+          
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Leases (property, equipment)</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="add-doc-12">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="add-doc-12" class="upload-input">
+            </div>
+          </div>
+          
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Employee Agreements</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="add-doc-13">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="add-doc-13" class="upload-input">
+            </div>
+          </div>
+          
+          <div class="document-item">
+            <div class="document-item-header">
+              <div class="document-name">Key Supplier/Vendor Agreements</div>
+              <div class="document-status status-pending">Pending</div>
+            </div>
+            <div class="document-actions">
+              <label class="button button-primary" for="add-doc-14">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+              </label>
+              <input type="file" id="add-doc-14" class="upload-input">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="page-footer">
+      <button class="button button-secondary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M5 12L12 19M5 12L12 5"/>
+        </svg>
+        Back
+      </button>
+      <button class="button button-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+        Submit Documents
+      </button>
+    </div>
+  </div>
+  
+  <script>
+    // Simple JavaScript to update progress bar (for demo purposes)
+    // In a real implementation, this would be connected to the actual upload functionality
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      const uploadInputs = document.querySelectorAll('.upload-input');
+      const progressBar = document.getElementById('overall-progress');
+      let uploadedCount = 0;
+      const totalDocuments = 45; // Total number of document items
+      
+      uploadInputs.forEach(input => {
+        input.addEventListener('change', function(e) {
+          if (e.target.files.length > 0) {
+            // Get the parent document item
+            const documentItem = this.closest('.document-item');
+            const statusBadge = documentItem.querySelector('.document-status');
+            
+            // Update status to uploaded
+            statusBadge.textContent = 'Uploaded';
+            statusBadge.classList.remove('status-pending');
+            statusBadge.classList.add('status-uploaded');
+            
+            // Update progress
+            uploadedCount++;
+            const progressPercentage = (uploadedCount / totalDocuments) * 100;
+            progressBar.style.width = progressPercentage + '%';
+            
+            // Update total count text
+            document.querySelector('.progress-title span').textContent = uploadedCount + ' of ' + totalDocuments + ' documents uploaded';
+            
+            // Update section counts
+            updateSectionCounts();
+          }
+        });
+      });
+      
+      // Initialize drag and drop area
+      const dragDropArea = document.getElementById('drag-drop-area');
+      
+      if (dragDropArea) {
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+          dragDropArea.addEventListener(eventName, preventDefaults, false);
+        });
+        
+        function preventDefaults(e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+        
+        ['dragenter', 'dragover'].forEach(eventName => {
+          dragDropArea.addEventListener(eventName, highlight, false);
+        });
+        
+        ['dragleave', 'drop'].forEach(eventName => {
+          dragDropArea.addEventListener(eventName, unhighlight, false);
+        });
+        
+        function highlight() {
+          dragDropArea.classList.add('active');
+        }
+        
+        function unhighlight() {
+          dragDropArea.classList.remove('active');
+        }
+        
+        dragDropArea.addEventListener('drop', handleDrop, false);
+        
+        function handleDrop(e) {
+          const dt = e.dataTransfer;
+          const files = dt.files;
+          
+          if (files.length > 0) {
+            // Handle the file upload here
+            console.log('Files dropped:', files);
+            
+            // Update UI to show files are uploaded
+            const documentItem = dragDropArea.closest('.document-item');
+            const statusBadge = documentItem.querySelector('.document-status');
+            
+            statusBadge.textContent = 'Uploaded';
+            statusBadge.classList.remove('status-pending');
+            statusBadge.classList.add('status-uploaded');
+            
+            // Update progress
+            uploadedCount++;
+            const progressPercentage = (uploadedCount / totalDocuments) * 100;
+            progressBar.style.width = progressPercentage + '%';
+            
+            // Update total count text
+            document.querySelector('.progress-title span').textContent = uploadedCount + ' of ' + totalDocuments + ' documents uploaded';
+            
+            // Update section counts
+            updateSectionCounts();
+          }
+        }
+      }
+      
+      function updateSectionCounts() {
+        // Update each section's progress count
+        const sections = document.querySelectorAll('.document-section');
+        
+        sections.forEach(section => {
+          const uploadedItems = section.querySelectorAll('.status-uploaded').length;
+          const totalItems = section.querySelectorAll('.document-item').length;
+          const progressText = section.querySelector('.section-progress');
+          
+          if (progressText) {
+            progressText.textContent = uploadedItems + ' of ' + totalItems + ' documents';
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

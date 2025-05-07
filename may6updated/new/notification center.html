@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DueDiligenceAI - Notification Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Color System */
+    :root {
+      --deep-navy: #0A2342;
+      --azure-blue: #2D72D9;
+      --slate-gray: #3C4858;
+      --mint-green: #00BFA5;
+      --coral-red: #FF5252;
+      --amber-yellow: #FFC107;
+      --light-blue: #E1F5FE;
+      --sky-blue: #81D4FA;
+      --dark-blue: #01579B;
+      --charcoal: #263238;
+      --medium-gray: #78909C;
+      --light-gray: #ECEFF1;
+      --white: #FFFFFF;
+      
+      /* Typography */
+      --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-display: 'Manrope', var(--font-primary);
+      --font-mono: 'JetBrains Mono', SFMono-Regular, Consolas, monospace;
+      
+      /* Spacing */
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 12px;
+      --space-lg: 16px;
+      --space-xl: 24px;
+      --space-2xl: 32px;
+      --space-3xl: 48px;
+      
+      /* Shadows */
+      --shadow-sm: 0px 1px 3px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0px 2px 6px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      
+      /* Border Radius */
+      --radius-sm: 2px;
+      --radius-md: 4px;
+      --radius-lg: 8px;
+    }
+
+    /* Global Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-primary);
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--slate-gray);
+      background-color: var(--light-gray);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-display);
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      line-height: 1.2;
+      font-weight: 800;
+      color: var(--deep-navy);
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      line-height: 1.2;
+      font-weight: 700;
+      color: var(--slate-gray);
+    }
+
+    h4 {
+      font-size: 1.125rem;
+      line-height: 1.4;
+      font-weight: 600;
+      color: var(--deep-navy);
+    }
+
+    /* Top Navigation */
+    .top-nav {
+      background-color: var(--white);
+      height: 64px;
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 var(--space-xl);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .top-nav-left, .top-nav-right {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--deep-navy);
+      margin-right: var(--space-2xl);
+    }
+
+    .logo svg {
+      margin-right: var(--space-sm);
+    }
+
+    .nav-items {
+      display: flex;
+    }
+
+    .nav-item {
+      padding: 0 var(--space-lg);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      color: var(--slate-gray);
+      cursor: pointer;
+      transition: color 0.15s;
+      position: relative;
+    }
+
+    .nav-item:hover {
+      color: var(--azure-blue);
+    }
+
+    .nav-item.active {
+      color: var(--azure-blue);
+    }
+
+    .nav-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--azure-blue);
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      background-color: var(--light-gray);
+      border-radius: 4px;
+      padding: 0 var(--space-md);
+      margin-right: var(--space-lg);
+      height: 36px;
+      width: 240px;
+    }
+
+    .search-bar input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 14px;
+      width: 100%;
+      margin-left: var(--space-xs);
+    }
+
+    .notifications, .user-profile {
+      margin-left: var(--space-lg);
+      cursor: pointer;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      background-color: var(--azure-blue);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    /* Notification Badge */
+    .notification-badge {
+      position: relative;
+    }
+
+    .badge {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background-color: var(--coral-red);
+      color: var(--white);
+      font-size: 10px;
+      font-weight: 600;
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      border: 2px solid var(--white);
+    }
+
+    /* Main Layout */
+    .container {
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 64px);
+    }
+
+    /* Breadcrumbs */
+    .breadcrumbs {
+      display: flex;
+      padding: var(--space-md) var(--space-xl);
+      background-color: var(--white);
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .breadcrumb-item {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: var(--medium-gray);
+    }
+
+    .breadcrumb-item:not(:last-child)::after {
+      content: '';
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2378909C' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 18l6-6-6-6'%3E%3C/path%3E%3C/svg%3E");
+      background-position: center;
+      background-repeat: no-repeat;
+      margin: 0 var(--space-sm);
+    }
+
+    .breadcrumb-item:last-child {
+      color: var(--charcoal);
+      font-weight: 500;
+    }
+
+    /* Two Column Layout */
+    .two-column-layout {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .main-content {
+      flex: 7;
+      padding: var(--space-xl);
+      overflow-y: auto;
+    }
+
+    .sidebar {
+      flex: 3;
+      width: 320px;
+      min-width: 320px;
+      max-width: 320px;
+      background-color: var(--white);
+      border-left: 1px solid var(--light-gray);
+      padding: var(--space-xl);
+      overflow-y: auto;
+    }
+
+    /* Button Styles */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      border-radius: var(--radius-md);
+      font-weight: 500;
+      font-size: 14px;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .button .icon {
+      width: 18px;
+      height: 18px;
+      margin-right: var(--space-xs);
+    }
+
+    .primary {
+      background-color: var(--azure-blue);
+      color: var(--white);
+    }
+
+    .primary:hover {
+      background-color: #1A5DC7;
+    }
+
+    .secondary {
+      background-color: var(--white);
+      color: var(--azure-blue);
+      border: 1px solid var(--azure-blue);
+    }
+
+    .secondary:hover {
+      background-color: var(--light-blue);
+    }
+
+    .tertiary {
+      background-color: transparent;
+      color: var(--azure-blue);
+      padding: 8px 12px;
+    }
+
+    .tertiary:hover {
+      background-color: var(--light-blue);
+    }
+
+    .icon-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-md);
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+    }
+
+    .icon-button:hover {
+      background-color: var(--light-gray);
+    }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      stroke-width: 1.5;
+    }
+
+    /* Page Header */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-xl);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: var(--space-md);
+    }
+
+    /* Cards and Sections */
+    .card {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      margin-bottom: var(--space-xl);
+    }
+
+    .card-header {
+      padding: var(--space-lg);
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+    }
+
+    .card-body {
+      padding: var(--space-lg);
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-lg);
+    }
+
+    /* Filter Bar */
+    .filter-bar {
+      display: flex;
+      gap: var(--space-md);
+      margin-bottom: var(--space-xl);
+      flex-wrap: wrap;
+    }
+
+    .filter-item {
+      display: flex;
+      align-items: center;
+      background-color: var(--white);
+      border: 1px solid var(--light-gray);
+      border-radius: var(--radius-md);
+      padding: 8px 12px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .filter-item:hover {
+      border-color: var(--azure-blue);
+    }
+
+    .filter-item .icon {
+      margin-right: var(--space-xs);
+      width: 16px;
+      height: 16px;
+    }
+
+    .filter-item.active {
+      background-color: var(--azure-blue);
+      color: var(--white);
+      border-color: var(--azure-blue);
+    }
+
+    /* Notifications List */
+    .notifications-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .notification-item {
+      display: flex;
+      padding: var(--space-lg);
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      position: relative;
+      transition: all 0.2s ease;
+    }
+
+    .notification-item:hover {
+      box-shadow: var(--shadow-lg);
+    }
+
+    .notification-item.unread {
+      border-left: 4px solid var(--azure-blue);
+    }
+
+    .notification-item.high-priority {
+      border-left: 4px solid var(--coral-red);
+    }
+
+    .notification-item.medium-priority {
+      border-left: 4px solid var(--amber-yellow);
+    }
+
+    .notification-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: var(--light-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: var(--space-lg);
+      flex-shrink: 0;
+    }
+
+    .notification-icon.high-priority {
+      background-color: rgba(255, 82, 82, 0.1);
+      color: var(--coral-red);
+    }
+
+    .notification-icon.medium-priority {
+      background-color: rgba(255, 193, 7, 0.1);
+      color: var(--amber-yellow);
+    }
+
+    .notification-icon.info {
+      background-color: rgba(45, 114, 217, 0.1);
+      color: var(--azure-blue);
+    }
+
+    .notification-icon.success {
+      background-color: rgba(0, 191, 165, 0.1);
+      color: var(--mint-green);
+    }
+
+    .notification-content {
+      flex: 1;
+    }
+
+    .notification-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--space-xs);
+    }
+
+    .notification-title {
+      font-weight: 600;
+      color: var(--deep-navy);
+    }
+
+    .notification-time {
+      font-size: 12px;
+      color: var(--medium-gray);
+      white-space: nowrap;
+      margin-left: var(--space-md);
+    }
+
+    .notification-message {
+      font-size: 14px;
+      color: var(--slate-gray);
+      margin-bottom: var(--space-md);
+    }
+
+    .notification-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .notification-meta {
+      display: flex;
+      gap: var(--space-md);
+      font-size: 12px;
+      color: var(--medium-gray);
+    }
+
+    .notification-meta-item {
+      display: flex;
+      align-items: center;
+    }
+
+    .notification-meta-item .icon {
+      width: 14px;
+      height: 14px;
+      margin-right: 4px;
+    }
+
+    .notification-actions {
+      display: flex;
+      gap: var(--space-sm);
+    }
+
+    .priority-badge {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-weight: 500;
+    }
+
+    .priority-badge.high {
+      background-color: rgba(255, 82, 82, 0.1);
+      color: var(--coral-red);
+    }
+
+    .priority-badge.medium {
+      background-color: rgba(255, 193, 7, 0.1);
+      color: var(--amber-yellow);
+    }
+
+    .priority-badge.low {
+      background-color: rgba(0, 191, 165, 0.1);
+      color: var(--mint-green);
+    }
+
+    /* Empty State */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-2xl);
+      text-align: center;
+    }
+
+    .empty-state-icon {
+      width: 80px;
+      height: 80px;
+      margin-bottom: var(--space-lg);
+      color: var(--medium-gray);
+    }
+
+    .empty-state-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-md);
+    }
+
+    .empty-state-description {
+      font-size: 14px;
+      color: var(--medium-gray);
+      max-width: 400px;
+      margin-bottom: var(--space-xl);
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--light-gray);
+      margin-bottom: var(--space-xl);
+    }
+
+    .tab {
+      padding: var(--space-md) var(--space-xl);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--slate-gray);
+      cursor: pointer;
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+
+    .tab:hover {
+      background-color: var(--light-blue);
+    }
+
+    .tab.active {
+      color: var(--azure-blue);
+    }
+
+    .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--azure-blue);
+    }
+
+    .tab-count {
+      background-color: var(--light-gray);
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 10px;
+    }
+
+    .tab.active .tab-count {
+      background-color: var(--azure-blue);
+      color: var(--white);
+    }
+
+    /* Pagination */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      margin-top: var(--space-2xl);
+    }
+
+    .pagination-item {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-md);
+      margin: 0 4px;
+      font-size: 14px;
+      cursor: pointer;
+      color: var(--slate-gray);
+    }
+
+    .pagination-item:hover {
+      background-color: var(--light-blue);
+    }
+
+    .pagination-item.active {
+      background-color: var(--azure-blue);
+      color: var(--white);
+    }
+
+    /* Settings Sidebar */
+    .settings-section {
+      margin-bottom: var(--space-2xl);
+    }
+
+    .settings-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-lg);
+    }
+
+    .settings-group {
+      margin-bottom: var(--space-xl);
+    }
+
+    .settings-group-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--slate-gray);
+      margin-bottom: var(--space-md);
+    }
+
+    .settings-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-md) 0;
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .settings-item:last-child {
+      border-bottom: none;
+    }
+
+    .settings-item-label {
+      font-size: 14px;
+      color: var(--deep-navy);
+    }
+
+    .settings-item-description {
+      font-size: 12px;
+      color: var(--medium-gray);
+      margin-top: 2px;
+    }
+
+    /* Toggle Switch */
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 36px;
+      height: 20px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--light-gray);
+      transition: .4s;
+      border-radius: 20px;
+    }
+
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 2px;
+      bottom: 2px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .toggle-slider {
+      background-color: var(--azure-blue);
+    }
+
+    input:checked + .toggle-slider:before {
+      transform: translateX(16px);
+    }
+
+    /* Escalation Options */
+    .escalation-option {
+      display: flex;
+      align-items: center;
+      padding: var(--space-md) 0;
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .escalation-option:last-child {
+      border-bottom: none;
+    }
+
+    .escalation-option-icon {
+      margin-right: var(--space-md);
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .escalation-option-content {
+      flex: 1;
+    }
+
+    .escalation-option-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--deep-navy);
+    }
+
+    .escalation-option-description {
+      font-size: 12px;
+      color: var(--medium-gray);
+    }
+
+    /* Dropdown */
+    .dropdown {
+      position: relative;
+      display: flex;
+      align-items: center;
+      background-color: var(--white);
+      border: 1px solid var(--light-gray);
+      border-radius: var(--radius-md);
+      padding: 8px 12px;
+      font-size: 14px;
+      cursor: pointer;
+      min-width: 120px;
+    }
+
+    .dropdown-icon {
+      margin-left: auto;
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 1024px) {
+      .two-column-layout {
+        flex-direction: column;
+      }
+      
+      .sidebar {
+        width: 100%;
+        max-width: 100%;
+        border-left: none;
+        border-top: 1px solid var(--light-gray);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-md);
+      }
+      
+      .header-actions {
+        width: 100%;
+      }
+      
+      .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .notification-item {
+        flex-direction: column;
+      }
+      
+      .notification-icon {
+        margin-bottom: var(--space-md);
+        margin-right: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <div class="top-nav-left">
+      <div class="logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 8H16C20.4183 8 24 11.5817 24 16C24 20.4183 20.4183 24 16 24H8V8Z" fill="#0A2342"/>
+          <path d="M16 8H24V16C24 20.4183 20.4183 24 16 24V8Z" fill="#2D72D9"/>
+        </svg>
+        <span>DueDiligenceAI</span>
+      </div>
+      <div class="nav-items">
+        <div class="nav-item">Dashboard</div>
+        <div class="nav-item">Documents</div>
+        <div class="nav-item">Analysis</div>
+        <div class="nav-item">Reports</div>
+        <div class="nav-item active">Notifications</div>
+      </div>
+    </div>
+    <div class="top-nav-right">
+      <div class="search-bar">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <input type="text" placeholder="Search..." />
+      </div>
+      <div class="notifications notification-badge">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 17H9M12 3V4M12 21V20M5.6 5.6L6.3 6.3M18.4 5.6L17.7 6.3M3 12H4M20 12H21M6 17.4V12C6 8.7 8.7 6 12 6C15.3 6 18 8.7 18 12V17.4H6Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="badge">12</span>
+      </div>
+      <div class="user-profile">
+        <div class="avatar">SK</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Breadcrumbs -->
+  <div class="breadcrumbs">
+    <div class="breadcrumb-item">Dashboard</div>
+    <div class="breadcrumb-item">Notification Center</div>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="container">
+    <div class="two-column-layout">
+      <!-- Main Content -->
+      <div class="main-content">
+        <!-- Page Header -->
+        <div class="page-header">
+          <h1>Notification Center</h1>
+          <div class="header-actions">
+            <button class="button secondary">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 12H15M12 9V15M12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Mark All as Read
+            </button>
+            <button class="button primary">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 12H15M9 16H12M12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 13.6569 16.6421 15 16 15C15.3579 15 15 14.5 14 14.5C13 14.5 12 15.2271 12 16C12 16.7729 12 21 12 21Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Configure Notifications
+            </button>
+          </div>
+        </div>
+
+        <!-- Notification Tabs -->
+        <div class="tabs">
+          <div class="tab active">All <span class="tab-count">24</span></div>
+          <div class="tab">Unread <span class="tab-count">12</span></div>
+          <div class="tab">High Priority <span class="tab-count">3</span></div>
+          <div class="tab">Action Items <span class="tab-count">8</span></div>
+          <div class="tab">Mentions <span class="tab-count">5</span></div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+          <div class="filter-item active">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            All Time
+          </div>
+          <div class="filter-item">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0378 2.66667 10.268 4L3.33978 16C2.56998 17.3333 3.53223 19 5.07183 19Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Priority
+          </div>
+          <div class="filter-item">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 6H20M9 12H20M9 18H20M5 6V6.01M5 12V12.01M5 18V18.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Project
+          </div>
+          <div class="filter-item">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12 14C8.13401 14 5 17.134 5 21H19C19 17.134 15.866 14 12 14Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Sender
+          </div>
+          <div class="filter-item">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 7V3M16 7V3M7 11H17M5 21H19C20.1046 21 21 20.1046 21 19V7C21 5.89543 20.1046 5 19 5H5C3.89543 5 3 5.89543 3 7V19C3 20.1046 3.89543 21 5 21Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Date Range
+          </div>
+        </div>
+
+        <!-- Notifications List -->
+        <div class="notifications-list">
+          <!-- High Priority Notification with Escalation -->
+          <div class="notification-item high-priority unread">
+            <div class="notification-icon high-priority">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 15V17M12 7V13M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="notification-content">
+              <div class="notification-header">
+                <div class="notification-title">Covenant Risk in Debt Structure</div>
+                <div class="notification-time">10:32 AM</div>
+              </div>
+              <div class="notification-message">
+                ABC Corp's Debt-to-EBITDA ratio has increased to 2.8x, approaching the covenant threshold of 3.0x. This creates significant risk as even a minor decrease in performance could trigger covenant breaches on multiple loan agreements.
+              </div>
+              <div class="notification-footer">
+                <div class="notification-meta">
+                  <div class="notification-meta-item">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9 6H20M9 12H20M9 18H20M5 6V6.01M5 12V12.01M5 18V18.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Financial Risk
+                  </div>
+                  <div class="notification-meta-item">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0378 2.66667 10.268 4L3.33978 16C2.56998 17.3333 3.53223 19 5.07183 19Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="priority-badge high">High Priority</span>
+                  </div>
+                </div>
+                <div class="notification-actions">
+                  <button class="button secondary">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M15 10L20 15M20 15L15 20M20 15H10.5C7.46243 15 5 12.5376 5 9.5V9.5C5 6.46243 7.46243 4 10.5 4H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Escalate
+                  </button>
+                  <button class="button primary">View Details</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Medium Priority Notification -->
+          <div class="notification-item medium-priority unread">
+            <div class="notification-icon medium-priority">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0378 2.66667 10.268 4L3.33978 16C2.56998 17.3333 3.53223 19 5.07183 19Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="notification-content">
+              <div class="notification-header">
+                <div class="notification-title">GDPR Compliance Review Required</div>
+                <div class="notification-time">Yesterday, 4:15 PM</div>
+              </div>
+              <div class="notification-message">
+                The recent assessment of ABC Corp's GDPR compliance revealed significant gaps including insufficient data protection policies and inadequate user consent mechanisms. Recommendation to implement comprehensive data protection systems required.
+              </div>
+              <div class="notification-footer">
+                <div class="notification-meta">
+                  <div class="notification-meta-item">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9 6H20M9 12H20M9 18H20M5 6V6.01M5 12V12.01M5 18V18.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Compliance
+                  </div>
+                  <div class="notification-meta-item">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0378 2.66667 10.268 4L3.33978 16C2.56998 17.3333 3.53223 19 5.07183 19Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="priority-badge medium">Medium Priority</span>
+                  </div>
+                </div>
+                <div class="notification-actions">
+                  <button class="button tertiary">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M4 12L10 16V8L4 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M14 12H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Snooze
+                  </button>
+                  <button class="button primary">Assign Action</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Item Notification -->
+          <div class="notification-item unread">
+            <div class="notification-icon info">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 12L11 14L15 10M12 3L4 7V12C4 16.0993 7.24 19.968 12 21C16.76 19.968 20 16.0993 20 12V7L12 3Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="notification-content">
+              <div class="notification-header">
+                <div class="notification-title">Action Required: Financial Report Review</div>
+                <div class="notification-time">Yesterday, 11:20 AM</div>
+              </div>
+              <div class="notification-message">
+                The quarterly financial report for ABC Corp is ready for review. Please validate the revenue projections and EBITDA calculations before the stakeholder meeting on Friday.
+              </div>
+              <div class="notification-footer">
+                <div class="notification-meta">
+                  <div class="notification-meta-item">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9 6H20M9 12H20M9 18H20M5 6V6.01M5 12V12.01M5 18V18.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Financial Reports
+                  </div>
+                  <div class="notification-meta-item">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M8 7V3M16 7V3M7 11H17M5 21H19C20.1046 21 21 20.1046 21 19V7C21 5.89543 20.1046 5 19 5H5C3.89543 5 3 5.89543 3 7V19C3 20.1046 3.89543 21 5 21Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Due in 2 days
+                  </div>
+                </div>
+                <div class="notification-actions">
+                  <button class="button tertiary">Mark Complete</button>
+                  <button class="button primary">View Report</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Information Notification -->
+          <div class="notification-item">
+            <div class="notification-icon info">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 8V12M12 16H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="notification-content">
+              <div class="notification-header">
+                <div class="notification-title">ABC Corp vs. XYZ Technologies Comparison Updated</div>
+                <div class="notification-time">2 days ago</div>
+              </div>
+              <div class="notification-message">
+                The competitor analysis comparing ABC Corp with XYZ Technologies has been updated with the latest financial data. New insights show that ABC Corp outperforms XYZ Technologies across most financial metrics.
+              </div>
+              <div class="notification-footer">
+                <div class="notification-meta">
+                  <div class="notification-meta-item">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9 6H20M9 12H20M9 18H20M5 6V6.01M5 12V12.01M5 18V18.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Competitive Analysis
+                  </div>
+                  <div class="notification-meta-item">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M12 14C8.13401 14 5 17.134 5 21H19C19 17.134 15.866 14 12 14Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    AI Analysis
+                  </div>
+                </div>
+                <div class="notification-actions">
+                  <button class="button primary">View Analysis</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Success Notification -->
+          <div class="notification-item">
+            <div class="notification-icon success">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="notification-content">
+              <div class="notification-header">
+                <div class="notification-title">SOX Compliance Audit Completed</div>
+                <div class="notification-time">3 days ago</div>
+              </div>
+              <div class="notification-message">
+                The Sarbanes-Oxley compliance assessment for TechSolutions Inc. has been completed successfully. Results show strong internal controls, robust financial reporting processes, and effective corporate governance.
+              </div>
+              <div class="notification-footer">
+                <div class="notification-meta">
+                  <div class="notification-meta-item">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9 6H20M9 12H20M9 18H20M5 6V6.01M5 12V12.01M5 18V18.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Compliance
+                  </div>
+                  <div class="notification-meta-item">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9 12L11 14L15 10M12 3L4 7V12C4 16.0993 7.24 19.968 12 21C16.76 19.968 20 16.0993 20 12V7L12 3Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Low Risk
+                  </div>
+                </div>
+                <div class="notification-actions">
+                  <button class="button primary">View Report</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+          <div class="pagination-item">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15 19L8 12L15 5" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="pagination-item active">1</div>
+          <div class="pagination-item">2</div>
+          <div class="pagination-item">3</div>
+          <div class="pagination-item">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 5L16 12L9 19" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Sidebar - Notification Preferences -->
+      <div class="sidebar">
+        <h4 style="margin-bottom: var(--space-xl);">Notification Settings</h4>
+        
+        <!-- Notification Preferences Section -->
+        <div class="settings-section">
+          <h5 class="settings-title">Notification Preferences</h5>
+          
+          <div class="settings-group">
+            <h6 class="settings-group-title">Delivery Methods</h6>
+            
+            <div class="settings-item">
+              <div>
+                <div class="settings-item-label">In-app Notifications</div>
+                <div class="settings-item-description">Receive alerts within the platform</div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            
+            <div class="settings-item">
+              <div>
+                <div class="settings-item-label">Email Notifications</div>
+                <div class="settings-item-description">Receive alerts via email</div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            
+            <div class="settings-item">
+              <div>
+                <div class="settings-item-label">SMS Notifications</div>
+                <div class="settings-item-description">Receive text alerts for high priority items</div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            
+            <div class="settings-item">
+              <div>
+                <div class="settings-item-label">Slack Integration</div>
+                <div class="settings-item-description">Receive alerts in your Slack workspace</div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="settings-group">
+            <h6 class="settings-group-title">Notification Categories</h6>
+            
+            <div class="settings-item">
+              <div>
+                <div class="settings-item-label">Financial Alerts</div>
+                <div class="settings-item-description">Covenant breaches, ratio changes, etc.</div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            
+            <div class="settings-item">
+              <div>
+                <div class="settings-item-label">Compliance Alerts</div>
+                <div class="settings-item-description">Regulatory issues, policy updates</div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            
+            <div class="settings-item">
+              <div>
+                <div class="settings-item-label">Risk Assessments</div>
+                <div class="settings-item-description">New risks, changed risk levels</div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            
+            <div class="settings-item">
+              <div>
+                <div class="settings-item-label">Action Items</div>
+                <div class="settings-item-description">Tasks requiring your attention</div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            
+            <div class="settings-item">
+              <div>
+                <div class="settings-item-label">Mentions</div>
+                <div class="settings-item-description">When you're tagged in comments</div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            
+            <div class="settings-item">
+              <div>
+                <div class="settings-item-label">System Updates</div>
+                <div class="settings-item-description">Product updates and announcements</div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="escalation-option">
+            <div class="escalation-option-icon">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0378 2.66667 10.268 4L3.33978 16C2.56998 17.3333 3.53223 19 5.07183 19Z" stroke="#FFC107" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="escalation-option-content">
+              <div class="escalation-option-title">Medium Priority Alerts</div>
+              <div class="escalation-option-description">Escalate to team lead after 24 hours if no action taken</div>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          
+          <div class="escalation-option">
+            <div class="escalation-option-icon">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 7V3M16 7V3M7 11H17M5 21H19C20.1046 21 21 20.1046 21 19V7C21 5.89543 20.1046 5 19 5H5C3.89543 5 3 5.89543 3 7V19C3 20.1046 3.89543 21 5 21Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="escalation-option-content">
+              <div class="escalation-option-title">Overdue Action Items</div>
+              <div class="escalation-option-description">Send reminder after due date, escalate after 48 hours</div>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+          
+        <div class="settings-group">
+          <h6 class="settings-group-title">Escalation Chain</h6>
+          
+          <div class="settings-item">
+            <div>
+              <div class="settings-item-label">Primary Contact</div>
+              <div class="settings-item-description">First person to be notified</div>
+            </div>
+            <div class="dropdown">
+              Sarah Kim
+              <svg class="dropdown-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 9L12 15L18 9" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+          
+          <div class="settings-item">
+            <div>
+              <div class="settings-item-label">Secondary Contact</div>
+              <div class="settings-item-description">Notified if primary is unavailable</div>
+            </div>
+            <div class="dropdown">
+              James Wilson
+              <svg class="dropdown-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 9L12 15L18 9" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+          
+          <div class="settings-item">
+            <div>
+              <div class="settings-item-label">Tertiary Contact</div>
+              <div class="settings-item-description">Final escalation point</div>
+            </div>
+            <div class="dropdown">
+              Maria Rodriguez
+              <svg class="dropdown-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 9L12 15L18 9" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Escalation Protocols Section -->
+        <div class="settings-section">
+          <h5 class="settings-title">Escalation Protocols</h5>
+          
+          <div class="settings-group">
+            <h6 class="settings-group-title">Configure Escalation Rules</h6>
+            
+            <div class="escalation-option">
+              <div class="escalation-option-icon">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 15V17M12 7V13M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#FF5252" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="escalation-option-content">
+                <div class="escalation-option-title">High Priority Alerts</div>
+                <div class="escalation-option-description">Escalate to senior management after 4 hours if no action taken</div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Action Item Reminders Section -->
+        <div class="settings-section">
+          <h5 class="settings-title">Action Item Reminders</h5>
+          
+          <div class="settings-group">
+            <h6 class="settings-group-title">Reminder Schedule</h6>
+            
+            <div class="settings-item">
+              <div>
+                <div class="settings-item-label">Initial Reminder</div>
+                <div class="settings-item-description">First notification for action items</div>
+              </div>
+              <div class="dropdown">
+                24 hours before due
+                <svg class="dropdown-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M6 9L12 15L18 9" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+            
+            <div class="settings-item">
+              <div>
+                <div class="settings-item-label">Follow-up Reminder</div>
+                <div class="settings-item-description">Second notification if not completed</div>
+              </div>
+              <div class="dropdown">
+                4 hours before due
+                <svg class="dropdown-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M6 9L12 15L18 9" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+            
+            <div class="settings-item">
+              <div>
+                <div class="settings-item-label">Overdue Reminder</div>
+                <div class="settings-item-description">Notification after deadline passed</div>
+              </div>
+              <div class="dropdown">
+                Every 24 hours
+                <svg class="dropdown-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M6 9L12 15L18 9" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <button class="button primary" style="width: 100%; margin-top: var(--space-xl);">
+          Save Notification Preferences
+        </button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

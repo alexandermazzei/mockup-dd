@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Due Diligence - Analysis Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Color System */
+            --navy-900: #0A2342;
+            --navy-700: #123976;
+            --azure-blue: #2D72D9;
+            --slate-gray: #3C4858;
+            --mint-green: #00BFA5;
+            --coral-red: #FF5252;
+            --amber-yellow: #FFC107;
+            --light-blue: #E1F5FE;
+            --sky-blue: #81D4FA;
+            --dark-blue: #01579B;
+            --charcoal: #263238;
+            --medium-gray: #78909C;
+            --light-gray: #ECEFF1;
+            --white: #FFFFFF;
+
+            /* Typography */
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --font-display: 'Manrope', var(--font-primary);
+            --font-mono: 'JetBrains Mono', SFMono-Regular, Consolas, monospace;
+            
+            /* Text Sizes */
+            --text-xs: 0.75rem;
+            --text-sm: 0.875rem;
+            --text-base: 1rem;
+            --text-lg: 1.125rem;
+            --text-xl: 1.25rem;
+            --text-2xl: 1.5rem;
+            --text-3xl: 1.875rem;
+            --text-4xl: 2.25rem;
+            
+            /* Line Heights */
+            --leading-none: 1;
+            --leading-tight: 1.2;
+            --leading-snug: 1.375;
+            --leading-normal: 1.5;
+            --leading-relaxed: 1.625;
+            
+            /* Spacing */
+            --space-0: 0;
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 12px;
+            --space-lg: 16px;
+            --space-xl: 24px;
+            --space-2xl: 32px;
+            --space-3xl: 48px;
+
+            /* Animation */
+            --duration-xs: 100ms;
+            --duration-sm: 150ms;
+            --duration-md: 300ms;
+            --ease-standard: cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            color: var(--slate-gray);
+            background-color: var(--light-gray);
+            line-height: var(--leading-normal);
+            font-size: var(--text-base);
+        }
+
+        /* Layout */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 240px;
+            background-color: var(--navy-900);
+            color: var(--white);
+            padding: var(--space-lg) 0;
+            flex-shrink: 0;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .top-nav {
+            height: 64px;
+            background-color: var(--white);
+            border-bottom: 1px solid var(--light-gray);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 var(--space-xl);
+        }
+
+        .main-area {
+            flex: 1;
+            padding: var(--space-xl);
+            overflow-y: auto;
+        }
+
+        /* Logo */
+        .logo {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: var(--text-xl);
+            color: var(--white);
+            padding: 0 var(--space-xl) var(--space-xl);
+        }
+
+        /* Navigation */
+        .nav-section {
+            margin-bottom: var(--space-xl);
+        }
+
+        .nav-header {
+            font-size: var(--text-xs);
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--medium-gray);
+            padding: var(--space-md) var(--space-xl);
+            letter-spacing: 0.5px;
+        }
+
+        .nav-items {
+            list-style: none;
+        }
+
+        .nav-item {
+            height: 48px;
+            padding: 0 var(--space-xl);
+            display: flex;
+            align-items: center;
+            color: var(--light-gray);
+            font-weight: 500;
+            transition: background-color var(--duration-sm) var(--ease-standard);
+            cursor: pointer;
+        }
+
+        .nav-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-item.active {
+            background-color: rgba(45, 114, 217, 0.3);
+            border-left: 3px solid var(--azure-blue);
+            color: var(--white);
+        }
+
+        .nav-item-icon {
+            margin-right: var(--space-md);
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Top Navigation */
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--navy-700);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 600;
+            margin-right: var(--space-md);
+        }
+
+        /* Breadcrumbs */
+        .breadcrumbs {
+            display: flex;
+            align-items: center;
+            margin-bottom: var(--space-xl);
+        }
+
+        .breadcrumb-item {
+            color: var(--medium-gray);
+            font-size: var(--text-sm);
+        }
+
+        .breadcrumb-item:not(:last-child)::after {
+            content: "/";
+            margin: 0 var(--space-sm);
+            color: var(--light-gray);
+        }
+
+        .breadcrumb-item:last-child {
+            color: var(--slate-gray);
+            font-weight: 500;
+        }
+
+        /* Page Header */
+        .page-header {
+            margin-bottom: var(--space-xl);
+        }
+
+        .page-title {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: var(--text-3xl);
+            color: var(--navy-900);
+            margin-bottom: var(--space-sm);
+        }
+
+        .page-description {
+            color: var(--slate-gray);
+            max-width: 800px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--light-gray);
+            margin-bottom: var(--space-xl);
+        }
+
+        .tab {
+            padding: var(--space-md) var(--space-xl);
+            font-weight: 500;
+            color: var(--slate-gray);
+            cursor: pointer;
+            transition: all var(--duration-sm) var(--ease-standard);
+        }
+
+        .tab:hover {
+            background-color: var(--light-blue);
+        }
+
+        .tab.active {
+            color: var(--azure-blue);
+            border-bottom: 2px solid var(--azure-blue);
+        }
+
+        /* Cards */
+        .card {
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: var(--space-xl);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: var(--space-xl);
+            border-bottom: 1px solid var(--light-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: var(--text-xl);
+            color: var(--navy-900);
+        }
+
+        .card-body {
+            padding: var(--space-xl);
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: var(--space-lg);
+        }
+
+        .grid-col-3 {
+            grid-column: span 3;
+        }
+
+        .grid-col-4 {
+            grid-column: span 4;
+        }
+
+        .grid-col-6 {
+            grid-column: span 6;
+        }
+
+        .grid-col-8 {
+            grid-column: span 8;
+        }
+
+        .grid-col-12 {
+            grid-column: span 12;
+        }
+
+        /* Metric Cards */
+        .metric-card {
+            padding: var(--space-xl);
+        }
+
+        .metric-value {
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: var(--text-3xl);
+            color: var(--navy-900);
+            margin-bottom: var(--space-xs);
+        }
+
+        .metric-label {
+            font-size: var(--text-sm);
+            color: var(--medium-gray);
+        }
+
+        .metric-trend {
+            display: flex;
+            align-items: center;
+            font-size: var(--text-sm);
+            margin-top: var(--space-xs);
+        }
+
+        .trend-positive {
+            color: var(--mint-green);
+        }
+
+        .trend-negative {
+            color: var(--coral-red);
+        }
+
+        /* Risk Indicators */
+        .risk-indicator {
+            display: inline-flex;
+            align-items: center;
+            padding: var(--space-xs) var(--space-sm);
+            border-radius: 4px;
+            font-size: var(--text-xs);
+            font-weight: 600;
+        }
+
+        .risk-low {
+            background-color: rgba(0, 191, 165, 0.1);
+            color: var(--mint-green);
+        }
+
+        .risk-medium {
+            background-color: rgba(255, 193, 7, 0.1);
+            color: var(--amber-yellow);
+        }
+
+        .risk-high {
+            background-color: rgba(255, 82, 82, 0.1);
+            color: var(--coral-red);
+        }
+
+        /* Buttons */
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-md) var(--space-lg);
+            border-radius: 4px;
+            font-weight: 500;
+            font-size: var(--text-sm);
+            cursor: pointer;
+            transition: all var(--duration-sm) var(--ease-standard);
+        }
+
+        .button-primary {
+            background-color: var(--azure-blue);
+            color: var(--white);
+            border: none;
+        }
+
+        .button-primary:hover {
+            background-color: #1A5DC7;
+        }
+
+        .button-secondary {
+            background-color: var(--white);
+            color: var(--azure-blue);
+            border: 1px solid var(--azure-blue);
+        }
+
+        .button-secondary:hover {
+            background-color: var(--light-blue);
+        }
+
+        .button-tertiary {
+            background-color: transparent;
+            color: var(--azure-blue);
+            border: none;
+        }
+
+        .button-tertiary:hover {
+            background-color: var(--light-blue);
+        }
+
+        .button-icon {
+            margin-right: var(--space-sm);
+        }
+
+        /* Data Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
+            background-color: var(--light-gray);
+            padding: var(--space-md) var(--space-lg);
+            text-align: left;
+            font-weight: 600;
+            font-size: var(--text-sm);
+            color: var(--slate-gray);
+        }
+
+        .data-table td {
+            padding: var(--space-md) var(--space-lg);
+            border-bottom: 1px solid var(--light-gray);
+            font-size: var(--text-sm);
+        }
+
+        .data-table tr:hover {
+            background-color: var(--light-blue);
+        }
+
+        /* Charts */
+        .chart-container {
+            height: 300px;
+            position: relative;
+        }
+
+        .chart-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--medium-gray);
+            font-style: italic;
+        }
+
+        /* Analysis Controls */
+        .control-group {
+            margin-bottom: var(--space-xl);
+        }
+
+        .control-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: var(--space-sm);
+            color: var(--navy-900);
+        }
+
+        .control-row {
+            display: flex;
+            gap: var(--space-lg);
+        }
+
+        .form-control {
+            padding: var(--space-md);
+            border: 1px solid var(--medium-gray);
+            border-radius: 4px;
+            font-family: var(--font-primary);
+            font-size: var(--text-sm);
+            width: 100%;
+        }
+
+        .form-control:focus {
+            border-color: var(--azure-blue);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(45, 114, 217, 0.1);
+        }
+
+        /* Risk Matrix */
+        .risk-matrix {
+            border: 1px solid var(--light-gray);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .matrix-row {
+            display: flex;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .matrix-row:last-child {
+            border-bottom: none;
+        }
+
+        .matrix-cell {
+            flex: 1;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-right: 1px solid var(--light-gray);
+            position: relative;
+        }
+
+        .matrix-cell:last-child {
+            border-right: none;
+        }
+
+        .risk-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: var(--navy-900);
+            position: absolute;
+        }
+
+        .matrix-label {
+            position: absolute;
+            font-size: var(--text-xs);
+            font-weight: 500;
+        }
+
+        .matrix-x-label {
+            bottom: 4px;
+        }
+
+        .matrix-y-label {
+            left: 4px;
+            transform: rotate(-90deg);
+            transform-origin: top left;
+            white-space: nowrap;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 64px;
+            }
+
+            .nav-item-text {
+                display: none;
+            }
+
+            .logo {
+                text-align: center;
+                padding: 0;
+                margin-bottom: var(--space-xl);
+            }
+
+            .nav-item {
+                justify-content: center;
+                padding: 0;
+            }
+
+            .nav-item-icon {
+                margin-right: 0;
+            }
+
+            .nav-header {
+                display: none;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: repeat(6, 1fr);
+            }
+
+            .grid-col-3, .grid-col-4, .grid-col-6 {
+                grid-column: span 3;
+            }
+
+            .grid-col-8, .grid-col-12 {
+                grid-column: span 6;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: repeat(1, 1fr);
+            }
+
+            .grid-col-3, .grid-col-4, .grid-col-6, .grid-col-8, .grid-col-12 {
+                grid-column: span 1;
+            }
+
+            .control-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo">DD</div>
+            
+            <div class="nav-section">
+                <div class="nav-header">Main</div>
+                <ul class="nav-items">
+                    <li class="nav-item">
+                        <svg class="nav-item-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="3" y1="9" x2="21" y2="9"></line>
+                            <line x1="9" y1="21" x2="9" y2="9"></line>
+                        </svg>
+                        <span class="nav-item-text">Dashboard</span>
+                    </li>
+                    <li class="nav-item">
+                        <svg class="nav-item-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                        <span class="nav-item-text">Documents</span>
+                    </li>
+                    <li class="nav-item active">
+                        <svg class="nav-item-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                        </svg>
+                        <span class="nav-item-text">Analysis</span>
+                    </li>
+                    <li class="nav-item">
+                        <svg class="nav-item-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="8" y1="6" x2="21" y2="6"></line>
+                            <line x1="8" y1="12" x2="21" y2="12"></line>
+                            <line x1="8" y1="18" x2="21" y2="18"></line>
+                            <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                            <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                            <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                        </svg>
+                        <span class="nav-item-text">Reports</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-header">Settings</div>
+                <ul class="nav-items">
+                    <li class="nav-item">
+                        <svg class="nav-item-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                        </svg>
+                        <span class="nav-item-text">Settings</span>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Navigation -->
+            <nav class="top-nav">
+                <div class="breadcrumbs">
+                    <div class="breadcrumb-item">Projects</div>
+                    <div class="breadcrumb-item">AcmeCorp Due Diligence</div>
+                    <div class="breadcrumb-item">Analysis</div>
+                </div>
+                
+                <div class="user-menu">
+                    <div class="user-avatar">JD</div>
+                    <div class="user-name">John Doe</div>
+                </div>
+            </nav>
+
+            <!-- Main Content -->
+            <div class="main-area">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <h1 class="page-title">Financial Performance Analysis</h1>
+                    <p class="page-description">Comprehensive financial analysis and risk assessment for AcmeCorp acquisition target.</p>
+                </div>
+
+                <!-- Analysis Tabs -->
+                <div class="tabs">
+                    <div class="tab active">Overview</div>
+                    <div class="tab">Financial Metrics</div>
+                    <div class="tab">Risk Assessment</div>
+                    <div class="tab">Cash Flow</div>
+                    <div class="tab">Comparative Analysis</div>
+                </div>
+
+                <!-- Analysis Controls -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Analysis Parameters</h2>
+                        <button class="button button-tertiary">
+                            <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="1"></circle>
+                                <circle cx="19" cy="12" r="1"></circle>
+                                <circle cx="5" cy="12" r="1"></circle>
+                            </svg>
+                            Options
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="control-group">
+                            <label class="control-label">Time Period</label>
+                            <div class="control-row">
+                                <input type="date" class="form-control" value="2022-01-01">
+                                <input type="date" class="form-control" value="2025-01-01">
+                                <select class="form-control">
+                                    <option>Quarterly</option>
+                                    <option selected>Annually</option>
+                                    <option>Monthly</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">Comparison Benchmarks</label>
+                            <div class="control-row">
+                                <select class="form-control">
+                                    <option selected>Industry Average</option>
+                                    <option>Top Performers</option>
+                                    <option>Custom Benchmark</option>
+                                </select>
+                                <select class="form-control">
+                                    <option selected>Technology</option>
+                                    <option>Manufacturing</option>
+                                    <option>Retail</option>
+                                    <option>Healthcare</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="control-row">
+                                <button class="button button-primary">
+                                    <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                                    </svg>
+                                    Run Analysis
+                                </button>
+                                <button class="button button-secondary">
+                                    <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="7 10 12 15 17 10"></polyline>
+                                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                                    </svg>
+                                    Export Results
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dashboard Grid -->
+                <div class="dashboard-grid">
+                    <!-- Key Metrics -->
+                    <div class="grid-col-3">
+                        <div class="card">
+                            <div class="metric-card">
+                                <div class="metric-value">$245.8M</div>
+                                <div class="metric-label">Annual Revenue</div>
+                                <div class="metric-trend trend-positive">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="18 15 12 9 6 15"></polyline>
+                                    </svg>
+                                    +12.5% YoY
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid-col-3">
+                        <div class="card">
+                            <div class="metric-card">
+                                <div class="metric-value">18.4%</div>
+                                <div class="metric-label">EBITDA Margin</div>
+                                <div class="metric-trend trend-negative">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
+                                    -2.1% YoY
+                                </div>
+                                <div class="metric-trend trend-negative">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
+                                    -2.1% YoY
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid-col-3">
+                        <div class="card">
+                            <div class="metric-card">
+                                <div class="metric-value">$45.2M</div>
+                                <div class="metric-label">Operating Income</div>
+                                <div class="metric-trend trend-positive">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="18 15 12 9 6 15"></polyline>
+                                    </svg>
+                                    +5.3% YoY
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid-col-3">
+                        <div class="card">
+                            <div class="metric-card">
+                                <div class="metric-value">Medium</div>
+                                <div class="metric-label">Overall Risk</div>
+                                <div class="risk-indicator risk-medium">
+                                    Medium Risk
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Revenue Chart -->
+                    <div class="grid-col-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">Revenue Trend</h2>
+                                <button class="button button-tertiary">
+                                    <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="1"></circle>
+                                        <circle cx="19" cy="12" r="1"></circle>
+                                        <circle cx="5" cy="12" r="1"></circle>
+                                    </svg>
+                                    Options
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container">
+                                    <!-- This would be a real chart in production -->
+                                    <div class="chart-placeholder">
+                                        [Revenue Trend Line Chart - Annual 2022-2025]
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Margin Analysis -->
+                    <div class="grid-col-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">Margin Analysis</h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container">
+                                    <!-- This would be a real chart in production -->
+                                    <div class="chart-placeholder">
+                                        [Margin Analysis Bar Chart]
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Risk Matrix -->
+                    <div class="grid-col-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">Risk Assessment Matrix</h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="risk-matrix">
+                                    <div class="matrix-row">
+                                        <div class="matrix-cell">
+                                            <div class="matrix-label matrix-y-label">High Impact</div>
+                                        </div>
+                                        <div class="matrix-cell">
+                                            <div class="risk-dot" style="background-color: #FFC107;"></div>
+                                        </div>
+                                        <div class="matrix-cell">
+                                            <div class="risk-dot" style="background-color: #FF5252;"></div>
+                                            <div class="risk-dot" style="background-color: #FF5252; top: 60%; left: 40%;"></div>
+                                        </div>
+                                    </div>
+                                    <div class="matrix-row">
+                                        <div class="matrix-cell"></div>
+                                        <div class="matrix-cell">
+                                            <div class="risk-dot" style="background-color: #00BFA5;"></div>
+                                            <div class="risk-dot" style="background-color: #00BFA5; top: 30%; left: 60%;"></div>
+                                        </div>
+                                        <div class="matrix-cell">
+                                            <div class="risk-dot" style="background-color: #FFC107;"></div>
+                                        </div>
+                                    </div>
+                                    <div class="matrix-row">
+                                        <div class="matrix-cell">
+                                            <div class="matrix-label matrix-y-label">Low Impact</div>
+                                        </div>
+                                        <div class="matrix-cell">
+                                            <div class="risk-dot" style="background-color: #00BFA5;"></div>
+                                        </div>
+                                        <div class="matrix-cell"></div>
+                                    </div>
+                                    <div class="matrix-row">
+                                        <div class="matrix-cell"></div>
+                                        <div class="matrix-cell">
+                                            <div class="matrix-label matrix-x-label">Low Probability</div>
+                                        </div>
+                                        <div class="matrix-cell">
+                                            <div class="matrix-label matrix-x-label">High Probability</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Key Risks Table -->
+                    <div class="grid-col-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">Key Risk Factors</h2>
+                            </div>
+                            <div class="card-body">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Risk Factor</th>
+                                            <th>Category</th>
+                                            <th>Severity</th>
+                                            <th>Mitigation</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Customer Concentration</td>
+                                            <td>Strategic</td>
+                                            <td><span class="risk-indicator risk-high">High</span></td>
+                                            <td>Customer Diversification Plan</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Supply Chain Disruption</td>
+                                            <td>Operational</td>
+                                            <td><span class="risk-indicator risk-medium">Medium</span></td>
+                                            <td>Multiple Supplier Strategy</td>
+                                        </tr>
+                                        <tr>
+                                            <td>IP Litigation</td>
+                                            <td>Legal</td>
+                                            <td><span class="risk-indicator risk-high">High</span></td>
+                                            <td>Legal Review in Process</td>
+                                        </tr>
+                                        <tr>
+                                            <td>FX Exposure</td>
+                                            <td>Financial</td>
+                                            <td><span class="risk-indicator risk-low">Low</span></td>
+                                            <td>Hedging Strategy</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Technology Obsolescence</td>
+                                            <td>Strategic</td>
+                                            <td><span class="risk-indicator risk-medium">Medium</span></td>
+                                            <td>R&D Investment Plan</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Industry Comparison -->
+                    <div class="grid-col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">Industry Comparison</h2>
+                                <button class="button button-tertiary">
+                                    <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="7 10 12 15 17 10"></polyline>
+                                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                                    </svg>
+                                    Export
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Metric</th>
+                                            <th>AcmeCorp</th>
+                                            <th>Industry Average</th>
+                                            <th>Percentile</th>
+                                            <th>Trend</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Revenue Growth</td>
+                                            <td>12.5%</td>
+                                            <td>8.3%</td>
+                                            <td>75th</td>
+                                            <td class="trend-positive">↑</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Gross Margin</td>
+                                            <td>58.2%</td>
+                                            <td>52.4%</td>
+                                            <td>68th</td>
+                                            <td class="trend-positive">↑</td>
+                                        </tr>
+                                        <tr>
+                                            <td>EBITDA Margin</td>
+                                            <td>18.4%</td>
+                                            <td>21.5%</td>
+                                            <td>42nd</td>
+                                            <td class="trend-negative">↓</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Return on Assets</td>
+                                            <td>9.2%</td>
+                                            <td>7.8%</td>
+                                            <td>63rd</td>
+                                            <td class="trend-positive">↑</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Debt-to-Equity</td>
+                                            <td>0.54</td>
+                                            <td>0.48</td>
+                                            <td>45th</td>
+                                            <td class="trend-negative">↓</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Working Capital Ratio</td>
+                                            <td>1.8</td>
+                                            <td>1.6</td>
+                                            <td>58th</td>
+                                            <td class="trend-positive">↑</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Financial Health Score -->
+                    <div class="grid-col-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">Financial Health Score</h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container">
+                                    <!-- This would be a real gauge chart in production -->
+                                    <div class="chart-placeholder">
+                                        [Financial Health Gauge: 76/100 - Good]
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Valuation Metrics -->
+                    <div class="grid-col-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">Valuation Metrics</h2>
+                            </div>
+                            <div class="card-body">
+                                <table class="data-table">
+                                    <tbody>
+                                        <tr>
+                                            <td>Enterprise Value</td>
+                                            <td>$1.25B</td>
+                                        </tr>
+                                        <tr>
+                                            <td>EV/EBITDA</td>
+                                            <td>12.6x</td>
+                                        </tr>
+                                        <tr>
+                                            <td>EV/Revenue</td>
+                                            <td>5.1x</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Discounted Cash Flow</td>
+                                            <td>$1.32B</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI Insights -->
+                    <div class="grid-col-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">AI Insights</h2>
+                            </div>
+                            <div class="card-body">
+                                <ul style="list-style-type: none; padding: 0;">
+                                    <li style="margin-bottom: 16px; padding-left: 24px; position: relative;">
+                                        <svg style="position: absolute; left: 0; top: 2px;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00BFA5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                        </svg>
+                                        Strong revenue growth exceeding industry averages indicates effective market positioning
+                                    </li>
+                                    <li style="margin-bottom: 16px; padding-left: 24px; position: relative;">
+                                        <svg style="position: absolute; left: 0; top: 2px;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFC107" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                        </svg>
+                                        Declining EBITDA margin requires investigation into cost structure
+                                    </li>
+                                    <li style="margin-bottom: 16px; padding-left: 24px; position: relative;">
+                                        <svg style="position: absolute; left: 0; top: 2px;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF5252" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                        </svg>
+                                        High customer concentration poses significant risk; top 3 customers represent 42% of revenue
+                                    </li>
+                                    <li style="padding-left: 24px; position: relative;">
+                                        <svg style="position: absolute; left: 0; top: 2px;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00BFA5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                        </svg>
+                                        R&D investment at 12.5% of revenue positions company well for future growth
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

@@ -1,0 +1,1843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DueDiligenceAI - CRM Systems Integration</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Color System */
+    :root {
+      --deep-navy: #0A2342;
+      --azure-blue: #2D72D9;
+      --slate-gray: #3C4858;
+      --mint-green: #00BFA5;
+      --coral-red: #FF5252;
+      --amber-yellow: #FFC107;
+      --light-blue: #E1F5FE;
+      --sky-blue: #81D4FA;
+      --dark-blue: #01579B;
+      --charcoal: #263238;
+      --medium-gray: #78909C;
+      --light-gray: #ECEFF1;
+      --white: #FFFFFF;
+      
+      /* Typography */
+      --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-display: 'Manrope', var(--font-primary);
+      --font-mono: 'JetBrains Mono', SFMono-Regular, Consolas, monospace;
+      
+      /* Spacing */
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 12px;
+      --space-lg: 16px;
+      --space-xl: 24px;
+      --space-2xl: 32px;
+      --space-3xl: 48px;
+      
+      /* Shadows */
+      --shadow-sm: 0px 1px 3px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0px 2px 6px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      
+      /* Border Radius */
+      --radius-sm: 2px;
+      --radius-md: 4px;
+      --radius-lg: 8px;
+    }
+
+    /* Global Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-primary);
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--slate-gray);
+      background-color: var(--light-gray);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-display);
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      line-height: 1.2;
+      font-weight: 800;
+      color: var(--deep-navy);
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      line-height: 1.2;
+      font-weight: 700;
+      color: var(--slate-gray);
+    }
+
+    h4 {
+      font-size: 1.125rem;
+      line-height: 1.4;
+      font-weight: 600;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-md);
+    }
+
+    /* Top Navigation */
+    .top-nav {
+      background-color: var(--white);
+      height: 64px;
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 var(--space-xl);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .top-nav-left, .top-nav-right {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--deep-navy);
+      margin-right: var(--space-2xl);
+    }
+
+    .logo svg {
+      margin-right: var(--space-sm);
+    }
+
+    .nav-items {
+      display: flex;
+    }
+
+    .nav-item {
+      padding: 0 var(--space-lg);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      color: var(--slate-gray);
+      cursor: pointer;
+      transition: color 0.15s;
+      position: relative;
+    }
+
+    .nav-item:hover {
+      color: var(--azure-blue);
+    }
+
+    .nav-item.active {
+      color: var(--azure-blue);
+    }
+
+    .nav-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--azure-blue);
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      background-color: var(--light-gray);
+      border-radius: 4px;
+      padding: 0 var(--space-md);
+      margin-right: var(--space-lg);
+      height: 36px;
+      width: 240px;
+    }
+
+    .search-bar input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 14px;
+      width: 100%;
+      margin-left: var(--space-xs);
+    }
+
+    .notifications, .user-profile {
+      margin-left: var(--space-lg);
+      cursor: pointer;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      background-color: var(--azure-blue);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    /* Breadcrumbs */
+    .breadcrumbs {
+      display: flex;
+      padding: var(--space-md) var(--space-xl);
+      background-color: var(--white);
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .breadcrumb-item {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: var(--medium-gray);
+    }
+
+    .breadcrumb-item:not(:last-child)::after {
+      content: '';
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2378909C' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 18l6-6-6-6'%3E%3C/path%3E%3C/svg%3E");
+      background-position: center;
+      background-repeat: no-repeat;
+      margin: 0 var(--space-sm);
+    }
+
+    .breadcrumb-item:last-child {
+      color: var(--charcoal);
+      font-weight: 500;
+    }
+
+    /* Main Layout */
+    .main-content {
+      padding: var(--space-xl);
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    /* Page Header */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-xl);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: var(--space-md);
+    }
+
+    /* Button Styles */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      border-radius: var(--radius-md);
+      font-weight: 500;
+      font-size: 14px;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .button .icon {
+      width: 18px;
+      height: 18px;
+      margin-right: var(--space-xs);
+    }
+
+    .primary {
+      background-color: var(--azure-blue);
+      color: var(--white);
+    }
+
+    .primary:hover {
+      background-color: #1A5DC7;
+    }
+
+    .secondary {
+      background-color: var(--white);
+      color: var(--azure-blue);
+      border: 1px solid var(--azure-blue);
+    }
+
+    .secondary:hover {
+      background-color: var(--light-blue);
+    }
+
+    .tertiary {
+      background-color: transparent;
+      color: var(--azure-blue);
+      padding: 8px 12px;
+    }
+
+    .tertiary:hover {
+      background-color: var(--light-blue);
+    }
+
+    .button-sm {
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+
+    .icon-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-md);
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+    }
+
+    .icon-button:hover {
+      background-color: var(--light-gray);
+    }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      stroke-width: 1.5;
+    }
+
+    /* Cards */
+    .card {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      margin-bottom: var(--space-xl);
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: var(--space-lg);
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+    }
+
+    .card-body {
+      padding: var(--space-lg);
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--light-gray);
+      margin-bottom: var(--space-xl);
+      background-color: var(--white);
+      border-radius: var(--radius-md) var(--radius-md) 0 0;
+    }
+
+    .tab {
+      padding: var(--space-md) var(--space-xl);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--slate-gray);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .tab:hover {
+      background-color: var(--light-blue);
+    }
+
+    .tab.active {
+      color: var(--azure-blue);
+    }
+
+    .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--azure-blue);
+    }
+
+    /* CRM Integrations Grid */
+    .integration-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: var(--space-lg);
+      margin-bottom: var(--space-xl);
+    }
+
+    .integration-card {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: var(--space-lg);
+      display: flex;
+      flex-direction: column;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      height: 100%;
+    }
+
+    .integration-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .integration-logo {
+      display: flex;
+      align-items: center;
+      margin-bottom: var(--space-md);
+      height: 48px;
+    }
+
+    .integration-logo img {
+      max-height: 48px;
+      max-width: 120px;
+    }
+
+    .integration-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-xs);
+    }
+
+    .integration-description {
+      font-size: 14px;
+      flex: 1;
+      margin-bottom: var(--space-md);
+    }
+
+    .integration-status {
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 12px;
+      width: fit-content;
+      margin-bottom: var(--space-md);
+    }
+
+    .status-connected {
+      background-color: rgba(0, 191, 165, 0.1);
+      color: var(--mint-green);
+    }
+
+    .status-available {
+      background-color: rgba(45, 114, 217, 0.1);
+      color: var(--azure-blue);
+    }
+
+    .status-setup {
+      background-color: rgba(255, 193, 7, 0.1);
+      color: var(--amber-yellow);
+    }
+
+    .integration-footer {
+      display: flex;
+      justify-content: space-between;
+      margin-top: auto;
+      align-items: center;
+    }
+
+    .integration-meta {
+      font-size: 12px;
+      color: var(--medium-gray);
+      display: flex;
+      align-items: center;
+    }
+
+    .status-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: var(--space-xs);
+    }
+
+    .status-active {
+      background-color: var(--mint-green);
+    }
+
+    .status-inactive {
+      background-color: var(--medium-gray);
+    }
+
+    /* CRM Configuration Section */
+    .connection-settings {
+      display: flex;
+      gap: var(--space-xl);
+      margin-bottom: var(--space-xl);
+    }
+
+    .settings-column {
+      flex: 1;
+    }
+
+    .settings-card {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      margin-bottom: var(--space-lg);
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: var(--space-lg);
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: rgba(45, 114, 217, 0.05);
+    }
+
+    .card-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+    }
+
+    .card-body {
+      padding: var(--space-lg);
+    }
+
+    /* Form Styles */
+    .form-group {
+      margin-bottom: var(--space-lg);
+    }
+
+    .form-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-xs);
+    }
+
+    .form-input {
+      width: 100%;
+      height: 40px;
+      padding: 0 var(--space-md);
+      border: 1px solid var(--light-gray);
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      color: var(--charcoal);
+      transition: border-color 0.15s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--azure-blue);
+    }
+
+    .form-select {
+      width: 100%;
+      height: 40px;
+      padding: 0 var(--space-md);
+      border: 1px solid var(--light-gray);
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      color: var(--charcoal);
+      background-color: var(--white);
+      transition: border-color 0.15s ease;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233C4858' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 16px;
+    }
+
+    .form-select:focus {
+      outline: none;
+      border-color: var(--azure-blue);
+    }
+
+    .input-group {
+      display: flex;
+      align-items: center;
+    }
+
+    .input-group .form-input {
+      flex: 1;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    .input-group .button {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      height: 40px;
+    }
+
+    .form-hint {
+      font-size: 12px;
+      color: var(--medium-gray);
+      margin-top: var(--space-xs);
+    }
+
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 36px;
+      height: 20px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--light-gray);
+      transition: .4s;
+      border-radius: 20px;
+    }
+
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 2px;
+      bottom: 2px;
+      background-color: var(--white);
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .toggle-slider {
+      background-color: var(--azure-blue);
+    }
+
+    input:checked + .toggle-slider:before {
+      transform: translateX(16px);
+    }
+
+    /* Field Mapping */
+    .field-mapping-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      margin-bottom: var(--space-md);
+    }
+
+    .field-mapping-table th, .field-mapping-table td {
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .field-mapping-table th {
+      font-weight: 600;
+      color: var(--deep-navy);
+      background-color: rgba(45, 114, 217, 0.05);
+    }
+
+    /* Data Sync History */
+    .sync-history-item {
+      display: flex;
+      justify-content: space-between;
+      padding: var(--space-md) 0;
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .sync-date {
+      font-size: 14px;
+      color: var(--deep-navy);
+    }
+
+    .sync-meta {
+      font-size: 12px;
+      color: var(--medium-gray);
+    }
+
+    .sync-status {
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 12px;
+    }
+
+    .sync-success {
+      background-color: rgba(0, 191, 165, 0.1);
+      color: var(--mint-green);
+    }
+
+    .sync-failure {
+      background-color: rgba(255, 82, 82, 0.1);
+      color: var(--coral-red);
+    }
+
+    /* Data Preview Section */
+    .data-preview {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      margin-bottom: var(--space-xl);
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .data-table th, .data-table td {
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .data-table th {
+      font-weight: 600;
+      color: var(--deep-navy);
+      background-color: rgba(45, 114, 217, 0.05);
+    }
+
+    .data-table tbody tr:hover {
+      background-color: rgba(45, 114, 217, 0.03);
+    }
+
+    .table-pagination {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-md) var(--space-lg);
+      border-top: 1px solid var(--light-gray);
+    }
+
+    .pagination-info {
+      font-size: 14px;
+      color: var(--medium-gray);
+    }
+
+    .pagination-controls {
+      display: flex;
+      gap: var(--space-xs);
+    }
+
+    .pagination-button {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--light-gray);
+      background-color: var(--white);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .pagination-button:hover {
+      background-color: var(--light-blue);
+      border-color: var(--azure-blue);
+    }
+
+    .pagination-button.active {
+      background-color: var(--azure-blue);
+      color: var(--white);
+      border-color: var(--azure-blue);
+    }
+
+    /* Badge Styles */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .badge-blue {
+      background-color: rgba(45, 114, 217, 0.1);
+      color: var(--azure-blue);
+    }
+
+    .badge-green {
+      background-color: rgba(0, 191, 165, 0.1);
+      color: var(--mint-green);
+    }
+
+    .badge-amber {
+      background-color: rgba(255, 193, 7, 0.1);
+      color: var(--amber-yellow);
+    }
+
+    .badge-red {
+      background-color: rgba(255, 82, 82, 0.1);
+      color: var(--coral-red);
+    }
+
+    /* Alert Styles */
+    .alert {
+      padding: var(--space-md) var(--space-lg);
+      border-radius: var(--radius-md);
+      margin-bottom: var(--space-lg);
+      display: flex;
+      align-items: center;
+    }
+
+    .alert-icon {
+      margin-right: var(--space-md);
+    }
+
+    .alert-content {
+      flex: 1;
+    }
+
+    .alert-title {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: var(--space-xs);
+    }
+
+    .alert-message {
+      font-size: 14px;
+    }
+
+    .alert-info {
+      background-color: rgba(45, 114, 217, 0.1);
+      border-left: 4px solid var(--azure-blue);
+    }
+
+    .alert-warning {
+      background-color: rgba(255, 193, 7, 0.1);
+      border-left: 4px solid var(--amber-yellow);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1024px) {
+      .connection-settings {
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .integration-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <div class="top-nav-left">
+      <div class="logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 8H16C20.4183 8 24 11.5817 24 16C24 20.4183 20.4183 24 16 24H8V8Z" fill="#0A2342"/>
+          <path d="M16 8H24V16C24 20.4183 20.4183 24 16 24V8Z" fill="#2D72D9"/>
+        </svg>
+        <span>DueDiligenceAI</span>
+      </div>
+      <div class="nav-items">
+        <div class="nav-item">Dashboard</div>
+        <div class="nav-item">Documents</div>
+        <div class="nav-item">Analysis</div>
+        <div class="nav-item">Reports</div>
+        <div class="nav-item active">Integration Hub</div>
+      </div>
+    </div>
+    <div class="top-nav-right">
+      <div class="search-bar">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <input type="text" placeholder="Search..." />
+      </div>
+      <div class="notifications">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 17H9M12 3V4M12 21V20M5.6 5.6L6.3 6.3M18.4 5.6L17.7 6.3M3 12H4M20 12H21M6 17.4V12C6 8.7 8.7 6 12 6C15.3 6 18 8.7 18 12V17.4H6Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="user-profile">
+        <div class="avatar">SK</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Breadcrumbs -->
+  <div class="breadcrumbs">
+    <div class="breadcrumb-item">Dashboard</div>
+    <div class="breadcrumb-item">Settings</div>
+    <div class="breadcrumb-item">Integration Hub</div>
+    <div class="breadcrumb-item">CRM Systems</div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1>CRM Systems Integration</h1>
+      <div class="header-actions">
+        <button class="button secondary">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 16.5V18.75C3 19.9926 4.00736 21 5.25 21H18.75C19.9926 21 21 19.9926 21 18.75V16.5M16.5 12L12 16.5M12 16.5L7.5 12M12 16.5V3" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Export Settings
+        </button>
+        <button class="button primary">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 6V12M12 12V18M12 12H18M12 12H6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Connect New CRM
+        </button>
+      </div>
+    </div>
+
+    <!-- Alert Info -->
+    <div class="alert alert-info">
+      <div class="alert-icon">
+        <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 16V12M12 8H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="alert-content">
+        <div class="alert-title">Data Privacy Notice</div>
+        <div class="alert-message">
+          When connecting CRM systems, we only access the data you explicitly authorize. All CRM connections are encrypted and follow the highest security standards.
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs Navigation -->
+    <div class="tabs">
+      <div class="tab active">Connected CRMs</div>
+      <div class="tab">Available Integrations</div>
+      <div class="tab">Data Mapping</div>
+      <div class="tab">Sync Settings</div>
+      <div class="tab">Logs & History</div>
+    </div>
+
+    <!-- Connected CRMs Section -->
+    <div class="integration-grid">
+      <!-- Salesforce Integration -->
+      <div class="integration-card">
+        <div class="integration-logo">
+          <img src="/api/placeholder/120/48" alt="Salesforce Logo" />
+        </div>
+        <div class="integration-title">Salesforce</div>
+        <div class="integration-description">
+          Enterprise sales CRM with accounts, contacts, opportunities and custom objects integrated with your due diligence process.
+        </div>
+        <div class="integration-status status-connected">
+          <div class="status-indicator status-active"></div>
+          Connected & Active
+        </div>
+        <div class="integration-footer">
+          <div class="integration-meta">
+            Last synced: 2 hours ago
+          </div>
+          <div>
+            <button class="button tertiary button-sm">
+              <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 16.5V18.75C3 19.9926 4.00736 21 5.25 21H18.75C19.9926 21 21 19.9926 21 18.75V16.5M12 15L12 3M12 3L16 7M12 3L8 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Sync Now
+            </button>
+            <button class="button tertiary button-sm">Configure</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Microsoft Dynamics Integration -->
+      <div class="integration-card">
+        <div class="integration-logo">
+          <img src="/api/placeholder/120/48" alt="Microsoft Dynamics Logo" />
+        </div>
+        <div class="integration-title">Microsoft Dynamics 365</div>
+        <div class="integration-description">
+          Comprehensive CRM with sales data, customer information, and marketing campaign results connected to your analysis platform.
+        </div>
+        <div class="integration-status status-connected">
+          <div class="status-indicator status-active"></div>
+          Connected & Active
+        </div>
+        <div class="integration-footer">
+          <div class="integration-meta">
+            Last synced: 1 day ago
+          </div>
+          <div>
+            <button class="button tertiary button-sm">
+              <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 16.5V18.75C3 19.9926 4.00736 21 5.25 21H18.75C19.9926 21 21 19.9926 21 18.75V16.5M12 15L12 3M12 3L16 7M12 3L8 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Sync Now
+            </button>
+            <button class="button tertiary button-sm">Configure</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pipedrive Integration -->
+      <div class="integration-card">
+        <div class="integration-logo">
+          <img src="/api/placeholder/120/48" alt="Pipedrive Logo" />
+        </div>
+        <div class="integration-title">Pipedrive</div>
+        <div class="integration-description">
+          Sales pipeline management with detailed deal progression tracking, contacts, and organization data for acquisition analysis.
+        </div>
+        <div class="integration-status status-setup">
+          <div class="status-indicator status-inactive"></div>
+          Setup in Progress
+        </div>
+        <div class="integration-footer">
+          <div class="integration-meta">
+            Connected 1 hour ago
+          </div>
+          <div>
+            <button class="button tertiary button-sm">Continue Setup</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Connect New CRM Card -->
+      <div class="integration-card" style="border: 2px dashed var(--light-gray); background-color: rgba(45, 114, 217, 0.03); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+        <div style="width: 48px; height: 48px; background-color: var(--azure-blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: var(--space-md);">
+          <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 6V12M12 12V18M12 12H18M12 12H6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div style="font-weight: 600; font-size: 16px; color: var(--deep-navy); margin-bottom: var(--space-xs);">Connect New CRM</div>
+        <div style="font-size: 14px; color: var(--slate-gray); margin-bottom: var(--space-lg);">
+          Add another CRM system to enhance your due diligence processes.
+        </div>
+        <button class="button secondary">Choose CRM Platform</button>
+      </div>
+    </div>
+
+    <!-- Salesforce Configuration Section -->
+    <h3 style="margin-bottom: var(--space-lg);">Salesforce Integration Configuration</h3>
+
+    <div class="connection-settings">
+      <div class="settings-column">
+        <!-- Connection Settings Card -->
+        <div class="settings-card">
+          <div class="card-header">
+            <div class="card-title">Connection Settings</div>
+            <button class="tertiary">Edit</button>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <div class="form-label">Connection Status</div>
+              <div style="display: flex; align-items: center; margin-top: var(--space-xs);">
+                <div style="width: 12px; height: 12px; border-radius: 50%; background-color: var(--mint-green); margin-right: var(--space-sm);"></div>
+                <span style="font-size: 14px;">Connected & Active</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Environment</div>
+              <div style="font-size: 14px;">Production</div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Instance URL</div>
+              <div style="font-size: 14px;">https://company.my.salesforce.com</div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Authentication Method</div>
+              <div style="font-size: 14px;">OAuth 2.0</div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Connected Account</div>
+              <div style="font-size: 14px;">integration@company.com</div>
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <div class="form-label">API Version</div>
+              <div style="font-size: 14px;">v56.0</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Data Sync Settings Card -->
+        <div class="settings-card">
+          <div class="card-header">
+            <div class="card-title">Data Sync Settings</div>
+            <button class="tertiary">Edit</button>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <div class="form-label">Sync Frequency</div>
+              <div style="font-size: 14px;">Every 6 hours</div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Last Sync</div>
+              <div style="font-size: 14px;">May 7, 2025, 10:24 AM</div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Next Scheduled Sync</div>
+              <div style="font-size: 14px;">May 7, 2025, 4:24 PM</div>
+            </div>
+            <div class="form-group">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="form-label">Real-time Updates</div>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="form-hint">Receive webhook notifications for record changes</div>
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="form-label">Auto-resolve Conflicts</div>
+                <label class="toggle-switch">
+                  <input type="checkbox" />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="form-hint">Automatically resolve data conflicts based on rules</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-column">
+        <!-- Object Sync Settings Card -->
+        <div class="settings-card">
+          <div class="card-header">
+            <div class="card-title">Object Sync Settings</div>
+            <button class="tertiary">Edit</button>
+          </div>
+          <div class="card-body">
+            <div style="margin-bottom: var(--space-md);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-sm);">
+                <div style="font-weight: 500; font-size: 14px;">Accounts</div>
+                <span class="badge badge-blue">7,245 records</span>
+              </div>
+              <div style="height: 8px; background-color: var(--light-gray); border-radius: 4px; overflow: hidden;">
+                <div style="height: 100%; width: 100%; background-color: var(--azure-blue);"></div>
+              </div>
+            </div>
+            <div style="margin-bottom: var(--space-md);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-sm);">
+                <div style="font-weight: 500; font-size: 14px;">Contacts</div>
+                <span class="badge badge-blue">22,813 records</span>
+              </div>
+              <div style="height: 8px; background-color: var(--light-gray); border-radius: 4px; overflow: hidden;">
+                <div style="height: 100%; width: 100%; background-color: var(--azure-blue);"></div>
+              </div>
+            </div>
+            <div style="margin-bottom: var(--space-md);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-sm);">
+                <div style="font-weight: 500; font-size: 14px;">Opportunities</div>
+                <span class="badge badge-blue">4,921 records</span>
+              </div>
+              <div style="height: 8px; background-color: var(--light-gray); border-radius: 4px; overflow: hidden;">
+                <div style="height: 100%; width: 100%; background-color: var(--azure-blue);"></div>
+              </div>
+            </div>
+            <div style="margin-bottom: var(--space-md);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-sm);">
+                <div style="font-weight: 500; font-size: 14px;">Tasks</div>
+                <span class="badge badge-amber">In Progress</span>
+              </div>
+              <div style="height: 8px; background-color: var(--light-gray); border-radius: 4px; overflow: hidden;">
+                <div style="height: 100%; width: 65%; background-color: var(--amber-yellow);"></div>
+              </div>
+            </div>
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-sm);">
+                <div style="font-weight: 500; font-size: 14px;">Custom Objects (2)</div>
+                <span class="badge badge-green">Active</span>
+              </div>
+              <div style="height: 8px; background-color: var(--light-gray); border-radius: 4px; overflow: hidden;">
+                <div style="height: 100%; width: 100%; background-color: var(--mint-green);"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sync History Card -->
+        <div class="settings-card">
+          <div class="card-header">
+            <div class="card-title">Recent Sync History</div>
+            <button class="tertiary">View All</button>
+          </div>
+          <div class="card-body">
+            <div class="sync-history-item">
+              <div>
+                <div class="sync-date">May 7, 2025, 10:24 AM</div>
+                <div class="sync-meta">35,275 records synced • 1.8 minutes</div>
+              </div>
+              <div class="sync-status sync-success">
+                <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Success
+              </div>
+            </div>
+            <div class="sync-history-item">
+              <div>
+                <div class="sync-date">May 7, 2025, 4:22 AM</div>
+                <div class="sync-meta">35,269 records synced • 1.7 minutes</div>
+              </div>
+              <div class="sync-status sync-success">
+                <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Success
+              </div>
+            </div>
+            <div class="sync-history-item">
+              <div>
+                <div class="sync-date">May 6, 2025, 10:22 PM</div>
+                <div class="sync-meta">35,244 records synced • 1.9 minutes</div>
+              </div>
+              <div class="sync-status sync-success">
+                <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Success
+              </div>
+            </div>
+            <div class="sync-history-item">
+              <div>
+                <div class="sync-date">May 6, 2025, 4:21 PM</div>
+                <div class="sync-meta">Partial sync failure • 0.8 minutes</div>
+              </div>
+              <div class="sync-status sync-failure">
+                <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0378 2.66667 10.268 4L3.33978 16C2.56998 17.3333 3.53223 19 5.07183 19Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Error
+              </div>
+            </div>
+            <div class="sync-history-item" style="border-bottom: none;">
+              <div>
+                <div class="sync-date">May 6, 2025, 10:22 AM</div>
+                <div class="sync-meta">35,210 records synced • 1.7 minutes</div>
+              </div>
+              <div class="sync-status sync-success">
+                <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Success
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Field Mapping Section -->
+    <h4>Field Mapping</h4>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Account Object Mapping</div>
+        <button class="tertiary">Edit Mapping</button>
+      </div>
+      <div class="card-body">
+        <table class="field-mapping-table">
+          <thead>
+            <tr>
+              <th>Salesforce Field</th>
+              <th>DueDiligenceAI Field</th>
+              <th>Data Type</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Id</td>
+              <td>salesforce_id</td>
+              <td>String</td>
+              <td><span class="badge badge-green">Mapped</span></td>
+            </tr>
+            <tr>
+              <td>Name</td>
+              <td>company_name</td>
+              <td>String</td>
+              <td><span class="badge badge-green">Mapped</span></td>
+            </tr>
+            <tr>
+              <td>Industry</td>
+              <td>industry</td>
+              <td>Picklist</td>
+              <td><span class="badge badge-green">Mapped</span></td>
+            </tr>
+            <tr>
+              <td>AnnualRevenue</td>
+              <td>annual_revenue</td>
+              <td>Currency</td>
+              <td><span class="badge badge-green">Mapped</span></td>
+            </tr>
+            <tr>
+              <td>NumberOfEmployees</td>
+              <td>employee_count</td>
+              <td>Integer</td>
+              <td><span class="badge badge-green">Mapped</span></td>
+            </tr>
+            <tr>
+              <td>BillingAddress</td>
+              <td>headquarters_address</td>
+              <td>Address</td>
+              <td><span class="badge badge-green">Mapped</span></td>
+            </tr>
+            <tr>
+              <td>Website</td>
+              <td>website_url</td>
+              <td>URL</td>
+              <td><span class="badge badge-green">Mapped</span></td>
+            </tr>
+            <tr>
+              <td>Description</td>
+              <td>company_description</td>
+              <td>Text Area</td>
+              <td><span class="badge badge-green">Mapped</span></td>
+            </tr>
+            <tr>
+              <td>Rating</td>
+              <td>customer_rating</td>
+              <td>Picklist</td>
+              <td><span class="badge badge-green">Mapped</span></td>
+            </tr>
+            <tr>
+              <td>CustomerPriority__c</td>
+              <td>priority_level</td>
+              <td>Custom Picklist</td>
+              <td><span class="badge badge-amber">Custom</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Data Preview Section -->
+    <h4>Data Preview</h4>
+    <div class="data-preview">
+      <div class="card-header">
+        <div class="card-title">Account Records (Sample)</div>
+        <div style="display: flex; gap: var(--space-md);">
+          <div style="display: flex; align-items: center;">
+            <label for="object-select" style="font-size: 14px; margin-right: var(--space-xs);">Object:</label>
+            <select id="object-select" class="form-select" style="width: 160px; height: 32px;">
+              <option value="account">Account</option>
+              <option value="contact">Contact</option>
+              <option value="opportunity">Opportunity</option>
+              <option value="task">Task</option>
+            </select>
+          </div>
+          <button class="button tertiary">
+            <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 16.5V18.75C3 19.9926 4.00736 21 5.25 21H18.75C19.9926 21 21 19.9926 21 18.75V16.5M16.5 12L12 16.5M12 16.5L7.5 12M12 16.5V3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Export CSV
+          </button>
+        </div>
+      </div>
+      <div style="overflow-x: auto;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Industry</th>
+              <th>Annual Revenue</th>
+              <th>Employees</th>
+              <th>Rating</th>
+              <th>Location</th>
+              <th>Last Modified</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Acme Corporation</td>
+              <td>Manufacturing</td>
+              <td>$245,000,000</td>
+              <td>1,850</td>
+              <td>Hot</td>
+              <td>Chicago, IL</td>
+              <td>May 5, 2025</td>
+            </tr>
+            <tr>
+              <td>Global Dynamics</td>
+              <td>Technology</td>
+              <td>$890,600,000</td>
+              <td>4,230</td>
+              <td>Hot</td>
+              <td>San Jose, CA</td>
+              <td>May 6, 2025</td>
+            </tr>
+            <tr>
+              <td>Stark Industries</td>
+              <td>Technology</td>
+              <td>$1,245,000,000</td>
+              <td>6,700</td>
+              <td>Hot</td>
+              <td>New York, NY</td>
+              <td>May 7, 2025</td>
+            </tr>
+            <tr>
+              <td>Wayne Enterprises</td>
+              <td>Manufacturing</td>
+              <td>$980,000,000</td>
+              <td>5,200</td>
+              <td>Hot</td>
+              <td>Gotham City, NJ</td>
+              <td>May 5, 2025</td>
+            </tr>
+            <tr>
+              <td>LexCorp</td>
+              <td>Technology</td>
+              <td>$750,300,000</td>
+              <td>3,800</td>
+              <td>Warm</td>
+              <td>Metropolis, DE</td>
+              <td>May 3, 2025</td>
+            </tr>
+            <tr>
+              <td>Umbrella Corporation</td>
+              <td>Pharmaceuticals</td>
+              <td>$560,700,000</td>
+              <td>2,900</td>
+              <td>Warm</td>
+              <td>Raccoon City, WA</td>
+              <td>May 4, 2025</td>
+            </tr>
+            <tr>
+              <td>Oscorp Industries</td>
+              <td>Biotechnology</td>
+              <td>$420,500,000</td>
+              <td>2,100</td>
+              <td>Warm</td>
+              <td>New York, NY</td>
+              <td>May 2, 2025</td>
+            </tr>
+            <tr>
+              <td>Weyland-Yutani Corp</td>
+              <td>Manufacturing</td>
+              <td>$680,200,000</td>
+              <td>3,400</td>
+              <td>Cold</td>
+              <td>San Francisco, CA</td>
+              <td>May 1, 2025</td>
+            </tr>
+            <tr>
+              <td>Soylent Corporation</td>
+              <td>Food Processing</td>
+              <td>$310,800,000</td>
+              <td>1,600</td>
+              <td>Cold</td>
+              <td>New York, NY</td>
+              <td>Apr 30, 2025</td>
+            </tr>
+            <tr>
+              <td>Tyrell Corporation</td>
+              <td>Biotechnology</td>
+              <td>$390,100,000</td>
+              <td>1,900</td>
+              <td>Cold</td>
+              <td>Los Angeles, CA</td>
+              <td>Apr 29, 2025</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-pagination">
+        <div class="pagination-info">Showing 1-10 of 7,245 records</div>
+        <div class="pagination-controls">
+          <button class="pagination-button">
+            <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <button class="pagination-button active">1</button>
+          <button class="pagination-button">2</button>
+          <button class="pagination-button">3</button>
+          <button class="pagination-button">4</button>
+          <button class="pagination-button">5</button>
+          <button class="pagination-button">
+            <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Advanced Integration Settings -->
+    <h4>Advanced Integration Settings</h4>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Salesforce Integration Advanced Settings</div>
+        <button class="tertiary">Edit</button>
+      </div>
+      <div class="card-body">
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--space-xl);">
+          <!-- Webhook Configuration -->
+          <div>
+            <h4 style="font-size: 16px; margin-bottom: var(--space-md);">Webhook Configuration</h4>
+            <div class="form-group">
+              <div class="form-label">Webhook URL</div>
+              <div class="input-group">
+                <input type="text" class="form-input" value="https://api.duediligenceai.com/webhooks/salesforce/abc123" readonly />
+                <button class="button secondary">
+                  <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 5H6C4.89543 5 4 5.89543 4 7V19C4 20.1046 4.89543 21 6 21H16C17.1046 21 18 20.1046 18 19V18M8 5C8 6.10457 8.89543 7 10 7H12C13.1046 7 14 6.10457 14 5M8 5C8 3.89543 8.89543 3 10 3H12C13.1046 3 14 3.89543 14 5M14 5H16C17.1046 5 18 5.89543 18 7V10M20 14H10M10 14L13 11M10 14L13 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Copy
+                </button>
+              </div>
+              <div class="form-hint">Use this URL in Salesforce to configure outbound messages</div>
+            </div>
+            <div class="form-group">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="form-label">Real-time Account Updates</div>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="form-label">Real-time Contact Updates</div>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="form-label">Real-time Opportunity Updates</div>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Data Filtering -->
+          <div>
+            <h4 style="font-size: 16px; margin-bottom: var(--space-md);">Data Filtering</h4>
+            <div class="form-group">
+              <div class="form-label">Account Import Filter</div>
+              <input type="text" class="form-input" value="LastModifiedDate >= LAST_N_DAYS:90" />
+              <div class="form-hint">SOQL filter condition for Account sync</div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Contact Import Filter</div>
+              <input type="text" class="form-input" value="LastModifiedDate >= LAST_N_DAYS:90" />
+              <div class="form-hint">SOQL filter condition for Contact sync</div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Opportunity Import Filter</div>
+              <input type="text" class="form-input" value="LastModifiedDate >= LAST_N_DAYS:180 AND StageName != 'Closed Lost'" />
+              <div class="form-hint">SOQL filter condition for Opportunity sync</div>
+            </div>
+          </div>
+
+          <!-- Error Handling -->
+          <div>
+            <h4 style="font-size: 16px; margin-bottom: var(--space-md);">Error Handling</h4>
+            <div class="form-group">
+              <div class="form-label">Error Notification Email</div>
+              <input type="email" class="form-input" value="integrations@company.com" />
+            </div>
+            <div class="form-group">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="form-label">Auto-Retry Failed Syncs</div>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="form-hint">Automatically retry failed sync operations</div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Max Retry Attempts</div>
+              <select class="form-select">
+                <option>1</option>
+                <option>2</option>
+                <option selected>3</option>
+                <option>5</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="form-label">Sync Error Dashboard Alerts</div>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="form-hint">Show sync errors in the admin dashboard</div>
+            </div>
+          </div>
+
+          <!-- Rate Limiting -->
+          <div>
+            <h4 style="font-size: 16px; margin-bottom: var(--space-md);">API Rate Limiting</h4>
+            <div class="form-group">
+              <div class="form-label">Max API Calls per Day</div>
+              <input type="number" class="form-input" value="100000" />
+              <div class="form-hint">Default: 100,000 (Salesforce Enterprise limit)</div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Batch Size</div>
+              <select class="form-select">
+                <option>100</option>
+                <option>200</option>
+                <option selected>500</option>
+                <option>1000</option>
+                <option>2000</option>
+              </select>
+              <div class="form-hint">Number of records per API batch request</div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Rate Limiting Strategy</div>
+              <select class="form-select">
+                <option>Conservative (Slow & Safe)</option>
+                <option selected>Balanced</option>
+                <option>Aggressive (Fast & Risky)</option>
+              </select>
+              <div class="form-hint">Controls API call rate and error handling</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Integration Security -->
+    <h4>Integration Security</h4>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Security and Compliance</div>
+        <button class="tertiary">Edit</button>
+      </div>
+      <div class="card-body">
+        <div class="alert alert-info" style="margin-bottom: var(--space-xl);">
+          <div class="alert-icon">
+            <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 16V12M12 8H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="alert-content">
+            <div class="alert-title">Data Privacy and Compliance Information</div>
+            <div class="alert-message">
+              All data exchanged with Salesforce is encrypted in transit and at rest. Personal data is handled in compliance with GDPR, CCPA, and other applicable regulations. Access is restricted based on user roles and permissions.
+            </div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--space-xl);">
+          <!-- Data Encryption -->
+          <div>
+            <h4 style="font-size: 16px; margin-bottom: var(--space-md);">Data Encryption</h4>
+            <div class="form-group">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="form-label">Encrypt Data at Rest</div>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="form-hint">AES-256 encryption for stored CRM data</div>
+            </div>
+            <div class="form-group">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="form-label">Encrypt Data in Transit</div>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked disabled />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="form-hint">TLS 1.3 encryption (Required)</div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Key Rotation Schedule</div>
+              <select class="form-select">
+                <option>Never</option>
+                <option>Yearly</option>
+                <option selected>Quarterly</option>
+                <option>Monthly</option>
+              </select>
+              <div class="form-hint">Encryption key rotation frequency</div>
+            </div>
+          </div>
+
+          <!-- Access Control -->
+          <div>
+            <h4 style="font-size: 16px; margin-bottom: var(--space-md);">Access Control</h4>
+            <div class="form-group">
+              <div class="form-label">Access Level</div>
+              <select class="form-select">
+                <option>Read-Only</option>
+                <option selected>Read-Write</option>
+                <option>Full Admin</option>
+              </select>
+              <div class="form-hint">Controls what operations are allowed</div>
+            </div>
+            <div class="form-group">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="form-label">IP Restrictions</div>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="form-hint">Restrict API access to authorized IPs</div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Authorized IP Addresses</div>
+              <textarea class="form-input" style="height: 80px;">192.168.1.1/24
+203.0.113.0/24</textarea>
+              <div class="form-hint">Enter one IP or CIDR range per line</div>
+            </div>
+          </div>
+
+          <!-- Data Retention -->
+          <div>
+            <h4 style="font-size: 16px; margin-bottom: var(--space-md);">Data Retention</h4>
+            <div class="form-group">
+              <div class="form-label">Data Retention Period</div>
+              <select class="form-select">
+                <option>30 days</option>
+                <option>90 days</option>
+                <option selected>1 year</option>
+                <option>3 years</option>
+                <option>Indefinite</option>
+              </select>
+              <div class="form-hint">How long to keep historical data</div>
+            </div>
+            <div class="form-group">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="form-label">Automated Data Purging</div>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="form-hint">Automatically purge data past retention period</div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Data Anonymization</div>
+              <select class="form-select">
+                <option>None</option>
+                <option>Basic</option>
+                <option selected>Enhanced</option>
+                <option>Full</option>
+              </select>
+              <div class="form-hint">Level of PII anonymization</div>
+            </div>
+          </div>
+
+          <!-- Audit Logging -->
+          <div>
+            <h4 style="font-size: 16px; margin-bottom: var(--space-md);">Audit Logging</h4>
+            <div class="form-group">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="form-label">Enable Audit Logging</div>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="form-hint">Track all integration activities</div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Log Retention Period</div>
+              <select class="form-select">
+                <option>30 days</option>
+                <option>90 days</option>
+                <option>6 months</option>
+                <option selected>1 year</option>
+                <option>2 years</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="form-label">Detailed Access Logging</div>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="form-hint">Log detailed info about each access</div>
+            </div>
+            <div class="form-group">
+              <button class="button secondary" style="width: 100%;">
+                <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 16.5V18.75C3 19.9926 4.00736 21 5.25 21H18.75C19.9926 21 21 19.9926 21 18.75V16.5M16.5 12L12 16.5M12 16.5L7.5 12M12 16.5V3" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Export Audit Logs
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Integration Actions -->
+    <div style="display: flex; justify-content: flex-end; gap: var(--space-md); margin-bottom: var(--space-2xl);">
+      <button class="button secondary">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 16.5V18.75C3 19.9926 4.00736 21 5.25 21H18.75C19.9926 21 21 19.9926 21 18.75V16.5M16.5 12L12 16.5M12 16.5L7.5 12M12 16.5V3" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Export Configuration
+      </button>
+      <button class="button secondary">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 15L12 3M12 3L16 7M12 3L8 7M3 15V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V15" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Force Full Sync
+      </button>
+      <button class="button secondary">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 15V17M12 7V13M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#FF5252" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Disconnect Integration
+      </button>
+      <button class="button primary">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5 12L9 16L19 6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Save All Changes
+      </button>
+    </div>
+  </div>
+</body>
+</html>

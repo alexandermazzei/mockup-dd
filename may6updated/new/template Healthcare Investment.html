@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DueDiligenceAI - Healthcare Investment Template</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Color System */
+    :root {
+      --deep-navy: #0A2342;
+      --azure-blue: #2D72D9;
+      --slate-gray: #3C4858;
+      --mint-green: #00BFA5;
+      --coral-red: #FF5252;
+      --amber-yellow: #FFC107;
+      --light-blue: #E1F5FE;
+      --sky-blue: #81D4FA;
+      --light-gray: #F5F7FA;
+      --medium-gray: #B0BEC5;
+      --dark-gray: #78909C;
+      --white: #FFFFFF;
+      --healthcare-blue: #3399CC;
+      --healthcare-green: #66CC99;
+      --healthcare-purple: #9966CC;
+      --healthcare-teal: #339999;
+      
+      /* Spacing */
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 16px;
+      --space-lg: 24px;
+      --space-xl: 32px;
+      --space-2xl: 48px;
+      --space-3xl: 64px;
+      
+      /* Shadows */
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+      --shadow-md: 0 4px 6px rgba(0,0,0,0.07);
+      --shadow-lg: 0 10px 15px rgba(0,0,0,0.05);
+      
+      /* Border Radius */
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+    }
+    
+    /* Global Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--slate-gray);
+      background-color: var(--light-gray);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    
+    /* Layout */
+    .app-container {
+      display: flex;
+      min-height: 100vh;
+    }
+    
+    .sidebar {
+      width: 250px;
+      background-color: var(--white);
+      border-right: 1px solid rgba(0,0,0,0.08);
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+    
+    .sidebar.collapsed {
+      width: 80px;
+    }
+    
+    #main {
+      margin-left: 250px;
+      width: calc(100% - 250px);
+      transition: all 0.3s ease;
+    }
+    
+    #main.expanded {
+      margin-left: 80px;
+      width: calc(100% - 80px);
+    }
+    
+    .topbar {
+      height: 64px;
+      background-color: var(--white);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      display: flex;
+      align-items: center;
+      padding: 0 var(--space-xl);
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+    
+    .container {
+      padding: var(--space-xl) var(--space-2xl);
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+    
+    .main-content {
+      padding-bottom: var(--space-3xl);
+    }
+    
+    /* Sidebar */
+    .sidebar-header {
+      height: 64px;
+      display: flex;
+      align-items: center;
+      padding: 0 var(--space-xl);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      font-family: 'Manrope', sans-serif;
+      font-weight: 800;
+      font-size: 18px;
+      color: var(--deep-navy);
+    }
+    
+    .logo img, .logo svg {
+      width: 32px;
+      height: 32px;
+      margin-right: var(--space-md);
+    }
+    
+    .logo-text {
+      white-space: nowrap;
+      overflow: hidden;
+      transition: opacity 0.3s ease;
+    }
+    
+    .sidebar.collapsed .logo-text {
+      opacity: 0;
+      width: 0;
+    }
+    
+    .nav-section {
+      padding: var(--space-lg) 0;
+    }
+    
+    .nav-section-title {
+      padding: 0 var(--space-xl);
+      margin-bottom: var(--space-md);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--dark-gray);
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    
+    .sidebar.collapsed .nav-section-title {
+      opacity: 0;
+    }
+    
+    .nav-item {
+      display: flex;
+      align-items: center;
+      padding: var(--space-md) var(--space-xl);
+      color: var(--slate-gray);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    
+    .nav-item:hover {
+      background-color: var(--light-gray);
+    }
+    
+    .nav-item.active {
+      background-color: rgba(45, 114, 217, 0.1);
+      color: var(--azure-blue);
+    }
+    
+    .nav-item.active .icon path {
+      stroke: var(--azure-blue);
+    }
+    
+    .nav-icon {
+      width: 20px;
+      height: 20px;
+      margin-right: var(--space-md);
+      flex-shrink: 0;
+    }
+    
+    .sidebar.collapsed .nav-text {
+      display: none;
+    }
+    
+    /* Typography */
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-lg);
+    }
+    
+    h2 {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-md);
+      margin-top: var(--space-xl);
+    }
+    
+    h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-md);
+      margin-top: var(--space-xl);
+    }
+    
+    p {
+      margin-bottom: var(--space-md);
+    }
+    
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--deep-navy);
+      margin-top: var(--space-2xl);
+      margin-bottom: var(--space-lg);
+    }
+    
+    /* Buttons */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      padding: var(--space-sm) var(--space-md);
+      border-radius: var(--radius-md);
+      font-weight: 500;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+      outline: none;
+    }
+    
+    .button .icon {
+      width: 16px;
+      height: 16px;
+      margin-right: var(--space-sm);
+    }
+    
+    .button.primary {
+      background-color: var(--azure-blue);
+      color: var(--white);
+    }
+    
+    .button.primary:hover {
+      background-color: #2661C0;
+    }
+    
+    .button.secondary {
+      background-color: rgba(45, 114, 217, 0.1);
+      color: var(--azure-blue);
+    }
+    
+    .button.secondary:hover {
+      background-color: rgba(45, 114, 217, 0.15);
+    }
+    
+    .button.tertiary {
+      background-color: transparent;
+      color: var(--slate-gray);
+    }
+    
+    .button.tertiary:hover {
+      background-color: var(--light-gray);
+    }
+    
+    /* Card */
+    .card {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      margin-bottom: var(--space-xl);
+      overflow: hidden;
+    }
+    
+    .card-header {
+      padding: var(--space-lg);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    
+    .card-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+      display: flex;
+      align-items: center;
+    }
+    
+    .card-body {
+      padding: var(--space-xl);
+    }
+    
+    /* Topbar */
+    .topbar-left {
+      display: flex;
+      align-items: center;
+    }
+    
+    .sidebar-toggle {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      cursor: pointer;
+      margin-right: var(--space-md);
+    }
+    
+    .sidebar-toggle:hover {
+      background-color: var(--light-gray);
+    }
+    
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+    }
+    
+    .breadcrumb-item {
+      color: var(--dark-gray);
+      text-decoration: none;
+    }
+    
+    .breadcrumb-separator {
+      margin: 0 var(--space-sm);
+      color: var(--dark-gray);
+    }
+    
+    .breadcrumb-item.active {
+      color: var(--slate-gray);
+      font-weight: 500;
+    }
+    
+    .topbar-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+    }
+    
+    .user-menu {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+    
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background-color: var(--light-blue);
+      color: var(--azure-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      margin-right: var(--space-sm);
+    }
+    
+    .dropdown {
+      position: relative;
+    }
+    
+    .dropdown-toggle {
+      display: flex;
+      align-items: center;
+    }
+    
+    .dropdown-menu {
+      position: absolute;
+      right: 0;
+      top: 100%;
+      width: 200px;
+      background-color: var(--white);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      padding: var(--space-sm) 0;
+      display: none;
+      z-index: 20;
+    }
+    
+    .dropdown.active .dropdown-menu {
+      display: block;
+    }
+    
+    .dropdown-item {
+      padding: var(--space-sm) var(--space-md);
+      display: flex;
+      align-items: center;
+      color: var(--slate-gray);
+      text-decoration: none;
+    }
+    
+    .dropdown-item:hover {
+      background-color: var(--light-gray);
+    }
+    
+    .dropdown-item .icon {
+      width: 16px;
+      height: 16px;
+      margin-right: var(--space-sm);
+    }
+    
+    /* Page Header */
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-xl);
+    }
+    
+    .header-actions {
+      display: flex;
+      gap: var(--space-sm);
+    }
+
+    /* Template Card Styles */
+    .template-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--space-xl);
+      margin-bottom: var(--space-2xl);
+    }
+
+    .template-card {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      transition: all 0.2s ease-in-out;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .template-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .template-img {
+      height: 160px;
+      background-color: var(--light-gray);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--medium-gray);
+    }
+
+    .template-content {
+      padding: var(--space-lg);
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .template-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-sm);
+    }
+
+    .template-description {
+      color: var(--slate-gray);
+      font-size: 14px;
+      margin-bottom: var(--space-lg);
+      flex-grow: 1;
+    }
+
+    .template-meta {
+      display: flex;
+      justify-content: space-between;
+      color: var(--dark-gray);
+      font-size: 12px;
+      margin-bottom: var(--space-md);
+    }
+
+    .template-category {
+      display: flex;
+      align-items: center;
+    }
+
+    .template-category .icon {
+      width: 14px;
+      height: 14px;
+      margin-right: 4px;
+    }
+
+    .template-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: var(--space-sm);
+    }
+
+    /* Icons */
+    .icon {
+      width: 20px;
+      height: 20px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Navigation -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="sidebar-toggle" id="sidebar-toggle">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 6H20M4 12H20M4 18H20" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="breadcrumb">
+        <a href="#" class="breadcrumb-item">Templates</a>
+        <span class="breadcrumb-separator">/</span>
+        <span class="breadcrumb-item active">Healthcare Investment</span>
+      </div>
+    </div>
+    
+    <div class="topbar-right">
+      <div class="dropdown">
+        <div class="dropdown-toggle user-menu">
+          <div class="avatar">JD</div>
+          <span style="margin-right: 8px;">John Doe</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 6L8 10L12 6" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="dropdown-menu">
+          <a href="#" class="dropdown-item">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.5 21.0001H6.5C5.11929 21.0001 4 19.8808 4 18.5001C4 14.4194 10 14.5001 12 14.5001C14 14.5001 20 14.4194 20 18.5001C20 19.8808 18.8807 21.0001 17.5 21.0001Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Profile
+          </a>
+          <a href="#" class="dropdown-item">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M19.4 15C19.2669 15.3016 19.2272 15.6362 19.286 15.9606C19.3448 16.285 19.4995 16.5843 19.73 16.82L19.79 16.88C19.976 17.0657 20.1235 17.2863 20.2241 17.5291C20.3248 17.7719 20.3766 18.0322 20.3766 18.295C20.3766 18.5578 20.3248 18.8181 20.2241 19.0609C20.1235 19.3037 19.976 19.5243 19.79 19.71C19.6043 19.896 19.3837 20.0435 19.1409 20.1441C18.8981 20.2448 18.6378 20.2966 18.375 20.2966C18.1122 20.2966 17.8519 20.2448 17.6091 20.1441C17.3663 20.0435 17.1457 19.896 16.96 19.71L16.9 19.65C16.6643 19.4195 16.365 19.2648 16.0406 19.206C15.7162 19.1472 15.3816 19.1869 15.08 19.32C14.7842 19.4468 14.532 19.6572 14.3543 19.9255C14.1766 20.1938 14.0813 20.5082 14.08 20.83V21C14.08 21.5304 13.8693 22.0391 13.4942 22.4142C13.1191 22.7893 12.6104 23 12.08 23C11.5496 23 11.0409 22.7893 10.6658 22.4142C10.2907 22.0391 10.08 21.5304 10.08 21V20.91C10.0723 20.579 9.96512 20.258 9.77251 19.9887C9.5799 19.7194 9.31074 19.5143 9 19.4C8.69838 19.2669 8.36381 19.2272 8.03941 19.286C7.71502 19.3448 7.41568 19.4995 7.18 19.73L7.12 19.79C6.93425 19.976 6.71368 20.1235 6.47088 20.2241C6.22808 20.3248 5.96783 20.3766 5.705 20.3766C5.44217 20.3766 5.18192 20.3248 4.93912 20.2241C4.69632 20.1235 4.47575 19.976 4.29 19.79C4.10405 19.6043 3.95653 19.3837 3.85588 19.1409C3.75523 18.8981 3.70343 18.6378 3.70343 18.375C3.70343 18.1122 3.75523 17.8519 3.85588 17.6091C3.95653 17.3663 4.10405 17.1457 4.29 16.96L4.35 16.9C4.58054 16.6643 4.73519 16.365 4.794 16.0406C4.85282 15.7162 4.81312 15.3816 4.68 15.08C4.55324 14.7842 4.34276 14.532 4.07447 14.3543C3.80618 14.1766 3.49179 14.0813 3.17 14.08H3C2.46957 14.08 1.96086 13.8693 1.58579 13.4942C1.21071 13.1191 1 12.6104 1 12.08C1 11.5496 1.21071 11.0409 1.58579 10.6658C1.96086 10.2907 2.46957 10.08 3 10.08H3.09C3.42099 10.0723 3.742 9.96512 4.0113 9.77251C4.28059 9.5799 4.48572 9.31074 4.6 9C4.73312 8.69838 4.77282 8.36381 4.714 8.03941C4.65519 7.71502 4.50054 7.41568 4.27 7.18L4.21 7.12C4.02405 6.93425 3.87653 6.71368 3.77588 6.47088C3.67523 6.22808 3.62343 5.96783 3.62343 5.705C3.62343 5.44217 3.67523 5.18192 3.77588 4.93912C3.87653 4.69632 4.02405 4.47575 4.21 4.29C4.39575 4.10405 4.61632 3.95653 4.85912 3.85588C5.10192 3.75523 5.36217 3.70343 5.625 3.70343C5.88783 3.70343 6.14808 3.75523 6.39088 3.85588C6.63368 3.95653 6.85425 4.10405 7.04 4.29L7.1 4.35C7.33568 4.58054 7.63502 4.73519 7.95941 4.794C8.28381 4.85282 8.61838 4.81312 8.92 4.68H9C9.29577 4.55324 9.54802 4.34276 9.72569 4.07447C9.90337 3.80618 9.99872 3.49179 10 3.17V3C10 2.46957 10.2107 1.96086 10.5858 1.58579C10.9609 1.21071 11.4696 1 12 1C12.5304 1 13.0391 1.21071 13.4142 1.58579C13.7893 1.96086 14 2.46957 14 3V3.09C14.0013 3.41179 14.0966 3.72618 14.2743 3.99447C14.452 4.26276 14.7042 4.47324 15 4.6C15.3016 4.73312 15.6362 4.77282 15.9606 4.714C16.285 4.65519 16.5843 4.50054 16.82 4.27L16.88 4.21C17.0657 4.02405 17.2863 3.87653 17.5291 3.77588C17.7719 3.67523 18.0322 3.62343 18.295 3.62343C18.5578 3.62343 18.8181 3.67523 19.0609 3.77588C19.3037 3.87653 19.5243 4.02405 19.71 4.21C19.896 4.39575 20.0435 4.61632 20.1441 4.85912C20.2448 5.10192 20.2966 5.36217 20.2966 5.625C20.2966 5.88783 20.2448 6.14808 20.1441 6.39088C20.0435 6.63368 19.896 6.85425 19.71 7.04L19.65 7.1C19.4195 7.33568 19.2648 7.63502 19.206 7.95941C19.1472 8.28381 19.1869 8.61838 19.32 8.92V9C19.4468 9.29577 19.6572 9.54802 19.9255 9.72569C20.1938 9.90337 20.5082 9.99872 20.83 10H21C21.5304 10 22.0391 10.2107 22.4142 10.5858C22.7893 10.9609 23 11.4696 23 12C23 12.5304 22.7893 13.0391 22.4142 13.4142C22.0391 13.7893 21.5304 14 21 14H20.91C20.5882 14.0013 20.2738 14.0966 20.0055 14.2743C19.7372 14.452 19.5268 14.7042 19.4 15Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Settings
+          </a>
+          <a href="#" class="dropdown-item">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14 8V6C14 4.89543 13.1046 4 12 4H6C4.89543 4 4 4.89543 4 6V18C4 19.1046 4.89543 20 6 20H12C13.1046 20 14 19.1046 14 18V16M10 12H21M21 12L18 9M21 12L18 15" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Logout
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="container">
+    <div class="main-content">
+      <!-- Page Header -->
+      <div class="page-header">
+        <h1>Healthcare Investment Template</h1>
+        <div class="header-actions">
+          <button class="button secondary">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15 8H15.01M15.01 11V16M15.01 19H15.02M5 8C5 6.11438 5 5.17157 5.58579 4.58579C6.17157 4 7.11438 4 9 4H15C16.8856 4 17.8284 4 18.4142 4.58579C19 5.17157 19 6.11438 19 8V16C19 17.8856 19 18.8284 18.4142 19.4142C17.8284 20 16.8856 20 15 20H9C7.11438 20 6.17157 20 5.58579 19.4142C5 18.8284 5 17.8856 5 16V8Z" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Documentation
+          </button>
+          <button class="button primary">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 12H20M12 4V20" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Create New Project
+          </button>
+        </div>
+      </div>
+      
+      <!-- Template Description Card -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <svg class="icon" style="margin-right: 8px;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 16V12M12 8H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            About This Template
+          </div>
+        </div>
+        <div class="card-body">
+          <p>The Healthcare Investment template is designed to streamline the due diligence process for healthcare company investments, focusing on unique considerations related to regulatory compliance, clinical validation, reimbursement models, and intellectual property. This template provides a structured framework for evaluating healthcare assets, identifying potential regulatory challenges, and assessing the target company's market positioning and growth potential.</p>
+          <br>
+          <p>Use this template when your organization is considering investment in healthcare companies, including hospitals, clinics, digital health startups, medical device manufacturers, pharmaceutical companies, or biotechnology firms. The template includes specialized analysis modules to evaluate regulatory compliance, clinical efficacy, reimbursement strategies, and healthcare team capabilities.</p>
+        </div>
+      </div>
+
+      <!-- Template Sections -->
+      <h3 class="section-title">Template Modules</h3>
+      
+      <div class="template-grid">
+        <!-- Module 1: Regulatory Compliance Analysis -->
+        <div class="template-card">
+          <div class="template-img" style="background-color: rgba(51, 153, 204, 0.1);">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#3399CC" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="template-content">
+            <div class="template-title">Regulatory Compliance Analysis</div>
+            <div class="template-description">
+              Comprehensive analysis of the target company's compliance with healthcare regulations including FDA approvals, HIPAA compliance, and international regulatory considerations. Evaluates regulatory risks and future compliance requirements.
+            </div>
+            <div class="template-meta">
+              <div class="template-category">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10.75 8C10.75 8.41421 10.4142 8.75 10 8.75C9.58579 8.75 9.25 8.41421 9.25 8C9.25 7.58579 9.58579 7.25 10 7.25C10.4142 7.25 10.75 7.58579 10.75 8Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M14.75 8C14.75 8.41421 14.4142 8.75 14 8.75C13.5858 8.75 13.25 8.41421 13.25 8C13.25 7.58579 13.5858 7.25 14 7.25C14.4142 7.25 14.75 7.58579 14.75 8Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M14.75 16C14.75 16.4142 14.4142 16.75 14 16.75C13.5858 16.75 13.25 16.4142 13.25 16C13.25 15.5858 13.5858 15.25 14 15.25C14.4142 15.25 14.75 15.5858 14.75 16Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M10.75 16C10.75 16.4142 10.4142 16.75 10 16.75C9.58579 16.75 9.25 16.4142 9.25 16C9.25 15.5858 9.58579 15.25 10 15.25C10.4142 15.25 10.75 15.5858 10.75 16Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M7 4H17C19.2091 4 21 5.79086 21 8V16C21 18.2091 19.2091 20 17 20H7C4.79086 20 3 18.2091 3 16V8C3 5.79086 4.79086 4 7 4Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Regulatory
+              </div>
+              <div>16 Documents</div>
+            </div>
+            <div class="template-actions">
+              <button class="button tertiary">Preview</button>
+              <button class="button secondary">Select</button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Module 2: Clinical Validation Assessment -->
+        <div class="template-card">
+          <div class="template-img" style="background-color: rgba(102, 204, 153, 0.1);">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 14L12 12M12 12L14 10M12 12L10 10M12 12L14 14M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#66CC99" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="template-content">
+            <div class="template-title">Clinical Validation Assessment</div>
+            <div class="template-description">
+              In-depth analysis of clinical trial data, published research, and efficacy studies. Evaluates strength of clinical evidence, identifies gaps in validation, and assesses future clinical development needs.
+            </div>
+            <div class="template-meta">
+              <div class="template-category">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 14L12.01 14M9 6.99997H7C5.89543 6.99997 5 7.8954 5 8.99997V16C5 17.1045 5.89543 18 7 18H17C18.1046 18 19 17.1045 19 16V14M16 8L12 8M16 8C16 9.10457 15.1046 10 14 10H10C8.89543 10 8 9.10457 8 8C8 6.89543 8.89543 6 10 6H14C15.1046 6 16 6.89543 16 8Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Clinical
+              </div>
+              <div>12 Documents</div>
+            </div>
+            <div class="template-actions">
+              <button class="button tertiary">Preview</button>
+              <button class="button secondary">Select</button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Module 3: Market Analysis & Reimbursement -->
+        <div class="template-card">
+          <div class="template-img" style="background-color: rgba(153, 102, 204, 0.1);">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 3C8.25027 3 5.87221 7.50541 5.56723 8.28662C5.41599 8.65318 5.34037 8.83646 5.38628 9.10692C5.43219 9.37738 5.55004 9.52798 5.78574 9.82918C7.39422 11.8653 9.57048 12.75 12 12.75C14.4295 12.75 16.6057 11.8653 18.2142 9.82918C18.45 9.52798 18.5678 9.37738 18.6137 9.10692C18.6596 8.83646 18.584 8.65318 18.4328 8.28662C18.1278 7.50541 15.7497 3 12 3Z" stroke="#9966CC" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M14.2223 14.5C13.6422 16.5661 12.94 18 12 18C10.5 18 9.5 14.5 9 12.5M19.5 18L17.5 20M4.5 18L6.5 20" stroke="#9966CC" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="template-content">
+            <div class="template-title">Market Analysis & Reimbursement</div>
+            <div class="template-description">
+              Comprehensive market assessment including payer landscape analysis, reimbursement pathway evaluation, and pricing strategy review. Identifies market access challenges and revenue potential in key healthcare markets.
+            </div>
+            <div class="template-meta">
+              <div class="template-category">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 8V16" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M8 12H16" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Markets
+              </div>
+              <div>14 Documents</div>
+            </div>
+            <div class="template-actions">
+              <button class="button tertiary">Preview</button>
+              <button class="button secondary">Select</button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Module 4: IP & Technology Assessment -->
+        <div class="template-card">
+          <div class="template-img" style="background-color: rgba(51, 153, 153, 0.1);">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17 20C17 18.3431 14.7614 17 12 17C9.23858 17 7 18.3431 7 20M16 8C16 10.2091 14.2091 12 12 12C9.79086 12 8 10.2091 8 8C8 5.79086 9.79086 4 12 4C14.2091 4 16 5.79086 16 8ZM19 20C19 20 20 20 20 19C20 16.4323 16.7386 15 14 15M5 20C5 20 4 20 4 19C4 16.4323 7.26142 15 10 15M17 8C17 8 18 8 18 7C18 4.43232 14.7386 3 12 3M7 8C7 8 6 8 6 7C6 4.43232 9.26142 3 12 3" stroke="#339999" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="template-content">
+            <div class="template-title">IP & Technology Assessment</div>
+            <div class="template-description">
+              Evaluates the target company's intellectual property portfolio, including patents, trade secrets, and technology platform. Identifies IP strengths, gaps, competitive positioning, and future development pathways.
+            </div>
+            <div class="template-meta">
+              <div class="template-category">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 14C8.13401 14 5 17.134 5 21H19C19 17.134 15.866 14 12 14Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Technology
+              </div>
+              <div>10 Documents</div>
+            </div>
+            <div class="template-actions">
+              <button class="button tertiary">Preview</button>
+              <button class="button secondary">Select</button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Module 5: Financial Assessment -->
+        <div class="template-card">
+          <div class="template-img" style="background-color: rgba(255, 193, 7, 0.1);">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 7h.01M9 11h6a2 2 0 1 0 0-4h-3a2 2 0 1 1 0-4h3M12 19v-6M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" stroke="#FFC107" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="template-content">
+            <div class="template-title">Financial Assessment</div>
+            <div class="template-description">
+              Specialized financial evaluation for healthcare businesses including long R&D cycles, reimbursement analysis, and healthcare-specific revenue models. Projects future financial performance based on regulatory milestones.
+            </div>
+            <div class="template-meta">
+              <div class="template-category">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8 14V17M12 14V17M16 14V17M4 10H20M4 10V18C4 19.1046 4.89543 20 6 20H18C19.1046 20 20 19.1046 20 18V10M4 10V6C4 4.89543 4.89543 4 6 4H18C19.1046 4 20 4.89543 20 6V10M12 4V8" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Finance
+              </div>
+              <div>8 Documents</div>
+            </div>
+            <div class="template-actions">
+              <button class="button tertiary">Preview</button>
+              <button class="button secondary">Select</button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Module 6: Healthcare Team Assessment -->
+        <div class="template-card">
+          <div class="template-img" style="background-color: rgba(45, 114, 217, 0.1);">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 14H15M12 11V17M12 2C15.8137 2 19 5.18629 19 9C19 12.8137 15.8137 16 12 16C8.18629 16 5 12.8137 5 9C5 5.18629 8.18629 2 12 2ZM19 21L15.5 19L12 21L8.5 19L5 21V16L12 16L19 16V21Z" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="template-content">
+            <div class="template-title">Healthcare Team Assessment</div>
+            <div class="template-description">
+              Evaluates clinical expertise, regulatory experience, and healthcare-specific leadership capabilities. Assesses key opinion leader relationships, scientific advisory boards, and ability to navigate complex healthcare ecosystems.
+            </div>
+            <div class="template-meta">
+              <div class="template-category">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 3.5V2M14.5 3.5V2M9 21.5V20M14.5 21.5V20M3.5 9H2M3.5 14.5H2M21.5 9H20M21.5 14.5H20" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Leadership
+              </div>
+              <div>9 Documents</div>
+            </div>
+            <div class="template-actions">
+              <button class="button tertiary">Preview</button>
+              <button class="button secondary">Select</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Get Started Section -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <svg class="icon" style="margin-right: 8px;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Get Started
+          </div>
+        </div>
+        <div class="card-body">
+          <p>Select the modules you want to include in your healthcare investment due diligence project, then click "Create Project" to get started. You can customize the template further after project creation.</p>
+          <div style="display: flex; justify-content: flex-end; margin-top: var(--space-xl);">
+            <button class="button primary">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 5V19M5 12H19" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Create Project
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Related Templates Section -->
+      <h3 class="section-title">Related Templates</h3>
+      
+      <div class="template-grid" style="grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));">
+        <!-- Related Template 1 -->
+        <div class="template-card">
+          <div class="template-content" style="padding: var(--space-lg);">
+            <div class="template-title">Biotech Venture Capital Due Diligence</div>
+            <div class="template-description">
+              Specialized template for biotech investments focusing on scientific validation, IP strategy, and drug development milestones. Ideal for early-stage biotech startups.
+            </div>
+            <div class="template-actions" style="margin-top: var(--space-md);">
+              <button class="button secondary">View Template</button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Related Template 2 -->
+        <div class="template-card">
+          <div class="template-content" style="padding: var(--space-lg);">
+            <div class="template-title">Digital Health Assessment</div>
+            <div class="template-description">
+              Focused template for digital health technologies including telemedicine, health apps, and wearable devices. Includes privacy assessment, engagement metrics, and clinical workflow integration.
+            </div>
+            <div class="template-actions" style="margin-top: var(--space-md);">
+              <button class="button secondary">View Template</button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Related Template 3 -->
+        <div class="template-card">
+          <div class="template-content" style="padding: var(--space-lg);">
+            <div class="template-title">Healthcare Provider M&A</div>
+            <div class="template-description">
+              Specialized template for hospital and clinical practice acquisitions, focusing on provider credentials, patient satisfaction, quality metrics, and revenue cycle management.
+            </div>
+            <div class="template-actions" style="margin-top: var(--space-md);">
+              <button class="button secondary">View Template</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Toggle sidebar
+    document.getElementById('sidebar-toggle').addEventListener('click', function() {
+      document.getElementById('sidebar').classList.toggle('collapsed');
+      document.getElementById('main').classList.toggle('expanded');
+    });
+    
+    // Dropdown toggle
+    const dropdownToggleList = document.querySelectorAll('.dropdown-toggle');
+    dropdownToggleList.forEach(function(dropdown) {
+      dropdown.addEventListener('click', function(event) {
+        event.stopPropagation();
+        this.closest('.dropdown').classList.toggle('active');
+      });
+    });
+    
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function() {
+      const activeDropdowns = document.querySelectorAll('.dropdown.active');
+      activeDropdowns.forEach(function(dropdown) {
+        dropdown.classList.remove('active');
+      });
+    });
+  </script>
+</body>
+</html> 

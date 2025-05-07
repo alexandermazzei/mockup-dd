@@ -1,0 +1,2072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DueDiligenceAI - Document Management Integration</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Color System */
+    :root {
+      --deep-navy: #0A2342;
+      --azure-blue: #2D72D9;
+      --slate-gray: #3C4858;
+      --mint-green: #00BFA5;
+      --coral-red: #FF5252;
+      --amber-yellow: #FFC107;
+      --light-blue: #E1F5FE;
+      --sky-blue: #81D4FA;
+      --dark-blue: #01579B;
+      --charcoal: #263238;
+      --medium-gray: #78909C;
+      --light-gray: #ECEFF1;
+      --white: #FFFFFF;
+      
+      /* Typography */
+      --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-display: 'Manrope', var(--font-primary);
+      --font-mono: 'JetBrains Mono', SFMono-Regular, Consolas, monospace;
+      
+      /* Spacing */
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 12px;
+      --space-lg: 16px;
+      --space-xl: 24px;
+      --space-2xl: 32px;
+      --space-3xl: 48px;
+      
+      /* Shadows */
+      --shadow-sm: 0px 1px 3px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0px 2px 6px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      
+      /* Border Radius */
+      --radius-sm: 2px;
+      --radius-md: 4px;
+      --radius-lg: 8px;
+    }
+
+    /* Global Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-primary);
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--slate-gray);
+      background-color: var(--light-gray);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-display);
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      line-height: 1.2;
+      font-weight: 800;
+      color: var(--deep-navy);
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      line-height: 1.2;
+      font-weight: 700;
+      color: var(--slate-gray);
+    }
+
+    h4 {
+      font-size: 1.125rem;
+      line-height: 1.4;
+      font-weight: 600;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-md);
+    }
+
+    p {
+      margin-bottom: var(--space-md);
+    }
+
+    /* Top Navigation */
+    .top-nav {
+      background-color: var(--white);
+      height: 64px;
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 var(--space-xl);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .top-nav-left, .top-nav-right {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--deep-navy);
+      margin-right: var(--space-2xl);
+    }
+
+    .logo svg {
+      margin-right: var(--space-sm);
+    }
+
+    .nav-items {
+      display: flex;
+    }
+
+    .nav-item {
+      padding: 0 var(--space-lg);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      color: var(--slate-gray);
+      cursor: pointer;
+      transition: color 0.15s;
+      position: relative;
+    }
+
+    .nav-item:hover {
+      color: var(--azure-blue);
+    }
+
+    .nav-item.active {
+      color: var(--azure-blue);
+    }
+
+    .nav-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--azure-blue);
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      background-color: var(--light-gray);
+      border-radius: 4px;
+      padding: 0 var(--space-md);
+      margin-right: var(--space-lg);
+      height: 36px;
+      width: 240px;
+    }
+
+    .search-bar input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 14px;
+      width: 100%;
+      margin-left: var(--space-xs);
+    }
+
+    .notifications, .user-profile {
+      margin-left: var(--space-lg);
+      cursor: pointer;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      background-color: var(--azure-blue);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    /* Breadcrumbs */
+    .breadcrumbs {
+      display: flex;
+      padding: var(--space-md) var(--space-xl);
+      background-color: var(--white);
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .breadcrumb-item {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: var(--medium-gray);
+    }
+
+    .breadcrumb-item:not(:last-child)::after {
+      content: '';
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2378909C' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 18l6-6-6-6'%3E%3C/path%3E%3C/svg%3E");
+      background-position: center;
+      background-repeat: no-repeat;
+      margin: 0 var(--space-sm);
+    }
+
+    .breadcrumb-item:last-child {
+      color: var(--charcoal);
+      font-weight: 500;
+    }
+
+    /* Main Layout */
+    .main-content {
+      padding: var(--space-xl);
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    /* Page Header */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-xl);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: var(--space-md);
+    }
+
+    /* Button Styles */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      border-radius: var(--radius-md);
+      font-weight: 500;
+      font-size: 14px;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .button .icon {
+      width: 18px;
+      height: 18px;
+      margin-right: var(--space-xs);
+    }
+
+    .primary {
+      background-color: var(--azure-blue);
+      color: var(--white);
+    }
+
+    .primary:hover {
+      background-color: #1A5DC7;
+    }
+
+    .secondary {
+      background-color: var(--white);
+      color: var(--azure-blue);
+      border: 1px solid var(--azure-blue);
+    }
+
+    .secondary:hover {
+      background-color: var(--light-blue);
+    }
+
+    .tertiary {
+      background-color: transparent;
+      color: var(--azure-blue);
+      padding: 8px 12px;
+    }
+
+    .tertiary:hover {
+      background-color: var(--light-blue);
+    }
+
+    .button-sm {
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+
+    .icon-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-md);
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+    }
+
+    .icon-button:hover {
+      background-color: var(--light-gray);
+    }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      stroke-width: 1.5;
+    }
+
+    /* Cards */
+    .card {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      margin-bottom: var(--space-xl);
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: var(--space-lg);
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+    }
+
+    .card-body {
+      padding: var(--space-lg);
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--light-gray);
+      margin-bottom: var(--space-xl);
+      background-color: var(--white);
+      border-radius: var(--radius-md) var(--radius-md) 0 0;
+    }
+
+    .tab {
+      padding: var(--space-md) var(--space-xl);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--slate-gray);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .tab:hover {
+      background-color: var(--light-blue);
+    }
+
+    .tab.active {
+      color: var(--azure-blue);
+    }
+
+    .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--azure-blue);
+    }
+
+    /* Integration Grid */
+    .integration-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: var(--space-lg);
+      margin-bottom: var(--space-xl);
+    }
+
+    .integration-card {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: var(--space-lg);
+      display: flex;
+      flex-direction: column;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      height: 100%;
+    }
+
+    .integration-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .integration-logo {
+      display: flex;
+      align-items: center;
+      margin-bottom: var(--space-md);
+      height: 48px;
+    }
+
+    .integration-logo img {
+      max-height: 48px;
+      max-width: 120px;
+    }
+
+    .integration-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-xs);
+    }
+
+    .integration-description {
+      font-size: 14px;
+      flex: 1;
+      margin-bottom: var(--space-md);
+    }
+
+    .integration-status {
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 12px;
+      width: fit-content;
+      margin-bottom: var(--space-md);
+    }
+
+    .status-connected {
+      background-color: rgba(0, 191, 165, 0.1);
+      color: var(--mint-green);
+    }
+
+    .status-available {
+      background-color: rgba(45, 114, 217, 0.1);
+      color: var(--azure-blue);
+    }
+
+    .status-setup {
+      background-color: rgba(255, 193, 7, 0.1);
+      color: var(--amber-yellow);
+    }
+
+    .integration-footer {
+      display: flex;
+      justify-content: space-between;
+      margin-top: auto;
+      align-items: center;
+    }
+
+    .integration-meta {
+      font-size: 12px;
+      color: var(--medium-gray);
+      display: flex;
+      align-items: center;
+    }
+
+    .status-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: var(--space-xs);
+    }
+
+    .status-active {
+      background-color: var(--mint-green);
+    }
+
+    .status-inactive {
+      background-color: var(--medium-gray);
+    }
+
+    /* Features Grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: var(--space-lg);
+      margin-bottom: var(--space-xl);
+    }
+
+    .feature-card {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: var(--space-lg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background-color: var(--light-blue);
+      color: var(--azure-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--space-xs);
+    }
+
+    .feature-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+    }
+
+    .feature-description {
+      font-size: 14px;
+      color: var(--slate-gray);
+      flex: 1;
+    }
+
+    /* Form Styles */
+    .form-group {
+      margin-bottom: var(--space-lg);
+    }
+
+    .form-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-xs);
+    }
+
+    .form-input {
+      width: 100%;
+      height: 40px;
+      padding: 0 var(--space-md);
+      border: 1px solid var(--light-gray);
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      color: var(--charcoal);
+      transition: border-color 0.15s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--azure-blue);
+    }
+
+    .form-select {
+      width: 100%;
+      height: 40px;
+      padding: 0 var(--space-md);
+      border: 1px solid var(--light-gray);
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      color: var(--charcoal);
+      background-color: var(--white);
+      transition: border-color 0.15s ease;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233C4858' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 16px;
+    }
+
+    .form-select:focus {
+      outline: none;
+      border-color: var(--azure-blue);
+    }
+
+    .form-hint {
+      font-size: 12px;
+      color: var(--medium-gray);
+      margin-top: var(--space-xs);
+    }
+
+    /* Toggle Switch */
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 36px;
+      height: 20px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--light-gray);
+      transition: .4s;
+      border-radius: 20px;
+    }
+
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 2px;
+      bottom: 2px;
+      background-color: var(--white);
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .toggle-slider {
+      background-color: var(--azure-blue);
+    }
+
+    input:checked + .toggle-slider:before {
+      transform: translateX(16px);
+    }
+
+    /* Alert Styles */
+    .alert {
+      padding: var(--space-md) var(--space-lg);
+      border-radius: var(--radius-md);
+      margin-bottom: var(--space-lg);
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .alert-icon {
+      margin-right: var(--space-md);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .alert-content {
+      flex: 1;
+    }
+
+    .alert-title {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: var(--space-xs);
+    }
+
+    .alert-message {
+      font-size: 14px;
+    }
+
+    .alert-info {
+      background-color: rgba(45, 114, 217, 0.1);
+      border-left: 4px solid var(--azure-blue);
+    }
+
+    .alert-warning {
+      background-color: rgba(255, 193, 7, 0.1);
+      border-left: 4px solid var(--amber-yellow);
+    }
+
+    .alert-success {
+      background-color: rgba(0, 191, 165, 0.1);
+      border-left: 4px solid var(--mint-green);
+    }
+
+    /* Dashboard Cards */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--space-lg);
+      margin-bottom: var(--space-xl);
+    }
+
+    .dashboard-card {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: var(--space-lg);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .dashboard-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--space-md);
+    }
+
+    .dashboard-card-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+    }
+
+    .dashboard-card-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .metric-value {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-xs);
+    }
+
+    .metric-label {
+      font-size: 14px;
+      color: var(--medium-gray);
+      margin-bottom: var(--space-md);
+    }
+
+    .metric-chart {
+      flex: 1;
+      min-height: 120px;
+      background-color: var(--light-gray);
+      border-radius: var(--radius-md);
+      margin-bottom: var(--space-md);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .metric-comparison {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: var(--medium-gray);
+    }
+
+    .comparison-up {
+      color: var(--mint-green);
+    }
+
+    .comparison-down {
+      color: var(--coral-red);
+    }
+
+    /* Badge Styles */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .badge-blue {
+      background-color: rgba(45, 114, 217, 0.1);
+      color: var(--azure-blue);
+    }
+
+    .badge-green {
+      background-color: rgba(0, 191, 165, 0.1);
+      color: var(--mint-green);
+    }
+
+    .badge-amber {
+      background-color: rgba(255, 193, 7, 0.1);
+      color: var(--amber-yellow);
+    }
+
+    .badge-red {
+      background-color: rgba(255, 82, 82, 0.1);
+      color: var(--coral-red);
+    }
+
+    /* File Upload Component */
+    .file-upload {
+      border: 2px dashed var(--light-gray);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
+      text-align: center;
+      margin-bottom: var(--space-xl);
+      background-color: rgba(0, 0, 0, 0.01);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .file-upload:hover {
+      border-color: var(--azure-blue);
+      background-color: rgba(45, 114, 217, 0.03);
+    }
+
+    .upload-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background-color: var(--light-blue);
+      color: var(--azure-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto var(--space-md);
+    }
+
+    .upload-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-xs);
+    }
+
+    .upload-description {
+      font-size: 14px;
+      color: var(--medium-gray);
+      margin-bottom: var(--space-lg);
+    }
+
+    /* File List */
+    .file-list {
+      margin-bottom: var(--space-xl);
+    }
+
+    .file-item {
+      display: flex;
+      align-items: center;
+      padding: var(--space-md);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--light-gray);
+      margin-bottom: var(--space-sm);
+      background-color: var(--white);
+      transition: all 0.15s ease;
+    }
+
+    .file-item:hover {
+      border-color: var(--azure-blue);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .file-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-md);
+      background-color: var(--light-blue);
+      color: var(--azure-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: var(--space-md);
+      flex-shrink: 0;
+    }
+
+    .file-icon.pdf {
+      background-color: rgba(255, 82, 82, 0.1);
+      color: var(--coral-red);
+    }
+
+    .file-icon.doc {
+      background-color: rgba(45, 114, 217, 0.1);
+      color: var(--azure-blue);
+    }
+
+    .file-icon.xls {
+      background-color: rgba(0, 191, 165, 0.1);
+      color: var(--mint-green);
+    }
+
+    .file-icon.ppt {
+      background-color: rgba(255, 193, 7, 0.1);
+      color: var(--amber-yellow);
+    }
+
+    .file-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .file-name {
+      font-weight: 500;
+      font-size: 14px;
+      color: var(--deep-navy);
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .file-meta {
+      display: flex;
+      font-size: 12px;
+      color: var(--medium-gray);
+    }
+
+    .file-meta-item {
+      display: flex;
+      align-items: center;
+      margin-right: var(--space-md);
+    }
+
+    .file-meta-item .icon {
+      width: 14px;
+      height: 14px;
+      margin-right: 4px;
+    }
+
+    .file-actions {
+      display: flex;
+      gap: var(--space-sm);
+    }
+    
+    /* Document Preview */
+    .document-preview {
+      display: flex;
+      flex-direction: column;
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      margin-bottom: var(--space-xl);
+    }
+    
+    .preview-header {
+      padding: var(--space-md) var(--space-lg);
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .preview-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+      display: flex;
+      align-items: center;
+    }
+    
+    .preview-title .icon {
+      margin-right: var(--space-sm);
+    }
+    
+    .preview-actions {
+      display: flex;
+      gap: var(--space-sm);
+    }
+    
+    .preview-content {
+      height: 400px;
+      background-color: var(--light-gray);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-lg);
+      position: relative;
+    }
+    
+    .preview-placeholder {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    
+    .preview-footer {
+      padding: var(--space-md) var(--space-lg);
+      border-top: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .preview-pagination {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+    
+    .page-number {
+      font-size: 14px;
+      color: var(--medium-gray);
+    }
+    
+    /* Document Tags */
+    .document-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-xs);
+      margin-bottom: var(--space-md);
+    }
+    
+    .document-tag {
+      display: flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      background-color: var(--light-gray);
+      color: var(--slate-gray);
+    }
+    
+    .document-tag .icon {
+      width: 14px;
+      height: 14px;
+      margin-right: 4px;
+    }
+
+    /* Table Styles */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      margin-bottom: var(--space-lg);
+    }
+
+    .data-table th, .data-table td {
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .data-table th {
+      font-weight: 600;
+      color: var(--deep-navy);
+      background-color: rgba(45, 114, 217, 0.05);
+    }
+
+    .data-table tbody tr:hover {
+      background-color: rgba(45, 114, 217, 0.03);
+    }
+
+    /* Folders Tree */
+    .folders-tree {
+      margin-bottom: var(--space-xl);
+    }
+    
+    .folder-item {
+      margin-bottom: var(--space-xs);
+    }
+    
+    .folder-row {
+      display: flex;
+      align-items: center;
+      padding: var(--space-sm) var(--space-md);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: background-color 0.15s ease;
+    }
+    
+    .folder-row:hover {
+      background-color: var(--light-blue);
+    }
+    
+    .folder-row.active {
+      background-color: var(--light-blue);
+      font-weight: 500;
+      color: var(--azure-blue);
+    }
+    
+    .folder-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      margin-right: var(--space-xs);
+    }
+    
+    .folder-icon {
+      display: flex;
+      margin-right: var(--space-sm);
+      color: var(--amber-yellow);
+    }
+    
+    .folder-children {
+      margin-left: var(--space-xl);
+    }
+
+    /* Search Results */
+    .search-results {
+      margin-bottom: var(--space-xl);
+    }
+    
+    .result-item {
+      padding: var(--space-md);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--light-gray);
+      margin-bottom: var(--space-md);
+      background-color: var(--white);
+      transition: all 0.15s ease;
+    }
+    
+    .result-item:hover {
+      border-color: var(--azure-blue);
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .result-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-xs);
+    }
+    
+    .result-excerpt {
+      font-size: 14px;
+      color: var(--slate-gray);
+      margin-bottom: var(--space-sm);
+    }
+    
+    .result-meta {
+      display: flex;
+      font-size: 12px;
+      color: var(--medium-gray);
+    }
+    
+    .result-meta-item {
+      display: flex;
+      align-items: center;
+      margin-right: var(--space-md);
+    }
+    
+    .result-meta-item .icon {
+      width: 14px;
+      height: 14px;
+      margin-right: 4px;
+    }
+    
+    .highlight {
+      background-color: rgba(255, 193, 7, 0.2);
+      padding: 0 2px;
+      border-radius: 2px;
+    }
+
+    /* Document Management Specific */
+    .document-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-md);
+      margin-bottom: var(--space-xl);
+    }
+    
+    .filter-input {
+      flex: 1;
+      min-width: 300px;
+      position: relative;
+    }
+    
+    .filter-input input {
+      width: 100%;
+      height: 40px;
+      padding: 0 var(--space-md) 0 40px;
+      border: 1px solid var(--light-gray);
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      color: var(--charcoal);
+      transition: border-color 0.15s ease;
+    }
+    
+    .filter-input input:focus {
+      outline: none;
+      border-color: var(--azure-blue);
+    }
+    
+    .filter-input .icon {
+      position: absolute;
+      left: var(--space-md);
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--medium-gray);
+    }
+    
+    .filter-dropdown {
+      height: 40px;
+      min-width: 150px;
+      padding: 0 var(--space-md);
+      border: 1px solid var(--light-gray);
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      color: var(--charcoal);
+      background-color: var(--white);
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+      cursor: pointer;
+    }
+    
+    .filter-dropdown:hover {
+      border-color: var(--azure-blue);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1024px) {
+      .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .integration-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <div class="top-nav-left">
+      <div class="logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 8H16C20.4183 8 24 11.5817 24 16C24 20.4183 20.4183 24 16 24H8V8Z" fill="#0A2342"/>
+          <path d="M16 8H24V16C24 20.4183 20.4183 24 16 24V8Z" fill="#2D72D9"/>
+        </svg>
+        <span>DueDiligenceAI</span>
+      </div>
+      <div class="nav-items">
+        <div class="nav-item">Dashboard</div>
+        <div class="nav-item">Documents</div>
+        <div class="nav-item">Analysis</div>
+        <div class="nav-item">Reports</div>
+        <div class="nav-item active">Integration Hub</div>
+      </div>
+    </div>
+    <div class="top-nav-right">
+      <div class="search-bar">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <input type="text" placeholder="Search..." />
+      </div>
+      <div class="notifications">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 17H9M12 3V4M12 21V20M5.6 5.6L6.3 6.3M18.4 5.6L17.7 6.3M3 12H4M20 12H21M6 17.4V12C6 8.7 8.7 6 12 6C15.3 6 18 8.7 18 12V17.4H6Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="user-profile">
+        <div class="avatar">SK</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Breadcrumbs -->
+  <div class="breadcrumbs">
+    <div class="breadcrumb-item">Dashboard</div>
+    <div class="breadcrumb-item">Settings</div>
+    <div class="breadcrumb-item">Integration Hub</div>
+    <div class="breadcrumb-item">Document Management</div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1>Document Management Integration</h1>
+      <div class="header-actions">
+        <button class="button secondary">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 6H20M9 12H20M9 18H20M5 6V6.01M5 12V12.01M5 18V18.01" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          View Documentation
+        </button>
+        <button class="button primary">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 6V12M12 12V18M12 12H18M12 12H6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Connect Repository
+        </button>
+      </div>
+    </div>
+
+    <!-- Document Storage Metrics -->
+    <div class="dashboard-grid">
+      <!-- Total Documents Card -->
+      <div class="dashboard-card">
+        <div class="dashboard-card-header">
+          <div class="dashboard-card-title">Total Documents</div>
+          <div class="badge badge-blue">All Repositories</div>
+        </div>
+        <div class="dashboard-card-body">
+          <div class="metric-value">12,487</div>
+          <div class="metric-label">Documents Indexed</div>
+          <div class="metric-chart">
+            <svg viewBox="0 0 300 120" width="100%" height="100%" preserveAspectRatio="none">
+              <!-- Document Count Chart -->
+              <path d="M0,120 L0,100 L30,95 L60,85 L90,70 L120,60 L150,45 L180,35 L210,25 L240,20 L270,15 L300,10 L300,120 Z" fill="rgba(45, 114, 217, 0.1)"></path>
+              <path d="M0,100 L30,95 L60,85 L90,70 L120,60 L150,45 L180,35 L210,25 L240,20 L270,15 L300,10" stroke="#2D72D9" stroke-width="2" fill="none"></path>
+              
+              <!-- Data Points -->
+              <circle cx="0" cy="100" r="3" fill="#2D72D9"></circle>
+              <circle cx="30" cy="95" r="3" fill="#2D72D9"></circle>
+              <circle cx="60" cy="85" r="3" fill="#2D72D9"></circle>
+              <circle cx="90" cy="70" r="3" fill="#2D72D9"></circle>
+              <circle cx="120" cy="60" r="3" fill="#2D72D9"></circle>
+              <circle cx="150" cy="45" r="3" fill="#2D72D9"></circle>
+              <circle cx="180" cy="35" r="3" fill="#2D72D9"></circle>
+              <circle cx="210" cy="25" r="3" fill="#2D72D9"></circle>
+              <circle cx="240" cy="20" r="3" fill="#2D72D9"></circle>
+              <circle cx="270" cy="15" r="3" fill="#2D72D9"></circle>
+              <circle cx="300" cy="10" r="3" fill="#2D72D9"></circle>
+            </svg>
+          </div>
+          <div class="metric-comparison">
+            <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="comparison-up">+1,245 since last month</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Storage Usage Card -->
+      <div class="dashboard-card">
+        <div class="dashboard-card-header">
+          <div class="dashboard-card-title">Storage Usage</div>
+          <div class="badge badge-green">36% Used</div>
+        </div>
+        <div class="dashboard-card-body">
+          <div class="metric-value">54.3 GB</div>
+          <div class="metric-label">of 150 GB Used</div>
+          <div class="metric-chart">
+            <svg viewBox="0 0 300 120" width="100%" height="100%" preserveAspectRatio="none">
+              <!-- Storage Usage Background -->
+              <rect x="10" y="45" width="280" height="30" rx="15" fill="#ECEFF1"></rect>
+              
+              <!-- Storage Used -->
+              <rect x="10" y="45" width="100" height="30" rx="15" fill="#00BFA5"></rect>
+              
+              <!-- Storage Labels -->
+              <text x="20" y="65" font-family="Inter, sans-serif" font-size="12" fill="#FFFFFF">36%</text>
+              <text x="140" y="35" font-family="Inter, sans-serif" font-size="12" fill="#78909C">54.3 GB used of 150 GB total</text>
+            </svg>
+          </div>
+          <div class="metric-comparison">
+            <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="comparison-up">+6.8 GB since last month</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Document Types Card -->
+      <div class="dashboard-card">
+        <div class="dashboard-card-header">
+          <div class="dashboard-card-title">Document Types</div>
+          <div class="badge badge-blue">By Format</div>
+        </div>
+        <div class="dashboard-card-body">
+          <div class="metric-value">14</div>
+          <div class="metric-label">File Types Supported</div>
+          <div class="metric-chart">
+            <svg viewBox="0 0 300 120" width="100%" height="100%" preserveAspectRatio="none">
+              <!-- Document Types Chart -->
+              <path d="M150,60 L150,10 A50,50 0 0,1 190,20 Z" fill="#2D72D9" stroke="#FFFFFF" stroke-width="1"></path>
+              <path d="M150,60 L190,20 A50,50 0 0,1 190,100 Z" fill="#00BFA5" stroke="#FFFFFF" stroke-width="1"></path>
+              <path d="M150,60 L190,100 A50,50 0 0,1 130,115 Z" fill="#FFC107" stroke="#FFFFFF" stroke-width="1"></path>
+              <path d="M150,60 L130,115 A50,50 0 0,1 70,60 Z" fill="#FF5252" stroke="#FFFFFF" stroke-width="1"></path>
+              <path d="M150,60 L70,60 A50,50 0 0,1 150,10 Z" fill="#78909C" stroke="#FFFFFF" stroke-width="1"></path>
+              
+              <!-- Legend -->
+              <text x="220" y="25" font-family="Inter, sans-serif" font-size="10" fill="#2D72D9">PDF (42%)</text>
+              <text x="220" y="45" font-family="Inter, sans-serif" font-size="10" fill="#00BFA5">DOCX (27%)</text>
+              <text x="220" y="65" font-family="Inter, sans-serif" font-size="10" fill="#FFC107">XLSX (14%)</text>
+              <text x="220" y="85" font-family="Inter, sans-serif" font-size="10" fill="#FF5252">PPT (8%)</text>
+              <text x="220" y="105" font-family="Inter, sans-serif" font-size="10" fill="#78909C">Others (9%)</text>
+            </svg>
+          </div>
+          <div class="metric-comparison">
+            <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="comparison-up">+2 formats added this quarter</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search Performance Card -->
+      <div class="dashboard-card">
+        <div class="dashboard-card-header">
+          <div class="dashboard-card-title">Search Performance</div>
+          <div class="badge badge-green">Fast</div>
+        </div>
+        <div class="dashboard-card-body">
+          <div class="metric-value">0.8s</div>
+          <div class="metric-label">Average Search Time</div>
+          <div class="metric-chart">
+            <svg viewBox="0 0 300 120" width="100%" height="100%" preserveAspectRatio="none">
+              <!-- Performance Chart -->
+              <path d="M0,80 L30,60 L60,90 L90,75 L120,65 L150,40 L180,50 L210,30 L240,25 L270,45 L300,35" stroke="#00BFA5" stroke-width="2" fill="none"></path>
+              
+              <!-- Threshold Line -->
+              <path d="M0,70 L300,70" stroke="#FF5252" stroke-width="1" stroke-dasharray="4,4" fill="none"></path>
+              <text x="280" y="65" font-family="Inter, sans-serif" font-size="10" fill="#FF5252">Target</text>
+              
+              <!-- Data Points -->
+              <circle cx="0" cy="80" r="3" fill="#00BFA5"></circle>
+              <circle cx="30" cy="60" r="3" fill="#00BFA5"></circle>
+              <circle cx="60" cy="90" r="3" fill="#00BFA5"></circle>
+              <circle cx="90" cy="75" r="3" fill="#00BFA5"></circle>
+              <circle cx="120" cy="65" r="3" fill="#00BFA5"></circle>
+              <circle cx="150" cy="40" r="3" fill="#00BFA5"></circle>
+              <circle cx="180" cy="50" r="3" fill="#00BFA5"></circle>
+              <circle cx="210" cy="30" r="3" fill="#00BFA5"></circle>
+              <circle cx="240" cy="25" r="3" fill="#00BFA5"></circle>
+              <circle cx="270" cy="45" r="3" fill="#00BFA5"></circle>
+              <circle cx="300" cy="35" r="3" fill="#00BFA5"></circle>
+            </svg>
+          </div>
+          <div class="metric-comparison">
+            <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="comparison-up">25% faster than last quarter</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alert Info -->
+    <div class="alert alert-info">
+      <div class="alert-icon">
+        <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 16V12M12 8H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="alert-content">
+        <div class="alert-title">Document Integration Security</div>
+        <div class="alert-message">
+          All document connections adhere to enterprise-grade security standards with end-to-end encryption. Access controls are synced from source repositories, and all document operations are logged for compliance audit trails.
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs Navigation -->
+    <div class="tabs">
+      <div class="tab active">Connected Repositories</div>
+      <div class="tab">Document Search</div>
+      <div class="tab">OCR & Processing</div>
+      <div class="tab">Metadata Management</div>
+      <div class="tab">Access Controls</div>
+    </div>
+
+    <!-- Document Filtering -->
+    <div class="document-filters">
+      <div class="filter-input">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <input type="text" placeholder="Search documents, folders, or repositories..." />
+      </div>
+      <div class="filter-dropdown">
+        <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 6H20M9 12H20M9 18H20M5 6V6.01M5 12V12.01M5 18V18.01" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>All Repositories</span>
+      </div>
+      <div class="filter-dropdown">
+        <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M14 3v4a1 1 0 001 1h4M9.5 17v-2M9.5 9v2M14 13h-3M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>All Document Types</span>
+      </div>
+      <div class="filter-dropdown">
+        <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Last Modified</span>
+      </div>
+    </div>
+
+    <!-- Connected Document Repositories -->
+    <h4>Connected Document Repositories</h4>
+    <div class="integration-grid">
+      <!-- Google Drive Integration -->
+      <div class="integration-card">
+        <div class="integration-logo">
+          <img src="/api/placeholder/120/48" alt="Google Drive Logo" />
+        </div>
+        <div class="integration-title">Google Drive</div>
+        <div class="integration-description">
+          Access documents, spreadsheets, and presentations from your organization's Google Drive. Supports version history and collaborative editing.
+        </div>
+        <div class="integration-status status-connected">
+          <div class="status-indicator status-active"></div>
+          Connected
+        </div>
+        <div class="integration-footer">
+          <div class="integration-meta">5,482 documents synced</div>
+          <button class="button tertiary button-sm">Configure</button>
+        </div>
+      </div>
+
+      <!-- Microsoft SharePoint Integration -->
+      <div class="integration-card">
+        <div class="integration-logo">
+          <img src="/api/placeholder/120/48" alt="SharePoint Logo" />
+        </div>
+        <div class="integration-title">Microsoft SharePoint</div>
+        <div class="integration-description">
+          Connect to SharePoint libraries and document centers to access corporate documents, reports, and presentations with preserved permissions.
+        </div>
+        <div class="integration-status status-connected">
+          <div class="status-indicator status-active"></div>
+          Connected
+        </div>
+        <div class="integration-footer">
+          <div class="integration-meta">4,125 documents synced</div>
+          <button class="button tertiary button-sm">Configure</button>
+        </div>
+      </div>
+
+      <!-- Box Integration -->
+      <div class="integration-card">
+        <div class="integration-logo">
+          <img src="/api/placeholder/120/48" alt="Box Logo" />
+        </div>
+        <div class="integration-title">Box</div>
+        <div class="integration-description">
+          Connect to your enterprise Box account to access secure file storage, document workflows, and collaboration features.
+        </div>
+        <div class="integration-status status-connected">
+          <div class="status-indicator status-active"></div>
+          Connected
+        </div>
+        <div class="integration-footer">
+          <div class="integration-meta">1,748 documents synced</div>
+          <button class="button tertiary button-sm">Configure</button>
+        </div>
+      </div>
+
+      <!-- Dropbox Integration -->
+      <div class="integration-card">
+        <div class="integration-logo">
+          <img src="/api/placeholder/120/48" alt="Dropbox Logo" />
+        </div>
+        <div class="integration-title">Dropbox</div>
+        <div class="integration-description">
+          Access files and folders from your Dropbox Business account. Sync entire folders or select specific documents for due diligence analysis.
+        </div>
+        <div class="integration-status status-setup">
+          <div class="status-indicator status-inactive"></div>
+          Setup in Progress
+        </div>
+        <div class="integration-footer">
+          <div class="integration-meta">Stage: Authentication</div>
+          <button class="button tertiary button-sm">Continue</button>
+        </div>
+      </div>
+
+      <!-- OneDrive Integration -->
+      <div class="integration-card">
+        <div class="integration-logo">
+          <img src="/api/placeholder/120/48" alt="OneDrive Logo" />
+        </div>
+        <div class="integration-title">Microsoft OneDrive</div>
+        <div class="integration-description">
+          Connect to OneDrive for Business to access files, collaborate on documents, and leverage Office 365 integration within your due diligence workflow.
+        </div>
+        <div class="integration-status status-available">
+          <div class="status-indicator status-inactive"></div>
+          Available
+        </div>
+        <div class="integration-footer">
+          <div class="integration-meta">Enterprise Plan</div>
+          <button class="button tertiary button-sm">Connect</button>
+        </div>
+      </div>
+
+      <!-- Amazon S3 Integration -->
+      <div class="integration-card">
+        <div class="integration-logo">
+          <img src="/api/placeholder/120/48" alt="Amazon S3 Logo" />
+        </div>
+        <div class="integration-title">Amazon S3</div>
+        <div class="integration-description">
+          Connect to Amazon S3 buckets to access secure cloud storage for documents, archives, and large files. Supports versioning and lifecycle policies.
+        </div>
+        <div class="integration-status status-available">
+          <div class="status-indicator status-inactive"></div>
+          Available
+        </div>
+        <div class="integration-footer">
+          <div class="integration-meta">Premium Integration</div>
+          <button class="button tertiary button-sm">Connect</button>
+        </div>
+      </div>
+
+      <!-- Local File System Integration -->
+      <div class="integration-card">
+        <div class="integration-logo">
+          <img src="/api/placeholder/120/48" alt="Local Files Logo" />
+        </div>
+        <div class="integration-title">Local File System</div>
+        <div class="integration-description">
+          Import documents directly from your device or network shared drives. Securely upload files for analysis while maintaining folder structure and metadata.
+        </div>
+        <div class="integration-status status-connected">
+          <div class="status-indicator status-active"></div>
+          Connected
+        </div>
+        <div class="integration-footer">
+          <div class="integration-meta">1,132 documents synced</div>
+          <button class="button tertiary button-sm">Configure</button>
+        </div>
+      </div>
+
+      <!-- Add New Repository Card -->
+      <div class="integration-card" style="border: 2px dashed var(--light-gray); background-color: rgba(45, 114, 217, 0.03); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+        <div style="width: 48px; height: 48px; background-color: var(--azure-blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: var(--space-md);">
+          <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 6V12M12 12V18M12 12H18M12 12H6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div style="font-weight: 600; font-size: 16px; color: var(--deep-navy); margin-bottom: var(--space-xs);">Add New Repository</div>
+        <div style="font-size: 14px; color: var(--slate-gray); margin-bottom: var(--space-lg);">
+          Connect to additional document repositories or upload custom document sets.
+        </div>
+        <button class="button secondary">Connect Repository</button>
+      </div>
+    </div>
+
+    <!-- Document Processing Features -->
+    <h4>Document Processing Features</h4>
+    <div class="features-grid">
+      <!-- OCR Feature -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M17.8 19.2c-.9.9-2.5 1.1-3.8 1.1h-4c-1.3 0-2.9-.2-3.8-1.1-1-1-1.2-2.7-1.2-4.2 0-1.5.2-3.2 1.2-4.2.9-.9 2.5-1.1 3.8-1.1h4c1.3 0 2.9.2 3.8 1.1 1 1 1.2 2.7 1.2 4.2 0 1.5-.2 3.2-1.2 4.2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="feature-title">Optical Character Recognition (OCR)</div>
+        <div class="feature-description">
+          Extract text from scanned documents, images, and PDFs. Supports multiple languages and maintains formatting for accurate data extraction.
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span class="badge badge-green">Active</span>
+          <button class="button tertiary button-sm">Configure</button>
+        </div>
+      </div>
+      
+      <!-- Document Classification -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="feature-title">Automatic Document Classification</div>
+        <div class="feature-description">
+          Automatically categorize documents based on content, metadata, and structural features. Creates organized virtual folders for due diligence analysis.
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span class="badge badge-green">Active</span>
+          <button class="button tertiary button-sm">Configure</button>
+        </div>
+      </div>
+      
+      <!-- Text Extraction -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="feature-title">Intelligent Text Extraction</div>
+        <div class="feature-description">
+          Extract key information from documents using AI-powered text analysis. Identifies named entities, contractual terms, financial data, and key dates.
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span class="badge badge-green">Active</span>
+          <button class="button tertiary button-sm">Configure</button>
+        </div>
+      </div>
+      
+      <!-- Document Versioning -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 10v12m7-6H5m11-4L9 15m5-9l2-2m-8 0l-2-2m0 10l-2 2m14-4l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="feature-title">Document Versioning</div>
+        <div class="feature-description">
+          Track document versions and changes across all connected repositories. Compare versions, restore previous states, and follow document evolution.
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span class="badge badge-green">Active</span>
+          <button class="button tertiary button-sm">Configure</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Google Drive Configuration -->
+    <h4>Google Drive Configuration</h4>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Google Drive Connection</div>
+        <span class="badge badge-green">Connected</span>
+      </div>
+      <div class="card-body">
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--space-xl);">
+          <!-- Connection Details -->
+          <div>
+            <h4 style="font-size: 16px; margin-bottom: var(--space-md);">Connection Details</h4>
+            <div class="form-group">
+              <div class="form-label">Connected Account</div>
+              <div style="font-size: 14px;">workspace@company.com</div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Connection Type</div>
+              <div style="font-size: 14px;">Google Drive API v3</div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Authentication Method</div>
+              <div style="font-size: 14px;">OAuth 2.0</div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Connection Status</div>
+              <div style="display: flex; align-items: center; margin-top: var(--space-xs);">
+                <div style="width: 12px; height: 12px; border-radius: 50%; background-color: var(--mint-green); margin-right: var(--space-sm);"></div>
+                <span style="font-size: 14px;">Connected & Active</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sync Settings -->
+          <div>
+            <h4 style="font-size: 16px; margin-bottom: var(--space-md);">Sync Settings</h4>
+            <div class="form-group">
+              <div class="form-label">Sync Frequency</div>
+              <select class="form-select">
+                <option>Real-time</option>
+                <option>Every 15 minutes</option>
+                <option selected>Every hour</option>
+                <option>Every 4 hours</option>
+                <option>Daily</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Last Sync</div>
+              <div style="font-size: 14px;">May 7, 2025, 10:45 AM</div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Next Scheduled Sync</div>
+              <div style="font-size: 14px;">May 7, 2025, 11:45 AM</div>
+            </div>
+            <div class="form-group">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="form-label">Sync on Document Change</div>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="form-hint">Automatically sync when documents change</div>
+            </div>
+          </div>
+
+          <!-- Folder Selection -->
+          <div>
+            <h4 style="font-size: 16px; margin-bottom: var(--space-md);">Folder Selection</h4>
+            <div class="form-group">
+              <div class="form-label">Root Folder</div>
+              <div style="font-size: 14px;">Due Diligence Projects</div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Included Folders</div>
+              <select class="form-select" multiple style="height: 100px;">
+                <option selected>Due Diligence Projects/ABC Corp</option>
+                <option selected>Due Diligence Projects/XYZ Tech</option>
+                <option selected>Due Diligence Projects/Financial Reports</option>
+                <option>Due Diligence Projects/Archives</option>
+                <option selected>Shared Documents/Financials</option>
+              </select>
+              <div class="form-hint">Select multiple folders to sync</div>
+            </div>
+            <div class="form-group">
+              <button class="button secondary" style="width: 100%;">
+                <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 13h6m-3-3v6m-7 4h14a2 2 0 002-2V8a2 2 0 00-2-2h-7l-2-2H5a2 2 0 00-2 2v11a2 2 0 002 2z" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Manage Folders
+              </button>
+            </div>
+          </div>
+
+          <!-- Document Filters -->
+          <div>
+            <h4 style="font-size: 16px; margin-bottom: var(--space-md);">Document Filters</h4>
+            <div class="form-group">
+              <div class="form-label">File Types</div>
+              <select class="form-select" multiple style="height: 100px;">
+                <option selected>PDF (.pdf)</option>
+                <option selected>Word (.docx, .doc)</option>
+                <option selected>Excel (.xlsx, .xls)</option>
+                <option selected>PowerPoint (.pptx, .ppt)</option>
+                <option selected>Text (.txt)</option>
+                <option>Images (.jpg, .png)</option>
+                <option>Zip Archives (.zip)</option>
+              </select>
+              <div class="form-hint">Select file types to include</div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Date Range</div>
+              <select class="form-select">
+                <option>Last 30 days</option>
+                <option>Last 90 days</option>
+                <option selected>Last 12 months</option>
+                <option>All documents</option>
+                <option>Custom range</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Synced Documents Section -->
+        <h4 style="font-size: 16px; margin: var(--space-xl) 0 var(--space-md);">Recently Synced Documents</h4>
+        <div class="file-list">
+          <div class="file-item">
+            <div class="file-icon pdf">
+              <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="file-info">
+              <div class="file-name">Financial_Analysis_Q1_2025.pdf</div>
+              <div class="file-meta">
+                <div class="file-meta-item">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 8v4l3 3m6-3c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2s10 4.477 10 10z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  May 7, 2025, 10:32 AM
+                </div>
+                <div class="file-meta-item">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87m-4-12a4 4 0 010 7.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Sarah Johnson
+                </div>
+                <div class="file-meta-item">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19.4 20H4.6a.6.6 0 01-.6-.6V4.6a.6.6 0 01.6-.6h3.8a.6.6 0 01.6.6v3.8a.6.6 0 00.6.6h5.8a.6.6 0 00.6-.6V4.6a.6.6 0 01.6-.6h3.8a.6.6 0 01.6.6v14.8a.6.6 0 01-.6.6z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  3.4 MB
+                </div>
+              </div>
+            </div>
+            <div class="file-actions">
+              <button class="icon-button">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 10v4m-4 8h8a2 2 0 002-2V6a2 2 0 00-2-2h-8a2 2 0 00-2 2v14a2 2 0 002 2zM9 22V2M15 22V2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <button class="icon-button">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 15v4a2 2 0 002 2h14a2 2 0 002-2v-4M17 8l-5-5-5 5M12 3v12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <button class="icon-button">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 15l-3-3m0 0l3-3m-3 3h10M7 4v1a3 3 0 01-3 3H3m11 12v-1a3 3 0 013-3h1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="file-item">
+            <div class="file-icon doc">
+              <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="file-info">
+              <div class="file-name">Due_Diligence_Report_Draft.docx</div>
+              <div class="file-meta">
+                <div class="file-meta-item">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 8v4l3 3m6-3c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2s10 4.477 10 10z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  May 7, 2025, 9:45 AM
+                </div>
+                <div class="file-meta-item">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87m-4-12a4 4 0 010 7.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Michael Reynolds
+                </div>
+                <div class="file-meta-item">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19.4 20H4.6a.6.6 0 01-.6-.6V4.6a.6.6 0 01.6-.6h3.8a.6.6 0 01.6.6v3.8a.6.6 0 00.6.6h5.8a.6.6 0 00.6-.6V4.6a.6.6 0 01.6-.6h3.8a.6.6 0 01.6.6v14.8a.6.6 0 01-.6.6z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  2.8 MB
+                </div>
+              </div>
+            </div>
+            <div class="file-actions">
+              <button class="icon-button">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 10v4m-4 8h8a2 2 0 002-2V6a2 2 0 00-2-2h-8a2 2 0 00-2 2v14a2 2 0 002 2zM9 22V2M15 22V2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <button class="icon-button">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 15v4a2 2 0 002 2h14a2 2 0 002-2v-4M17 8l-5-5-5 5M12 3v12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <button class="icon-button">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 15l-3-3m0 0l3-3m-3 3h10M7 4v1a3 3 0 01-3 3H3m11 12v-1a3 3 0 013-3h1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="file-item">
+            <div class="file-icon xls">
+              <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="file-info">
+              <div class="file-name">Revenue_Projections_2025-2026.xlsx</div>
+              <div class="file-meta">
+                <div class="file-meta-item">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 8v4l3 3m6-3c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2s10 4.477 10 10z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  May 6, 2025, 4:15 PM
+                </div>
+                <div class="file-meta-item">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87m-4-12a4 4 0 010 7.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Jennifer Park
+                </div>
+                <div class="file-meta-item">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19.4 20H4.6a.6.6 0 01-.6-.6V4.6a.6.6 0 01.6-.6h3.8a.6.6 0 01.6.6v3.8a.6.6 0 00.6.6h5.8a.6.6 0 00.6-.6V4.6a.6.6 0 01.6-.6h3.8a.6.6 0 01.6.6v14.8a.6.6 0 01-.6.6z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  1.2 MB
+                </div>
+              </div>
+            </div>
+            <div class="file-actions">
+              <button class="icon-button">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 10v4m-4 8h8a2 2 0 002-2V6a2 2 0 00-2-2h-8a2 2 0 00-2 2v14a2 2 0 002 2zM9 22V2M15 22V2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <button class="icon-button">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 15v4a2 2 0 002 2h14a2 2 0 002-2v-4M17 8l-5-5-5 5M12 3v12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <button class="icon-button">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 15l-3-3m0 0l3-3m-3 3h10M7 4v1a3 3 0 01-3 3H3m11 12v-1a3 3 0 013-3h1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Document Preview -->
+        <h4 style="font-size: 16px; margin: var(--space-xl) 0 var(--space-md);">Document Preview</h4>
+        <div class="document-preview">
+          <div class="preview-header">
+            <div class="preview-title">
+              <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="preview-actions">
+              <button class="button tertiary button-sm">
+                <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                View Full Document
+              </button>
+              <button class="button tertiary button-sm">
+                <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Compare Versions
+              </button>
+              <button class="button tertiary button-sm">
+                <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Restore Previous State
+              </button>
+            </div>
+          </div>
+          <div class="preview-content">
+            <div class="preview-placeholder">
+              <!-- Preview content will be dynamically inserted here -->
+            </div>
+          </div>
+          <div class="preview-footer">
+            <div class="preview-pagination">
+              <!-- Pagination controls will be dynamically inserted here -->
+            </div>
+            <div class="preview-actions">
+              <!-- Actions will be dynamically inserted here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DueDiligenceAI - Risk Assessment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Color System */
+    :root {
+      --deep-navy: #0A2342;
+      --azure-blue: #2D72D9;
+      --slate-gray: #3C4858;
+      --mint-green: #00BFA5;
+      --coral-red: #FF5252;
+      --amber-yellow: #FFC107;
+      --light-blue: #E1F5FE;
+      --sky-blue: #81D4FA;
+      --dark-blue: #01579B;
+      --charcoal: #263238;
+      --medium-gray: #78909C;
+      --light-gray: #ECEFF1;
+      --white: #FFFFFF;
+      
+      /* Typography */
+      --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-display: 'Manrope', var(--font-primary);
+      --font-mono: 'JetBrains Mono', SFMono-Regular, Consolas, monospace;
+      
+      /* Spacing */
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 12px;
+      --space-lg: 16px;
+      --space-xl: 24px;
+      --space-2xl: 32px;
+      --space-3xl: 48px;
+      
+      /* Shadows */
+      --shadow-sm: 0px 1px 3px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0px 2px 6px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      
+      /* Border Radius */
+      --radius-sm: 2px;
+      --radius-md: 4px;
+      --radius-lg: 8px;
+    }
+
+    /* Global Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-primary);
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--slate-gray);
+      background-color: var(--light-gray);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-display);
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      line-height: 1.2;
+      font-weight: 800;
+      color: var(--deep-navy);
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      line-height: 1.2;
+      font-weight: 700;
+      color: var(--slate-gray);
+    }
+
+    h4 {
+      font-size: 1.125rem;
+      line-height: 1.4;
+      font-weight: 600;
+      color: var(--deep-navy);
+    }
+
+    /* Top Navigation */
+    .top-nav {
+      background-color: var(--white);
+      height: 64px;
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 var(--space-xl);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .top-nav-left, .top-nav-right {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--deep-navy);
+      margin-right: var(--space-2xl);
+    }
+
+    .logo svg {
+      margin-right: var(--space-sm);
+    }
+
+    .nav-items {
+      display: flex;
+    }
+
+    .nav-item {
+      padding: 0 var(--space-lg);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      color: var(--slate-gray);
+      cursor: pointer;
+      transition: color 0.15s;
+      position: relative;
+    }
+
+    .nav-item:hover {
+      color: var(--azure-blue);
+    }
+
+    .nav-item.active {
+      color: var(--azure-blue);
+    }
+
+    .nav-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--azure-blue);
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      background-color: var(--light-gray);
+      border-radius: 4px;
+      padding: 0 var(--space-md);
+      margin-right: var(--space-lg);
+      height: 36px;
+      width: 240px;
+    }
+
+    .search-bar input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 14px;
+      width: 100%;
+      margin-left: var(--space-xs);
+    }
+
+    .notifications, .user-profile {
+      margin-left: var(--space-lg);
+      cursor: pointer;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      background-color: var(--azure-blue);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    /* Main Layout */
+    .container {
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 64px);
+    }
+
+    /* Breadcrumbs */
+    .breadcrumbs {
+      display: flex;
+      padding: var(--space-md) var(--space-xl);
+      background-color: var(--white);
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .breadcrumb-item {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: var(--medium-gray);
+    }
+
+    .breadcrumb-item:not(:last-child)::after {
+      content: '';
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2378909C' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 18l6-6-6-6'%3E%3C/path%3E%3C/svg%3E");
+      background-position: center;
+      background-repeat: no-repeat;
+      margin: 0 var(--space-sm);
+    }
+
+    .breadcrumb-item:last-child {
+      color: var(--charcoal);
+      font-weight: 500;
+    }
+
+    /* Two Column Layout */
+    .two-column-layout {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .main-content {
+      flex: 7;
+      padding: var(--space-xl);
+      overflow-y: auto;
+    }
+
+    .sidebar {
+      flex: 3;
+      width: 320px;
+      min-width: 320px;
+      max-width: 320px;
+      background-color: var(--white);
+      border-left: 1px solid var(--light-gray);
+      padding: var(--space-xl);
+      overflow-y: auto;
+    }
+
+    /* Button Styles */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      border-radius: var(--radius-md);
+      font-weight: 500;
+      font-size: 14px;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .button .icon {
+      width: 18px;
+      height: 18px;
+      margin-right: var(--space-xs);
+    }
+
+    .primary {
+      background-color: var(--azure-blue);
+      color: var(--white);
+    }
+
+    .primary:hover {
+      background-color: #1A5DC7;
+    }
+
+    .secondary {
+      background-color: var(--white);
+      color: var(--azure-blue);
+      border: 1px solid var(--azure-blue);
+    }
+
+    .secondary:hover {
+      background-color: var(--light-blue);
+    }
+
+    .tertiary {
+      background-color: transparent;
+      color: var(--azure-blue);
+      padding: 8px 12px;
+    }
+
+    .tertiary:hover {
+      background-color: var(--light-blue);
+    }
+
+    .icon-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-md);
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+    }
+
+    .icon-button:hover {
+      background-color: var(--light-gray);
+    }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      stroke-width: 1.5;
+    }
+
+    /* Tab Panel */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--light-gray);
+      margin-bottom: var(--space-xl);
+    }
+
+    .tab {
+      padding: var(--space-md) var(--space-xl);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--slate-gray);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .tab:hover {
+      background-color: var(--light-blue);
+    }
+
+    .tab.active {
+      color: var(--azure-blue);
+    }
+
+    .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--azure-blue);
+    }
+
+    /* Page Header */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-xl);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: var(--space-md);
+    }
+
+    /* Cards and Sections */
+    .card {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      margin-bottom: var(--space-xl);
+    }
+
+    .card-header {
+      padding: var(--space-lg);
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+    }
+
+    .card-body {
+      padding: var(--space-lg);
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-lg);
+    }
+
+    /* Status Badge Styles */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .status-badge.critical {
+      background-color: rgba(255, 82, 82, 0.2);
+      color: var(--coral-red);
+    }
+
+    .status-badge.high {
+      background-color: rgba(255, 82, 82, 0.1);
+      color: var(--coral-red);
+    }
+
+    .status-badge.medium {
+      background-color: rgba(255, 193, 7, 0.1);
+      color: var(--amber-yellow);
+    }
+
+    .status-badge.low {
+      background-color: rgba(0, 191, 165, 0.1);
+      color: var(--mint-green);
+    }
+
+    /* Data Table */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: var(--space-xl);
+    }
+
+    .data-table th,
+    .data-table td {
+      padding: var(--space-md);
+      text-align: left;
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .data-table th {
+      font-weight: 600;
+      color: var(--slate-gray);
+      background-color: var(--light-gray);
+    }
+
+    .data-table tbody tr:hover {
+      background-color: var(--light-blue);
+    }
+
+    /* Risk Matrix */
+    .risk-matrix {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      grid-template-rows: repeat(5, 60px);
+      gap: 1px;
+      margin-bottom: var(--space-xl);
+    }
+
+    .risk-cell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 500;
+      text-align: center;
+      background-color: var(--white);
+    }
+
+    .risk-cell.header {
+      background-color: var(--light-gray);
+      color: var(--slate-gray);
+      font-weight: 600;
+    }
+
+    .risk-cell.low {
+      background-color: rgba(0, 191, 165, 0.1);
+    }
+
+    .risk-cell.medium {
+      background-color: rgba(255, 193, 7, 0.1);
+    }
+
+    .risk-cell.high {
+      background-color: rgba(255, 82, 82, 0.1);
+    }
+
+    .risk-item {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      font-size: 12px;
+      font-weight: 600;
+      margin: 2px;
+    }
+
+    .risk-item.low {
+      background-color: var(--mint-green);
+    }
+
+    .risk-item.medium {
+      background-color: var(--amber-yellow);
+    }
+
+    .risk-item.high {
+      background-color: var(--coral-red);
+    }
+
+    .risk-item.critical {
+      background-color: #D32F2F;
+    }
+
+    /* Risk Score Card */
+    .risk-score {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background-color: rgba(255, 82, 82, 0.1);
+      margin: var(--space-lg) auto;
+      position: relative;
+    }
+
+    .risk-score-inner {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background-color: rgba(255, 82, 82, 0.15);
+    }
+
+    .risk-score-value {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--coral-red);
+    }
+
+    .risk-score-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--slate-gray);
+    }
+
+    /* Risk Trend Chart */
+    .risk-trend-chart {
+      height: 300px;
+      margin-bottom: var(--space-xl);
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: var(--space-lg);
+    }
+
+    /* Mitigation Plan Section */
+    .mitigation-plan {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      margin-bottom: var(--space-xl);
+      padding: var(--space-lg);
+    }
+
+    .plan-item {
+      padding: var(--space-md) 0;
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .plan-item:last-child {
+      border-bottom: none;
+    }
+
+    .plan-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-sm);
+    }
+
+    .plan-title {
+      font-weight: 600;
+      color: var(--deep-navy);
+      font-size: 16px;
+    }
+
+    .plan-status {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .plan-details {
+      font-size: 14px;
+      color: var(--slate-gray);
+      margin-bottom: var(--space-sm);
+    }
+
+    .plan-meta {
+      display: flex;
+      font-size: 12px;
+      color: var(--medium-gray);
+    }
+
+    .plan-meta div {
+      margin-right: var(--space-lg);
+      display: flex;
+      align-items: center;
+    }
+
+    .plan-meta .icon {
+      width: 16px;
+      height: 16px;
+      margin-right: var(--space-xs);
+    }
+
+    /* Progress Bar */
+    .progress-bar {
+      height: 6px;
+      background-color: var(--light-gray);
+      border-radius: 3px;
+      margin-top: var(--space-sm);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background-color: var(--azure-blue);
+      border-radius: 3px;
+    }
+
+    .progress-fill.low {
+      width: 20%;
+    }
+
+    .progress-fill.medium {
+      width: 50%;
+    }
+
+    .progress-fill.high {
+      width: 75%;
+    }
+
+    .progress-fill.complete {
+      width: 100%;
+      background-color: var(--mint-green);
+    }
+
+    /* Risk Category Cards */
+    .risk-categories {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: var(--space-lg);
+      margin-bottom: var(--space-xl);
+    }
+
+    .risk-category-card {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: var(--space-lg);
+    }
+
+    .risk-category-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-md);
+    }
+
+    .risk-category-title {
+      font-weight: 600;
+      color: var(--deep-navy);
+    }
+
+    .risk-category-score {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-weight: 600;
+      color: white;
+      font-size: 14px;
+    }
+
+    .risk-category-score.critical {
+      background-color: #D32F2F;
+    }
+
+    .risk-category-score.high {
+      background-color: var(--coral-red);
+    }
+
+    .risk-category-score.medium {
+      background-color: var(--amber-yellow);
+    }
+
+    .risk-category-score.low {
+      background-color: var(--mint-green);
+    }
+
+    .risk-category-items {
+      list-style: none;
+    }
+
+    .risk-category-item {
+      display: flex;
+      justify-content: space-between;
+      padding: var(--space-xs) 0;
+      font-size: 14px;
+      color: var(--slate-gray);
+    }
+
+    /* Sidebar Components */
+    .sidebar-section {
+      margin-bottom: var(--space-xl);
+    }
+
+    .sidebar-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-md);
+    }
+
+    .sidebar-card {
+      background-color: var(--light-gray);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      margin-bottom: var(--space-md);
+    }
+
+    .sidebar-card-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-xs);
+    }
+
+    .sidebar-card-content {
+      font-size: 14px;
+      color: var(--slate-gray);
+    }
+
+    .sidebar-list {
+      list-style: none;
+    }
+
+    .sidebar-list-item {
+      display: flex;
+      align-items: center;
+      padding: var(--space-sm) 0;
+      font-size: 14px;
+      color: var(--slate-gray);
+    }
+
+    .sidebar-list-item .icon {
+      width: 16px;
+      height: 16px;
+      margin-right: var(--space-sm);
+      color: var(--azure-blue);
+    }
+
+    /* AI Insights */
+    .ai-insight {
+      background-color: rgba(45, 114, 217, 0.05);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      margin-bottom: var(--space-md);
+    }
+
+    .ai-insight-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: var(--space-sm);
+    }
+
+    .ai-insight-header .icon {
+      width: 18px;
+      height: 18px;
+      margin-right: var(--space-sm);
+      color: var(--azure-blue);
+    }
+
+    .ai-insight-title {
+      font-weight: 600;
+      color: var(--deep-navy);
+      font-size: 14px;
+    }
+
+    .ai-insight-content {
+      font-size: 14px;
+      color: var(--slate-gray);
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 1024px) {
+      .two-column-layout {
+        /* Don't change to column layout until smaller screens */
+        display: flex;
+      }
+
+      .sidebar {
+        width: 280px;
+        min-width: 280px;
+        max-width: 280px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .two-column-layout {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
+        border-left: none;
+        border-top: 1px solid var(--light-gray);
+      }
+      
+      .top-nav {
+        padding: 0 var(--space-md);
+      }
+      
+      .nav-items {
+        display: none;
+      }
+      
+      .search-bar {
+        width: 160px;
+      }
+
+      .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-md);
+      }
+
+      .header-actions {
+        width: 100%;
+      }
+
+      .risk-categories {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <div class="top-nav-left">
+      <div class="logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 8H16C20.4183 8 24 11.5817 24 16C24 20.4183 20.4183 24 16 24H8V8Z" fill="#0A2342"/>
+          <path d="M16 8H24V16C24 20.4183 20.4183 24 16 24V8Z" fill="#2D72D9"/>
+        </svg>
+        <span>DueDiligenceAI</span>
+      </div>
+      <div class="nav-items">
+        <div class="nav-item">Dashboard</div>
+        <div class="nav-item">Documents</div>
+        <div class="nav-item active">Analysis</div>
+        <div class="nav-item">Reports</div>
+      </div>
+    </div>
+    <div class="top-nav-right">
+      <div class="search-bar">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <input type="text" placeholder="Search..." />
+      </div>
+      <div class="notifications">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 17H9M12 3V4M12 21V20M5.6 5.6L6.3 6.3M18.4 5.6L17.7 6.3M3 12H4M20 12H21M6 17.4V12C6 8.7 8.7 6 12 6C15.3 6 18 8.7 18 12V17.4H6Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="user-profile">
+        <div class="avatar">SK</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Breadcrumbs -->
+  <div class="breadcrumbs">
+    <div class="breadcrumb-item">Dashboard</div>
+    <div class="breadcrumb-item">Projects</div>
+    <div class="breadcrumb-item">ABC Corp Acquisition</div>
+    <div class="breadcrumb-item">Risk Assessment</div>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="container">
+    <div class="two-column-layout">
+      <!-- Main Content -->
+      <div class="main-content">
+        <!-- Page Header -->
+        <div class="page-header">
+          <h1>ABC Corp Risk Assessment</h1>
+          <div class="header-actions">
+            <button class="button secondary">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 16.5V18.75C3 19.9926 4.00736 21 5.25 21H18.75C19.9926 21 21 19.9926 21 18.75V16.5M16.5 12L12 16.5M12 16.5L7.5 12M12 16.5V3" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Export
+            </button>
+            <button class="button primary">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 12H15M12 9V15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Update Assessment
+            </button>
+          </div>
+        </div>
+
+        <!-- Tabs Navigation -->
+        <div class="tabs">
+          <div class="tab">Overview</div>
+          <div class="tab">Financial Performance</div>
+          <div class="tab active">Risk Assessment</div>
+          <div class="tab">AI Insights</div>
+          <div class="tab">Documents</div>
+        </div>
+
+        <!-- AI Summary Callout -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <svg class="icon" style="margin-right: 8px;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 16V12M12 8H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Risk Analysis Summary
+            </div>
+            <div>
+              <span class="status-badge high">High Risk</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <p>ABC Corp has an overall risk score of 72/100, indicating a high risk profile. Key concerns include customer concentration (45% revenue from top 3 clients), increased debt leverage (Debt-to-EBITDA ratio 2.8x), and key person dependency. The company also faces moderate foreign exchange exposure with 30% of revenue in EUR. Recent mitigation actions have reduced regulatory compliance risks to low levels.</p>
+            
+            <!-- Overall Risk Score -->
+            <div class="risk-score">
+              <div class="risk-score-inner">
+                <div class="risk-score-value">72</div>
+                <div class="risk-score-label">High Risk</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Risk Categories -->
+        <h3 class="section-title">Risk Categories</h3>
+        <div class="risk-categories">
+          <div class="risk-category-card">
+            <div class="risk-category-header">
+              <div class="risk-category-title">Business Risk</div>
+              <div class="risk-category-score high">85</div>
+            </div>
+            <ul class="risk-category-items">
+              <li class="risk-category-item">
+                <span>Customer Concentration</span>
+                <span class="status-badge high">High</span>
+              </li>
+              <li class="risk-category-item">
+                <span>Market Competition</span>
+                <span class="status-badge medium">Medium</span>
+              </li>
+              <li class="risk-category-item">
+                <span>Product Obsolescence</span>
+                <span class="status-badge low">Low</span>
+              </li>
+            </ul>
+          </div>
+          
+          <div class="risk-category-card">
+            <div class="risk-category-header">
+              <div class="risk-category-title">Financial Risk</div>
+              <div class="risk-category-score high">78</div>
+            </div>
+            <ul class="risk-category-items">
+              <li class="risk-category-item">
+                <span>Debt Leverage</span>
+                <span class="status-badge high">High</span>
+              </li>
+              <li class="risk-category-item">
+                <span>Foreign Exchange Exposure</span>
+                <span class="status-badge medium">Medium</span>
+              </li>
+              <li class="risk-category-item">
+                <span>Working Capital Management</span>
+                <span class="status-badge medium">Medium</span>
+              </li>
+            </ul>
+          </div>
+          
+          <div class="risk-category-card">
+            <div class="risk-category-header">
+              <div class="risk-category-title">Operational Risk</div>
+              <div class="risk-category-score critical">92</div>
+            </div>
+            <ul class="risk-category-items">
+              <li class="risk-category-item">
+                <span>Key Person Dependency</span>
+                <span class="status-badge critical">Critical</span>
+              </li>
+              <li class="risk-category-item">
+                <span>Supply Chain Disruption</span>
+                <span class="status-badge medium">Medium</span>
+              </li>
+              <li class="risk-category-item">
+                <span>IT Infrastructure</span>
+                <span class="status-badge medium">Medium</span>
+              </li>
+            </ul>
+          </div>
+          
+          <div class="risk-category-card">
+            <div class="risk-category-header">
+              <div class="risk-category-title">Compliance Risk</div>
+              <div class="risk-category-score low">32</div>
+            </div>
+            <ul class="risk-category-items">
+              <li class="risk-category-item">
+                <span>Regulatory Compliance</span>
+                <span class="status-badge low">Low</span>
+              </li>
+              <li class="risk-category-item">
+                <span>Tax Compliance</span>
+                <span class="status-badge low">Low</span>
+              </li>
+              <li class="risk-category-item">
+                <span>Data Privacy</span>
+                <span class="status-badge medium">Medium</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Risk Assessment Matrix -->
+        <h3 class="section-title">Risk Assessment Matrix</h3>
+        
+        <div class="risk-matrix">
+          <div class="risk-cell header"></div>
+          <div class="risk-cell header">Very Low</div>
+          <div class="risk-cell header">Low</div>
+          <div class="risk-cell header">Medium</div>
+          <div class="risk-cell header">High</div>
+          
+          <div class="risk-cell header">Critical</div>
+          <div class="risk-cell high">
+            <div class="risk-item high">R5</div>
+          </div>
+          <div class="risk-cell high">
+            <div class="risk-item high">R1</div>
+          </div>
+          <div class="risk-cell high"></div>
+          <div class="risk-cell high"></div>
+          
+          <div class="risk-cell header">High</div>
+          <div class="risk-cell medium"></div>
+          <div class="risk-cell medium">
+            <div class="risk-item medium">R6</div>
+          </div>
+          <div class="risk-cell medium">
+            <div class="risk-item medium">R3</div>
+            <div class="risk-item medium">R8</div>
+          </div>
+          <div class="risk-cell high"></div>
+          
+          <div class="risk-cell header">Medium</div>
+          <div class="risk-cell low"></div>
+          <div class="risk-cell low">
+            <div class="risk-item low">R7</div>
+          </div>
+          <div class="risk-cell medium">
+            <div class="risk-item medium">R2</div>
+            <div class="risk-item medium">R10</div>
+          </div>
+          <div class="risk-cell medium"></div>
+          
+          <div class="risk-cell header">Low</div>
+          <div class="risk-cell low"></div>
+          <div class="risk-cell low">
+            <div class="risk-item low">R4</div>
+            <div class="risk-item low">R9</div>
+          </div>
+          <div class="risk-cell low"></div>
+          <div class="risk-cell medium"></div>
+        </div>
+
+        <!-- Detailed Risk Factors Table -->
+        <h3 class="section-title">Detailed Risk Factors</h3>
+        
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Risk Factor</th>
+              <th>Category</th>
+              <th>Severity</th>
+              <th>Probability</th>
+              <th>Overall Rating</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>R1</td>
+              <td>High customer concentration (Top 3 clients = 45% of revenue)</td>
+              <td>Business Risk</td>
+              <td>Critical</td>
+              <td>Low</td>
+              <td><span class="status-badge high">High</span></td>
+            </tr>
+            <tr>
+              <td>R2</td>
+              <td>Foreign exchange exposure (30% revenue in EUR)</td>
+              <td>Financial Risk</td>
+              <td>Medium</td>
+              <td>Medium</td>
+              <td><span class="status-badge medium">Medium</span></td>
+            </tr>
+            <tr>
+              <td>R3</td>
+              <td>Increased debt leverage (Debt-to-EBITDA ratio 2.8x)</td>
+              <td>Financial Risk</td>
+              <td>Medium</td>
+              <td>High</td>
+              <td><span class="status-badge medium">Medium</span></td>
+            </tr>
+            <tr>
+              <td>R4</td>
+              <td>Regulatory compliance (Industry-specific regulations)</td>
+              <td>Compliance Risk</td>
+              <td>Low</td>
+              <td>Low</td>
+              <td><span class="status-badge low">Low</span></td>
+            </tr>
+            <tr>
+              <td>R5</td>
+              <td>Key person dependency (CEO/Founder)</td>
+              <td>Operational Risk</td>
+              <td>Critical</td>
+              <td>Very Low</td>
+              <td><span class="status-badge high">High</span></td>
+            </tr>
+            <tr>
+              <td>R6</td>
+              <td>Supply chain disruption risk</td>
+              <td>Operational Risk</td>
+              <td>High</td>
+              <td>Low</td>
+              <td><span class="status-badge medium">Medium</span></td>
+            </tr>
+            <tr>
+              <td>R7</td>
+              <td>Product obsolescence risk</td>
+              <td>Business Risk</td>
+              <td>Medium</td>
+              <td>Low</td>
+              <td><span class="status-badge low">Low</span></td>
+            </tr>
+            <tr>
+              <td>R8</td>
+              <td>Working capital management</td>
+              <td>Financial Risk</td>
+              <td>Medium</td>
+              <td>Medium</td>
+              <td><span class="status-badge medium">Medium</span></td>
+            </tr>
+            <tr>
+              <td>R9</td>
+              <td>Tax compliance risk</td>
+              <td>Compliance Risk</td>
+              <td>Low</td>
+              <td>Low</td>
+              <td><span class="status-badge low">Low</span></td>
+            </tr>
+            <tr>
+              <td>R10</td>
+              <td>Data privacy and cybersecurity</td>
+              <td>Compliance Risk</td>
+              <td>Medium</td>
+              <td>Medium</td>
+              <td><span class="status-badge medium">Medium</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Risk Trend Chart -->
+        <h3 class="section-title">Risk Score Trend</h3>
+        <div class="risk-trend-chart">
+          <!-- Placeholder for chart -->
+          <svg width="100%" height="100%" viewBox="0 0 800 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Axes -->
+            <line x1="50" y1="230" x2="750" y2="230" stroke="#ECEFF1" stroke-width="2"/>
+            <line x1="50" y1="30" x2="50" y2="230" stroke="#ECEFF1" stroke-width="2"/>
+            
+            <!-- X-Axis Labels -->
+            <text x="120" y="250" font-size="12" text-anchor="middle" fill="#78909C">Q4 2023</text>
+            <text x="260" y="250" font-size="12" text-anchor="middle" fill="#78909C">Q1 2024</text>
+            <text x="400" y="250" font-size="12" text-anchor="middle" fill="#78909C">Q2 2024</text>
+            <text x="540" y="250" font-size="12" text-anchor="middle" fill="#78909C">Q3 2024</text>
+            <text x="680" y="250" font-size="12" text-anchor="middle" fill="#78909C">Q4 2024</text>
+            
+            <!-- Y-Axis Labels -->
+            <text x="40" y="230" font-size="12" text-anchor="end" fill="#78909C">0</text>
+            <text x="40" y="180" font-size="12" text-anchor="end" fill="#78909C">25</text>
+            <text x="40" y="130" font-size="12" text-anchor="end" fill="#78909C">50</text>
+            <text x="40" y="80" font-size="12" text-anchor="end" fill="#78909C">75</text>
+            <text x="40" y="30" font-size="12" text-anchor="end" fill="#78909C">100</text>
+            
+            <!-- Grid Lines -->
+            <line x1="50" y1="180" x2="750" y2="180" stroke="#ECEFF1" stroke-width="1"/>
+            <line x1="50" y1="130" x2="750" y2="130" stroke="#ECEFF1" stroke-width="1"/>
+            <line x1="50" y1="80" x2="750" y2="80" stroke="#ECEFF1" stroke-width="1"/>
+            <line x1="50" y1="30" x2="750" y2="30" stroke="#ECEFF1" stroke-width="1"/>
+            
+            <!-- Risk Rating Lines -->
+            <rect x="50" y="30" width="700" height="50" fill="rgba(255, 82, 82, 0.1)"/>
+            <rect x="50" y="80" width="700" height="50" fill="rgba(255, 193, 7, 0.1)"/>
+            <rect x="50" y="130" width="700" height="100" fill="rgba(0, 191, 165, 0.1)"/>
+            
+            <text x="70" y="55" font-size="12" fill="#FF5252">High Risk Zone</text>
+            <text x="70" y="105" font-size="12" fill="#FFC107">Medium Risk Zone</text>
+            <text x="70" y="155" font-size="12" fill="#00BFA5">Low Risk Zone</text>
+            
+            <!-- Overall Risk Score Line -->
+            <path d="M120,90 L260,100 L400,80 L540,70 L680,60" 
+                  stroke="#FF5252" stroke-width="3" fill="none"/>
+            
+            <!-- Data Points -->
+            <circle cx="120" cy="90" r="5" fill="#FF5252"/>
+            <circle cx="260" cy="100" r="5" fill="#FF5252"/>
+            <circle cx="400" cy="80" r="5" fill="#FF5252"/>
+            <circle cx="540" cy="70" r="5" fill="#FF5252"/>
+            <circle cx="680" cy="60" r="5" fill="#FF5252"/>
+            
+            <!-- Business Risk Line -->
+            <path d="M120,70 L260,80 L400,75 L540,65 L680,50" 
+                  stroke="#FF5252" stroke-width="2" stroke-dasharray="5,5" fill="none"/>
+            
+            <!-- Financial Risk Line -->
+            <path d="M120,100 L260,110 L400,90 L540,80 L680,60" 
+                  stroke="#FFC107" stroke-width="2" stroke-dasharray="5,5" fill="none"/>
+                  
+            <!-- Operational Risk Line -->
+            <path d="M120,60 L260,65 L400,55 L540,45 L680,40" 
+                  stroke="#D32F2F" stroke-width="2" stroke-dasharray="5,5" fill="none"/>
+                  
+            <!-- Compliance Risk Line -->
+            <path d="M120,120 L260,130 L400,150 L540,160 L680,170" 
+                  stroke="#00BFA5" stroke-width="2" stroke-dasharray="5,5" fill="none"/>
+            
+            <!-- Legend -->
+            <rect x="550" y="15" width="12" height="3" fill="#FF5252"/>
+            <text x="570" y="18" font-size="12" fill="#3C4858">Overall Risk (72)</text>
+            
+            <line x1="550" y1="35" x2="562" y2="35" stroke="#FF5252" stroke-width="2" stroke-dasharray="5,5"/>
+            <text x="570" y="38" font-size="12" fill="#3C4858">Business Risk (85)</text>
+            
+            <line x1="550" y1="55" x2="562" y2="55" stroke="#FFC107" stroke-width="2" stroke-dasharray="5,5"/>
+            <text x="570" y="58" font-size="12" fill="#3C4858">Financial Risk (78)</text>
+            
+            <line x1="550" y1="75" x2="562" y2="75" stroke="#D32F2F" stroke-width="2" stroke-dasharray="5,5"/>
+            <text x="570" y="78" font-size="12" fill="#3C4858">Operational Risk (92)</text>
+            
+            <line x1="550" y1="95" x2="562" y2="95" stroke="#00BFA5" stroke-width="2" stroke-dasharray="5,5"/>
+            <text x="570" y="98" font-size="12" fill="#3C4858">Compliance Risk (32)</text>
+          </svg>
+        </div>
+
+        <!-- Risk Mitigation Plans -->
+        <h3 class="section-title">Risk Mitigation Plans</h3>
+        
+        <div class="mitigation-plan">
+          <div class="plan-item">
+            <div class="plan-header">
+              <div class="plan-title">Client Diversification Strategy</div>
+              <span class="status-badge medium">In Progress</span>
+            </div>
+            <div class="plan-details">
+              Implement a strategic plan to reduce customer concentration by targeting new industry segments and expanding geographic reach. Target is to reduce top 3 client concentration from 45% to below 30% of revenue within 18 months.
+            </div>
+            <div class="plan-meta">
+              <div>
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Started: Jan 15, 2024
+              </div>
+              <div>
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 14C8.13401 14 5 17.134 5 21H19C19 17.134 15.866 14 12 14Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Owner: Sarah Chen (VP Sales)
+              </div>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill medium"></div>
+            </div>
+          </div>
+          
+          <div class="plan-item">
+            <div class="plan-header">
+              <div class="plan-title">Foreign Exchange Hedging Program</div>
+              <span class="status-badge medium">In Progress</span>
+            </div>
+            <div class="plan-details">
+              Implement a comprehensive FX hedging strategy to mitigate currency risk exposure. Plan includes forward contracts covering 75% of EUR exposure for the next 12 months and establishment of a natural hedge through European supplier agreements.
+            </div>
+            <div class="plan-meta">
+              <div>
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Started: Mar 5, 2024
+              </div>
+              <div>
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 14C8.13401 14 5 17.134 5 21H19C19 17.134 15.866 14 12 14Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Owner: Michael Johnson (CFO)
+              </div>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill high"></div>
+            </div>
+          </div>
+          
+          <div class="plan-item">
+            <div class="plan-header">
+              <div class="plan-title">Succession Planning & Leadership Development</div>
+              <span class="status-badge low">Early Stage</span>
+            </div>
+            <div class="plan-details">
+              Develop a formal succession plan for key leadership positions, particularly for the CEO/Founder. Includes leadership development program, knowledge transfer protocols, and interim management contingency plans.
+            </div>
+            <div class="plan-meta">
+              <div>
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Started: Apr 18, 2024
+              </div>
+              <div>
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 14C8.13401 14 5 17.134 5 21H19C19 17.134 15.866 14 12 14Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Owner: David Kim (HR Director)
+              </div>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill low"></div>
+            </div>
+          </div>
+          
+          <div class="plan-item">
+            <div class="plan-header">
+              <div class="plan-title">Regulatory Compliance Framework</div>
+              <span class="status-badge low">Complete</span>
+            </div>
+            <div class="plan-details">
+              Implementation of a comprehensive compliance management system covering industry-specific regulations, documentation protocols, and regular compliance audits. This has successfully reduced compliance risk from medium to low.
+            </div>
+            <div class="plan-meta">
+              <div>
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Completed: Feb 28, 2024
+              </div>
+              <div>
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 14C8.13401 14 5 17.134 5 21H19C19 17.134 15.866 14 12 14Z" stroke="#78909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Owner: Jennifer Lee (Legal Counsel)
+              </div>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill complete"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Insights -->
+        <h3 class="section-title">AI Risk Insights</h3>
+        
+        <div class="ai-insight">
+          <div class="ai-insight-header">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 3.5V2M14.5 3.5V2M9 21.5V20M14.5 21.5V20M3.5 9H2M3.5 14.5H2M21.5 9H20M21.5 14.5H20" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div class="ai-insight-title">Customer Concentration Risk Analysis</div>
+          </div>
+          <div class="ai-insight-content">
+            Our analysis of historical client data reveals that the customer concentration risk is more severe than standard metrics suggest. While top 3 clients represent 45% of revenue, they also account for 62% of profit margin due to favorable pricing. The loss of any one key client would impact profitability disproportionately. Recommend accelerating the client diversification strategy with specific focus on high-margin segments.
+          </div>
+        </div>
+        
+        <div class="ai-insight">
+          <div class="ai-insight-header">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 3.5V2M14.5 3.5V2M9 21.5V20M14.5 21.5V20M3.5 9H2M3.5 14.5H2M21.5 9H20M21.5 14.5H20" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div class="ai-insight-title">Debt Covenant Compliance Projections</div>
+          </div>
+          <div class="ai-insight-content">
+            Based on financial projections and stress testing, we identify a 35% probability of covenant breach in Q3 2025 if current trends continue. The most vulnerable covenant is the fixed charge coverage ratio, which could fall below the required 1.2x threshold in downside scenarios. Recommend proactive discussions with lenders to renegotiate terms or establish covenant holiday provisions before any potential breach occurs.
+          </div>
+        </div>
+        
+        <div class="ai-insight">
+          <div class="ai-insight-header">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 3.5V2M14.5 3.5V2M9 21.5V20M14.5 21.5V20M3.5 9H2M3.5 14.5H2M21.5 9H20M21.5 14.5H20" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div class="ai-insight-title">Supply Chain Vulnerability Assessment</div>
+          </div>
+          <div class="ai-insight-content">
+            Our analysis of supplier data and geopolitical risk factors identifies potential vulnerabilities in the component supply chain. 28% of critical components are sourced from regions with elevated geopolitical risk. Recommend implementing a dual-sourcing strategy for these components and increasing safety stock levels to mitigate potential disruptions.
+          </div>
+        </div>
+        
+      </div>
+      
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="sidebar-section">
+          <h4 class="sidebar-title">Project Information</h4>
+          <div class="sidebar-card">
+            <div class="sidebar-card-title">Project Name</div>
+            <div class="sidebar-card-content">ABC Corp Acquisition</div>
+          </div>
+          <div class="sidebar-card">
+            <div class="sidebar-card-title">Analysis Date</div>
+            <div class="sidebar-card-content">April 30, 2024</div>
+          </div>
+          <div class="sidebar-card">
+            <div class="sidebar-card-title">Risk Analyst</div>
+            <div class="sidebar-card-content">Emma Rodriguez</div>
+          </div>
+          <div class="sidebar-card">
+            <div class="sidebar-card-title">Last Updated</div>
+            <div class="sidebar-card-content">May 2, 2024 (3 days ago)</div>
+          </div>
+        </div>
+        
+        <div class="sidebar-section">
+          <h4 class="sidebar-title">Risk Score Comparison</h4>
+          <div class="sidebar-card">
+            <div class="sidebar-card-title">Industry Average</div>
+            <div class="sidebar-card-content">58/100 (Medium Risk)</div>
+          </div>
+          <div class="sidebar-card">
+            <div class="sidebar-card-title">Target Company</div>
+            <div class="sidebar-card-content">72/100 (High Risk)</div>
+          </div>
+          <div class="sidebar-card">
+            <div class="sidebar-card-title">Historical Risk Score</div>
+            <div class="sidebar-card-content">↓ 7 points from Q3 2023</div>
+          </div>
+        </div>
+        
+        <div class="sidebar-section">
+          <h4 class="sidebar-title">AI Recommendations</h4>
+          <ul class="sidebar-list">
+            <li class="sidebar-list-item">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Accelerate client diversification efforts
+            </li>
+            <li class="sidebar-list-item">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Implement dual-sourcing strategy for key components
+            </li>
+            <li class="sidebar-list-item">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Prioritize succession planning for CEO position
+            </li>
+            <li class="sidebar-list-item">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Renegotiate debt covenants with lenders
+            </li>
+            <li class="sidebar-list-item">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Enhance cybersecurity measures for data protection
+            </li>
+          </ul>
+        </div>
+        
+        <div class="sidebar-section">
+          <h4 class="sidebar-title">Related Documents</h4>
+          <ul class="sidebar-list">
+            <li class="sidebar-list-item">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13.5 3H9C7.89543 3 7 3.89543 7 5V19C7 20.1046 7.89543 21 9 21H15C16.1046 21 17 20.1046 17 19V6.5M13.5 3L17 6.5M13.5 3V6.5H17M13 10.5H11M13 14.5H11" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Financial Due Diligence Report
+            </li>
+            <li class="sidebar-list-item">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13.5 3H9C7.89543 3 7 3.89543 7 5V19C7 20.1046 7.89543 21 9 21H15C16.1046 21 17 20.1046 17 19V6.5M13.5 3L17 6.5M13.5 3V6.5H17M13 10.5H11M13 14.5H11" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Legal Due Diligence Summary
+            </li>
+            <li class="sidebar-list-item">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13.5 3H9C7.89543 3 7 3.89543 7 5V19C7 20.1046 7.89543 21 9 21H15C16.1046 21 17 20.1046 17 19V6.5M13.5 3L17 6.5M13.5 3V6.5H17M13 10.5H11M13 14.5H11" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Market Analysis Report
+            </li>
+            <li class="sidebar-list-item">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13.5 3H9C7.89543 3 7 3.89543 7 5V19C7 20.1046 7.89543 21 9 21H15C16.1046 21 17 20.1046 17 19V6.5M13.5 3L17 6.5M13.5 3V6.5H17M13 10.5H11M13 14.5H11" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Operational Assessment
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

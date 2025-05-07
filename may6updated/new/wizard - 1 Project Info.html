@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DueDiligenceAI - Project Information</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Color System */
+    :root {
+      --deep-navy: #0A2342;
+      --azure-blue: #2D72D9;
+      --slate-gray: #3C4858;
+      --mint-green: #00BFA5;
+      --coral-red: #FF5252;
+      --amber-yellow: #FFC107;
+      --light-blue: #E1F5FE;
+      --sky-blue: #81D4FA;
+      --dark-blue: #01579B;
+      --charcoal: #263238;
+      --medium-gray: #78909C;
+      --light-gray: #ECEFF1;
+      --white: #FFFFFF;
+      
+      /* Typography */
+      --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-display: 'Manrope', var(--font-primary);
+      --font-mono: 'JetBrains Mono', SFMono-Regular, Consolas, monospace;
+      
+      /* Spacing */
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 12px;
+      --space-lg: 16px;
+      --space-xl: 24px;
+      --space-2xl: 32px;
+      --space-3xl: 48px;
+      
+      /* Shadows */
+      --shadow-sm: 0px 1px 3px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0px 2px 6px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      
+      /* Border Radius */
+      --radius-sm: 2px;
+      --radius-md: 4px;
+      --radius-lg: 8px;
+
+      /* Focus */
+      --focus-ring: 0 0 0 3px rgba(45, 114, 217, 0.4);
+    }
+
+    /* Global Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-primary);
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--slate-gray);
+      background-color: var(--light-gray);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-display);
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      line-height: 1.2;
+      font-weight: 800;
+      color: var(--deep-navy);
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      line-height: 1.2;
+      font-weight: 700;
+      color: var(--slate-gray);
+    }
+
+    h4 {
+      font-size: 1.125rem;
+      line-height: 1.4;
+      font-weight: 600;
+      color: var(--deep-navy);
+    }
+
+    /* Top Navigation */
+    .top-nav {
+      background-color: var(--white);
+      height: 64px;
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 var(--space-xl);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .top-nav-left, .top-nav-right {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--deep-navy);
+      margin-right: var(--space-2xl);
+    }
+
+    .logo svg {
+      margin-right: var(--space-sm);
+    }
+
+    .nav-items {
+      display: flex;
+    }
+
+    .nav-item {
+      padding: 0 var(--space-lg);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      color: var(--slate-gray);
+      cursor: pointer;
+      transition: color 0.15s;
+      position: relative;
+    }
+
+    .nav-item:hover {
+      color: var(--azure-blue);
+    }
+
+    .nav-item.active {
+      color: var(--azure-blue);
+    }
+
+    .nav-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--azure-blue);
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      background-color: var(--light-gray);
+      border-radius: 4px;
+      padding: 0 var(--space-md);
+      margin-right: var(--space-lg);
+      height: 36px;
+      width: 240px;
+    }
+
+    .search-bar input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 14px;
+      width: 100%;
+      margin-left: var(--space-xs);
+    }
+
+    .notifications, .user-profile {
+      margin-left: var(--space-lg);
+      cursor: pointer;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      background-color: var(--azure-blue);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    /* Breadcrumbs */
+    .breadcrumbs {
+      display: flex;
+      padding: var(--space-md) var(--space-xl);
+      background-color: var(--white);
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .breadcrumb-item {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: var(--medium-gray);
+    }
+
+    .breadcrumb-item:not(:last-child)::after {
+      content: '';
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2378909C' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 18l6-6-6-6'%3E%3C/path%3E%3C/svg%3E");
+      background-position: center;
+      background-repeat: no-repeat;
+      margin: 0 var(--space-sm);
+    }
+
+    .breadcrumb-item:last-child {
+      color: var(--charcoal);
+      font-weight: 500;
+    }
+
+    /* Main Container */
+    .container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--space-xl);
+      gap: var(--space-xl);
+    }
+
+    /* Page Header */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-xl);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: var(--space-md);
+    }
+
+    /* Project Info Panel */
+    .project-info-container {
+      display: flex;
+      gap: var(--space-xl);
+    }
+
+    .main-panel {
+      flex: 7;
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-panel {
+      flex: 3;
+      width: 320px;
+      min-width: 320px;
+      max-width: 320px;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xl);
+    }
+
+    .info-panel-header {
+      background-color: var(--deep-navy);
+      color: var(--white);
+      padding: var(--space-xl);
+    }
+
+    .info-panel-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .info-panel-subtitle {
+      font-size: 0.875rem;
+      opacity: 0.8;
+      margin-top: var(--space-sm);
+    }
+
+    .info-panel-content {
+      padding: var(--space-xl);
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .info-panel-footer {
+      display: flex;
+      justify-content: flex-end;
+      padding: var(--space-lg) var(--space-xl);
+      border-top: 1px solid var(--light-gray);
+      background-color: var(--white);
+    }
+
+    /* Form Styles */
+    .form-group {
+      margin-bottom: var(--space-xl);
+    }
+
+    .form-label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: var(--space-sm);
+      color: var(--deep-navy);
+    }
+
+    .form-hint {
+      font-size: 0.75rem;
+      color: var(--medium-gray);
+      margin-top: var(--space-xs);
+    }
+
+    .form-control {
+      display: block;
+      width: 100%;
+      padding: var(--space-sm) var(--space-md);
+      font-size: 1rem;
+      border: 1px solid var(--light-gray);
+      border-radius: var(--radius-md);
+      background-color: var(--white);
+      transition: border-color 0.15s ease-in-out;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--azure-blue);
+      box-shadow: var(--focus-ring);
+    }
+
+    .form-control-lg {
+      padding: var(--space-md) var(--space-lg);
+      font-size: 1.125rem;
+    }
+
+    textarea.form-control {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .input-group {
+      display: flex;
+      gap: var(--space-lg);
+    }
+
+    .input-group .form-group {
+      flex: 1;
+    }
+
+    /* Card Styles */
+    .card {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: var(--space-lg);
+      border-bottom: 1px solid var(--light-gray);
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+    }
+
+    .card-body {
+      padding: var(--space-lg);
+    }
+
+    /* Project Type Card */
+    .project-type-card {
+      background-color: var(--white);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--light-gray);
+      padding: var(--space-lg);
+      margin-bottom: var(--space-lg);
+      transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .project-type-card:hover {
+      border-color: var(--sky-blue);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .project-type-card:focus-within {
+      outline: none;
+      border-color: var(--azure-blue);
+      box-shadow: var(--focus-ring);
+    }
+
+    .project-type-card.selected {
+      border-color: var(--azure-blue);
+      box-shadow: 0 0 0 3px rgba(45, 114, 217, 0.1);
+    }
+
+    /* Hide radio visually but keep it accessible */
+    .project-type-card input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .project-type-card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: var(--space-md);
+    }
+
+    .project-type-title {
+      font-weight: 600;
+      color: var(--deep-navy);
+    }
+
+    .project-type-subtitle {
+      font-size: 0.875rem;
+      color: var(--medium-gray);
+      margin-top: var(--space-xs);
+    }
+
+    .project-type-card-body {
+      font-size: 0.875rem;
+    }
+
+    .project-type-radio {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid var(--light-gray);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: border-color 0.15s ease-in-out;
+    }
+
+    .project-type-card.selected .project-type-radio {
+      border-color: var(--azure-blue);
+    }
+
+    .project-type-card.selected .project-type-radio::after {
+      content: '';
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: var(--azure-blue);
+    }
+
+    /* Button Styles */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      border-radius: var(--radius-md);
+      font-weight: 500;
+      font-size: 14px;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .button:focus {
+      outline: none;
+      box-shadow: var(--focus-ring);
+    }
+
+    .button .icon {
+      width: 18px;
+      height: 18px;
+      margin-right: var(--space-xs);
+    }
+
+    .primary {
+      background-color: var(--azure-blue);
+      color: var(--white);
+    }
+
+    .primary:hover {
+      background-color: #1A5DC7;
+    }
+
+    .secondary {
+      background-color: var(--white);
+      color: var(--azure-blue);
+      border: 1px solid var(--azure-blue);
+    }
+
+    .secondary:hover {
+      background-color: var(--light-blue);
+    }
+
+    .tertiary {
+      background-color: transparent;
+      color: var(--azure-blue);
+      padding: 8px 12px;
+    }
+
+    .tertiary:hover {
+      background-color: var(--light-blue);
+    }
+
+    /* Sidebar Components */
+    .sidebar-card {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+
+    .sidebar-card-header {
+      padding: var(--space-lg);
+      border-bottom: 1px solid var(--light-gray);
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .sidebar-card-body {
+      padding: var(--space-lg);
+    }
+
+    .help-panel {
+      background-color: rgba(45, 114, 217, 0.05);
+      border-radius: var(--radius-md);
+      padding: var(--space-lg);
+    }
+
+    .help-panel-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: var(--space-md);
+    }
+
+    .help-panel-header .icon {
+      margin-right: var(--space-sm);
+      color: var(--azure-blue);
+    }
+
+    .help-panel-title {
+      font-weight: 600;
+      color: var(--deep-navy);
+    }
+
+    .help-panel-content {
+      font-size: 0.875rem;
+    }
+
+    .help-panel-actions {
+      margin-top: var(--space-md);
+    }
+
+    .recent-projects-list {
+      list-style: none;
+    }
+
+    .recent-project-item {
+      padding: var(--space-md) 0;
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .recent-project-item:last-child {
+      border-bottom: none;
+    }
+
+    .recent-project-name {
+      font-weight: 500;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-xs);
+    }
+
+    .recent-project-date {
+      font-size: 0.75rem;
+      color: var(--medium-gray);
+    }
+
+    /* Tag Component */
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+      margin-right: 6px;
+    }
+
+    .tag.blue {
+      background-color: rgba(45, 114, 217, 0.1);
+      color: var(--azure-blue);
+    }
+
+    .tag.green {
+      background-color: rgba(0, 191, 165, 0.1);
+      color: var(--mint-green);
+    }
+
+    .tag.amber {
+      background-color: rgba(255, 193, 7, 0.1);
+      color: var(--amber-yellow);
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 1024px) {
+      .project-info-container {
+        flex-direction: column;
+      }
+
+      .sidebar-panel {
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: var(--space-md);
+      }
+
+      .top-nav {
+        padding: 0 var(--space-md);
+      }
+
+      .nav-items {
+        display: none;
+      }
+
+      .search-bar {
+        width: 160px;
+      }
+
+      .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-md);
+      }
+
+      .header-actions {
+        width: 100%;
+      }
+
+      .input-group {
+        flex-direction: column;
+        gap: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <div class="top-nav-left">
+      <div class="logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M8 8H16C20.4183 8 24 11.5817 24 16C24 20.4183 20.4183 24 16 24H8V8Z" fill="#0A2342"/>
+          <path d="M16 8H24V16C24 20.4183 20.4183 24 16 24V8Z" fill="#2D72D9"/>
+        </svg>
+        <span>DueDiligenceAI</span>
+      </div>
+      <div class="nav-items">
+        <div class="nav-item">Dashboard</div>
+        <div class="nav-item">Documents</div>
+        <div class="nav-item active">Analysis</div>
+        <div class="nav-item">Reports</div>
+      </div>
+    </div>
+    <div class="top-nav-right">
+      <div class="search-bar">
+        <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <input type="text" placeholder="Search..." />
+      </div>
+      <div class="notifications">
+        <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M15 17H9M12 3V4M12 21V20M5.6 5.6L6.3 6.3M18.4 5.6L17.7 6.3M3 12H4M20 12H21M6 17.4V12C6 8.7 8.7 6 12 6C15.3 6 18 8.7 18 12V17.4H6Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="user-profile">
+        <div class="avatar">SK</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Breadcrumbs -->
+  <div class="breadcrumbs">
+    <div class="breadcrumb-item">Dashboard</div>
+    <div class="breadcrumb-item">Projects</div>
+    <div class="breadcrumb-item">New Project</div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1>Create New Project</h1>
+      <div class="header-actions">
+        <button class="button secondary">
+          <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Back to Dashboard
+        </button>
+      </div>
+    </div>
+
+    <!-- Project Info Panels -->
+    <div class="project-info-container">
+      <!-- Main Panel -->
+      <div class="main-panel">
+        <div class="info-panel-header">
+          <h2 class="info-panel-title">Project Information</h2>
+          <p class="info-panel-subtitle">Enter basic information about your new due diligence project</p>
+        </div>
+        <div class="info-panel-content">
+          <div class="form-group">
+            <label for="project-name" class="form-label">Project Name</label>
+            <input type="text" id="project-name" class="form-control form-control-lg" placeholder="Enter a descriptive name for your project">
+            <p class="form-hint">Use a clear, specific name to easily identify this project</p>
+          </div>
+
+          <div class="form-group">
+            <label for="project-code" class="form-label">Project Code (Optional)</label>
+            <input type="text" id="project-code" class="form-control" placeholder="Enter internal project code (e.g., DD-2025-001)">
+          </div>
+
+          <div class="input-group">
+            <div class="form-group">
+              <label for="start-date" class="form-label">Estimated Start Date</label>
+              <input type="date" id="start-date" class="form-control" aria-required="true">
+            </div>
+            <div class="form-group">
+              <label for="end-date" class="form-label">Target Completion Date</label>
+              <input type="date" id="end-date" class="form-control" aria-required="true">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="project-budget" class="form-label">Project Budget (Optional)</label>
+            <div style="position: relative;">
+              <span style="position: absolute; left: 12px; top: 9px; color: var(--medium-gray);">$</span>
+              <input type="number" id="project-budget" class="form-control" placeholder="Enter budget amount" style="padding-left: 24px;" aria-label="Project budget in dollars">
+            </div>
+            <p class="form-hint">Enter the estimated total budget for this due diligence project</p>
+          </div>
+
+          <div class="form-group">
+            <label for="project-description" class="form-label">Project Description</label>
+            <textarea id="project-description" class="form-control" placeholder="Describe the purpose and scope of this due diligence project" aria-required="true"></textarea>
+            <p class="form-hint">Include key objectives, deal context, and any specific areas of focus</p>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Project Type</label>
+            <p class="form-hint">Select the type of due diligence project</p>
+            
+            <!-- Project Type Card 1 -->
+            <div class="project-type-card selected">
+              <input type="radio" name="project-type" id="project-type-acquisition" value="acquisition" checked>
+              <div class="project-type-card-header">
+                <div>
+                  <div class="project-type-title">Acquisition Due Diligence</div>
+                  <div class="project-type-subtitle">Full-scale due diligence process for company acquisition</div>
+                </div>
+                <div class="project-type-radio"></div>
+              </div>
+              <div class="project-type-card-body">
+                Includes financial, legal, operational, and strategic analysis for potential acquisition targets. Comes with pre-configured document checklists and risk assessment frameworks tailored for M&A transactions.
+              </div>
+            </div>
+            
+            <!-- Project Type Card 2 -->
+            <div class="project-type-card">
+              <input type="radio" name="project-type" id="project-type-vendor" value="vendor">
+              <div class="project-type-card-header">
+                <div>
+                  <div class="project-type-title">Vendor Due Diligence</div>
+                  <div class="project-type-subtitle">Assess potential vendors and suppliers</div>
+                </div>
+                <div class="project-type-radio"></div>
+              </div>
+              <div class="project-type-card-body">
+                Focused on evaluating vendor credentials, compliance, financial stability, and operational capabilities to minimize supply chain risks. Includes tailored document requests for third-party assessments.
+              </div>
+            </div>
+            
+            <!-- Project Type Card 3 -->
+            <div class="project-type-card">
+              <input type="radio" name="project-type" id="project-type-investment" value="investment">
+              <div class="project-type-card-header">
+                <div>
+                  <div class="project-type-title">Investment Due Diligence</div>
+                  <div class="project-type-subtitle">Assessment for potential investments</div>
+                </div>
+                <div class="project-type-radio"></div>
+              </div>
+              <div class="project-type-card-body">
+                Streamlined process for evaluating investment opportunities, with emphasis on financial analysis, market positioning, and growth potential. Designed for venture capital, private equity, or strategic investments.
+              </div>
+            </div>
+            
+            <!-- Project Type Card 4 -->
+            <div class="project-type-card">
+              <input type="radio" name="project-type" id="project-type-custom" value="custom">
+              <div class="project-type-card-header">
+                <div>
+                  <div class="project-type-title">Custom Due Diligence</div>
+                  <div class="project-type-subtitle">Build a custom due diligence workflow</div>
+                </div>
+                <div class="project-type-radio"></div>
+              </div>
+              <div class="project-type-card-body">
+                Create a fully customized due diligence process with handpicked modules and document requirements. Best for specialized projects with unique requirements or non-standard assessment needs.
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="industry-select" class="form-label">Industry</label>
+            <select id="industry-select" class="form-control" aria-required="true">
+              <option value="">Select Industry</option>
+              <option value="tech">Technology</option>
+              <option value="finance">Financial Services</option>
+              <option value="healthcare">Healthcare</option>
+              <option value="manufacturing">Manufacturing</option>
+              <option value="retail">Retail & Consumer</option>
+              <option value="energy">Energy & Utilities</option>
+              <option value="real-estate">Real Estate</option>
+              <option value="telecom">Telecommunications</option>
+              <option value="media">Media & Entertainment</option>
+              <option value="other">Other</option>
+            </select>
+            <p class="form-hint">The industry selection will customize analysis templates and document requirements</p>
+          </div>
+
+          <div class="form-group">
+            <label for="project-tags" class="form-label">Project Tags</label>
+            <input type="text" id="project-tags" class="form-control" placeholder="Add tags separated by commas" aria-label="Project tags">
+            <p class="form-hint">Example: #acquisition, #technology, #international</p>
+          </div>
+        </div>
+        <div class="info-panel-footer">
+          <button class="button primary">
+            Continue to Next Step
+            <svg class="icon" width="18" height="18" style="margin-left: var(--space-xs); margin-right: 0;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M9 6L15 12L9 18" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Sidebar Panel -->
+      <div class="sidebar-panel">
+        <!-- Help Card -->
+        <div class="sidebar-card">
+          <div class="sidebar-card-header">
+            Project Setup Guide
+          </div>
+          <div class="sidebar-card-body">
+            <div class="help-panel">
+              <div class="help-panel-header">
+                <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M12 16V12M12 8H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="help-panel-title">Getting Started</div>
+              </div>
+              <div class="help-panel-content">
+                <p>You're setting up a new due diligence project. This multi-step process will guide you through configuring your project.</p>
+                <ul style="margin-top: 8px; margin-left: 16px;">
+                  <li>Start by providing basic project information</li>
+                  <li>You'll then add target company details</li>
+                  <li>Next, assign team members and their roles</li>
+                  <li>Set up timeline and milestones</li>
+                  <li>Finally, customize document requirements</li>
+                </ul>
+              </div>
+              <div class="help-panel-actions">
+                <button class="button tertiary">
+                  <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M13.5 3H9C7.89543 3 7 3.89543 7 5V19C7 20.1046 7.89543 21 9 21H15C16.1046 21 17 20.1046 17 19V6.5M13.5 3L17 6.5M13.5 3V6.5H17" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  View Setup Guide
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Projects Card -->
+        <div class="sidebar-card">
+          <div class="sidebar-card-header">
+            <span>Recent Projects</span>
+            <button class="button tertiary" style="padding: 4px 8px; margin: -4px 0;">View All</button>
+          </div>
+          <div class="sidebar-card-body">
+            <ul class="recent-projects-list">
+              <li class="recent-project-item">
+                <div class="recent-project-name">XYZ Corp Acquisition</div>
+                <div class="recent-project-date">Updated May 1, 2025</div>
+                <div style="margin-top: 4px;">
+                  <span class="tag blue">Acquisition</span>
+                  <span class="tag green">Complete</span>
+                </div>
+              </li>
+              <li class="recent-project-item">
+                <div class="recent-project-name">Global Tech Vendor Assessment</div>
+                <div class="recent-project-date">Updated Apr 28, 2025</div>
+                <div style="margin-top: 4px;">
+                  <span class="tag blue">Vendor</span>
+                  <span class="tag amber">In Progress</span>
+                </div>
+              </li>
+              <li class="recent-project-item">
+                <div class="recent-project-name">MedTech Series B Investment</div>
+                <div class="recent-project-date">Updated Apr 22, 2025</div>
+                <div style="margin-top: 4px;">
+                  <span class="tag blue">Investment</span>
+                  <span class="tag green">Complete</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Templates Card -->
+        <div class="sidebar-card">
+          <div class="sidebar-card-header">
+            Available Templates
+          </div>
+          <div class="sidebar-card-body">
+            <p style="font-size: 14px; margin-bottom: 12px;">Use a template to quickly set up your project with predefined settings.</p>
+            
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <button class="button secondary" style="width: 100%; justify-content: flex-start;">
+                <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M9 3.5V2M14.5 3.5V2M9 21.5V20M14.5 21.5V20M3.5 9H2M3.5 14.5H2M21.5 9H20M21.5 14.5H20M12 7L10.5 12M10.5 12L9 17M10.5 12L16 12" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Technology Acquisition
+              </button>
+              
+              <button class="button secondary" style="width: 100%; justify-content: flex-start;">
+                <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M9 3.5V2M14.5 3.5V2M9 21.5V20M14.5 21.5V20M3.5 9H2M3.5 14.5H2M21.5 9H20M21.5 14.5H20M12 7L10.5 12M10.5 12L9 17M10.5 12L16 12" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Manufacturing Vendor
+              </button>
+              
+              <button class="button secondary" style="width: 100%; justify-content: flex-start;">
+                <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M9 3.5V2M14.5 3.5V2M9 21.5V20M14.5 21.5V20M3.5 9H2M3.5 14.5H2M21.5 9H20M21.5 14.5H20M12 7L10.5 12M10.5 12L9 17M10.5 12L16 12" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Healthcare Investment
+              </button>
+              
+              <button class="button tertiary" style="width: 100%; justify-content: center; margin-top: 8px;">
+                View More Templates
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Add JavaScript for interactivity -->
+  <script>
+    // Project Type Card Selection
+    document.addEventListener('DOMContentLoaded', function() {
+      const projectTypeCards = document.querySelectorAll('.project-type-card');
+      const projectTypeRadios = document.querySelectorAll('input[name="project-type"]');
+      
+      // Make the entire card clickable
+      projectTypeCards.forEach(card => {
+        card.addEventListener('click', function() {
+          // Find the radio input within this card
+          const radio = this.querySelector('input[type="radio"]');
+          if (radio) {
+            radio.checked = true;
+            
+            // Remove 'selected' class from all cards
+            projectTypeCards.forEach(c => c.classList.remove('selected'));
+            // Add 'selected' class to clicked card
+            this.classList.add('selected');
+          }
+        });
+        
+        // Keyboard support - allow pressing Enter to select a card
+        card.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            this.click();
+          }
+        });
+      });
+      
+      // Handle radio button changes
+      projectTypeRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+          if (this.checked) {
+            // Remove 'selected' class from all cards
+            projectTypeCards.forEach(c => c.classList.remove('selected'));
+            // Add 'selected' class to the card containing this radio
+            this.closest('.project-type-card').classList.add('selected');
+          }
+        });
+      });
+      
+      // Set up form validation for required fields
+      const continueButton = document.querySelector('.info-panel-footer .button.primary');
+      const projectNameInput = document.getElementById('project-name');
+      const projectDescriptionInput = document.getElementById('project-description');
+      const industrySelect = document.getElementById('industry-select');
+      
+      continueButton.addEventListener('click', function(e) {
+        let isValid = true;
+        
+        // Validate project name
+        if (!projectNameInput.value.trim()) {
+          isValid = false;
+          showError(projectNameInput, 'Project name is required');
+        }
+        
+        // Validate project description
+        if (!projectDescriptionInput.value.trim()) {
+          isValid = false;
+          showError(projectDescriptionInput, 'Project description is required');
+        }
+        
+        // Validate industry selection
+        if (!industrySelect.value) {
+          isValid = false;
+          showError(industrySelect, 'Please select an industry');
+        }
+        
+        if (!isValid) {
+          e.preventDefault();
+        } else {
+          // Navigate to next step (for demo purposes just showing a success message)
+          alert('Form validated! In a real app, this would navigate to the next step.');
+        }
+      });
+      
+      // Helper function to show error message
+      function showError(element, message) {
+        element.style.borderColor = 'var(--coral-red)';
+        
+        // Add error message if it doesn't exist
+        let errorMessage = element.parentElement.querySelector('.error-message');
+        if (!errorMessage) {
+          errorMessage = document.createElement('p');
+          errorMessage.className = 'error-message';
+          errorMessage.style.color = 'var(--coral-red)';
+          errorMessage.style.fontSize = '0.75rem';
+          errorMessage.style.marginTop = 'var(--space-xs)';
+          errorMessage.textContent = message;
+          element.parentElement.appendChild(errorMessage);
+        }
+        
+        // Scroll to the first error
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      
+      // Clear validation errors when user interacts with fields
+      const formControls = document.querySelectorAll('.form-control');
+      formControls.forEach(control => {
+        control.addEventListener('input', function() {
+          this.style.borderColor = '';
+          const errorMessage = this.parentElement.querySelector('.error-message');
+          if (errorMessage) {
+            errorMessage.remove();
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DueDiligenceAI - Risk Assessment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Color System */
+    :root {
+      --deep-navy: #0A2342;
+      --azure-blue: #2D72D9;
+      --slate-gray: #3C4858;
+      --mint-green: #00BFA5;
+      --coral-red: #FF5252;
+      --amber-yellow: #FFC107;
+      --light-blue: #E1F5FE;
+      --sky-blue: #81D4FA;
+      --dark-blue: #01579B;
+      --charcoal: #263238;
+      --medium-gray: #78909C;
+      --light-gray: #ECEFF1;
+      --white: #FFFFFF;
+      
+      /* Typography */
+      --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-display: 'Manrope', var(--font-primary);
+      --font-mono: 'JetBrains Mono', SFMono-Regular, Consolas, monospace;
+      
+      /* Spacing */
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 12px;
+      --space-lg: 16px;
+      --space-xl: 24px;
+      --space-2xl: 32px;
+      --space-3xl: 48px;
+      
+      /* Shadows */
+      --shadow-sm: 0px 1px 3px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0px 2px 6px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      
+      /* Border Radius */
+      --radius-sm: 2px;
+      --radius-md: 4px;
+      --radius-lg: 8px;
+    }
+
+    /* Global Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-primary);
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--slate-gray);
+      background-color: var(--light-gray);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-display);
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      line-height: 1.2;
+      font-weight: 800;
+      color: var(--deep-navy);
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      line-height: 1.2;
+      font-weight: 700;
+      color: var(--slate-gray);
+    }
+
+    h4 {
+      font-size: 1.125rem;
+      line-height: 1.4;
+      font-weight: 600;
+      color: var(--deep-navy);
+    }
+
+    /* Top Navigation */
+    .top-nav {
+      background-color: var(--white);
+      height: 64px;
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 var(--space-xl);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .top-nav-left, .top-nav-right {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--deep-navy);
+      margin-right: var(--space-2xl);
+    }
+
+    .logo svg {
+      margin-right: var(--space-sm);
+    }
+
+    .nav-items {
+      display: flex;
+    }
+
+    .nav-item {
+      padding: 0 var(--space-lg);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      color: var(--slate-gray);
+      cursor: pointer;
+      transition: color 0.15s;
+      position: relative;
+    }
+
+    .nav-item:hover {
+      color: var(--azure-blue);
+    }
+
+    .nav-item.active {
+      color: var(--azure-blue);
+    }
+
+    .nav-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--azure-blue);
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      background-color: var(--light-gray);
+      border-radius: 4px;
+      padding: 0 var(--space-md);
+      margin-right: var(--space-lg);
+      height: 36px;
+      width: 240px;
+    }
+
+    .search-bar input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 14px;
+      width: 100%;
+      margin-left: var(--space-xs);
+    }
+
+    .notifications, .user-profile {
+      margin-left: var(--space-lg);
+      cursor: pointer;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      background-color: var(--azure-blue);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    /* Main Layout */
+    .container {
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 64px);
+    }
+
+    /* Breadcrumbs */
+    .breadcrumbs {
+      display: flex;
+      padding: var(--space-md) var(--space-xl);
+      background-color: var(--white);
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .breadcrumb-item {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: var(--medium-gray);
+    }
+
+    .breadcrumb-item:not(:last-child)::after {
+      content: '';
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2378909C' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 18l6-6-6-6'%3E%3C/path%3E%3C/svg%3E");
+      background-position: center;
+      background-repeat: no-repeat;
+      margin: 0 var(--space-sm);
+    }
+
+    .breadcrumb-item:last-child {
+      color: var(--charcoal);
+      font-weight: 500;
+    }
+
+    /* Two Column Layout */
+    .two-column-layout {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .main-content {
+      flex: 7;
+      padding: var(--space-xl);
+      overflow-y: auto;
+    }
+
+    .sidebar {
+      flex: 3;
+      width: 320px;
+      min-width: 320px;
+      max-width: 320px;
+      background-color: var(--white);
+      border-left: 1px solid var(--light-gray);
+      padding: var(--space-xl);
+      overflow-y: auto;
+    }
+
+    /* Button Styles */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      border-radius: var(--radius-md);
+      font-weight: 500;
+      font-size: 14px;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .button .icon {
+      width: 18px;
+      height: 18px;
+      margin-right: var(--space-xs);
+    }
+
+    .primary {
+      background-color: var(--azure-blue);
+      color: var(--white);
+    }
+
+    .primary:hover {
+      background-color: #1A5DC7;
+    }
+
+    .secondary {
+      background-color: var(--white);
+      color: var(--azure-blue);
+      border: 1px solid var(--azure-blue);
+    }
+
+    .secondary:hover {
+      background-color: var(--light-blue);
+    }
+
+    .tertiary {
+      background-color: transparent;
+      color: var(--azure-blue);
+      padding: 8px 12px;
+    }
+
+    .tertiary:hover {
+      background-color: var(--light-blue);
+    }
+
+    .icon-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-md);
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+    }
+
+    .icon-button:hover {
+      background-color: var(--light-gray);
+    }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      stroke-width: 1.5;
+    }
+
+    /* Page Header */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-xl);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: var(--space-md);
+    }
+
+    /* Cards and Sections */
+    .card {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      margin-bottom: var(--space-xl);
+    }
+
+    .card-header {
+      padding: var(--space-lg);
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+    }
+
+    .card-body {
+      padding: var(--space-lg);
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-lg);
+    }
+
+    /* Risk Assessment Specific Styles */
+    .risk-matrix {
+      width: 100%;
+      height: 400px;
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      margin-bottom: var(--space-xl);
+      padding: var(--space-lg);
+    }
+
+    .risk-item {
+      display: flex;
+      align-items: flex-start;
+      padding: var(--space-lg);
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      margin-bottom: var(--space-lg);
+      border-left: 4px solid var(--azure-blue);
+    }
+
+    .risk-item.high {
+      border-left-color: var(--coral-red);
+    }
+
+    .risk-item.medium {
+      border-left-color: var(--amber-yellow);
+    }
+
+    .risk-item.low {
+      border-left-color: var(--mint-green);
+    }
+
+    .risk-icon {
+      width: 32px;
+      height: 32px;
+      margin-right: var(--space-lg);
+      flex-shrink: 0;
+    }
+
+    .risk-content {
+      flex: 1;
+    }
+
+    .risk-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-md);
+    }
+
+    .risk-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+    }
+
+    .risk-badge {
+      padding: 4px 8px;
+      border-radius: 16px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .risk-badge.high {
+      background-color: rgba(255, 82, 82, 0.1);
+      color: var(--coral-red);
+    }
+
+    .risk-badge.medium {
+      background-color: rgba(255, 193, 7, 0.1);
+      color: var(--amber-yellow);
+    }
+
+    .risk-badge.low {
+      background-color: rgba(0, 191, 165, 0.1);
+      color: var(--mint-green);
+    }
+
+    .risk-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-md);
+      margin-top: var(--space-md);
+    }
+
+    .risk-metric {
+      background-color: var(--light-gray);
+      padding: var(--space-md);
+      border-radius: var(--radius-md);
+    }
+
+    .risk-metric-label {
+      font-size: 12px;
+      color: var(--medium-gray);
+      margin-bottom: 4px;
+    }
+
+    .risk-metric-value {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--deep-navy);
+    }
+
+    .risk-filters {
+      display: flex;
+      gap: var(--space-md);
+      margin-bottom: var(--space-xl);
+      flex-wrap: wrap;
+    }
+
+    .filter-chip {
+      display: flex;
+      align-items: center;
+      background-color: var(--white);
+      border: 1px solid var(--light-gray);
+      padding: 6px 12px;
+      border-radius: 16px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .filter-chip:hover {
+      border-color: var(--azure-blue);
+    }
+
+    .filter-chip.active {
+      background-color: var(--azure-blue);
+      color: var(--white);
+      border-color: var(--azure-blue);
+    }
+
+    .filter-chip .icon {
+      width: 16px;
+      height: 16px;
+      margin-right: 6px;
+    }
+
+    .tab-container {
+      margin-bottom: var(--space-xl);
+    }
+
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--light-gray);
+      margin-bottom: var(--space-lg);
+    }
+
+    .tab {
+      padding: var(--space-md) var(--space-xl);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--slate-gray);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .tab:hover {
+      background-color: var(--light-blue);
+    }
+
+    .tab.active {
+      color: var(--azure-blue);
+    }
+
+    .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--azure-blue);
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: var(--space-md);
+    }
+
+    .tag {
+      font-size: 12px;
+      color: var(--slate-gray);
+      background-color: var(--light-gray);
+      padding: 4px 8px;
+      border-radius: 16px;
+    }
+
+    .progress-bar {
+      height: 8px;
+      background-color: var(--light-gray);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background-color: var(--azure-blue);
+    }
+
+    .progress-fill.high {
+      background-color: var(--coral-red);
+    }
+
+    .progress-fill.medium {
+      background-color: var(--amber-yellow);
+    }
+
+    .progress-fill.low {
+      background-color: var(--mint-green);
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <div class="top-nav-left">
+      <div class="logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 8H16C20.4183 8 24 11.5817 24 16C24 20.4183 20.4183 24 16 24H8V8Z" fill="#0A2342"/>
+          <path d="M16 8H24V16C24 20.4183 20.4183 24 16 24V8Z" fill="#2D72D9"/>
+        </svg>
+        <span>DueDiligenceAI</span>
+      </div>
+      <div class="nav-items">
+        <div class="nav-item">Dashboard</div>
+        <div class="nav-item">Documents</div>
+        <div class="nav-item active">Analysis</div>
+        <div class="nav-item">Reports</div>
+      </div>
+    </div>
+    <div class="top-nav-right">
+      <div class="search-bar">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <input type="text" placeholder="Search..." />
+      </div>
+      <div class="notifications">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 17H9M12 3V4M12 21V20M5.6 5.6L6.3 6.3M18.4 5.6L17.7 6.3M3 12H4M20 12H21M6 17.4V12C6 8.7 8.7 6 12 6C15.3 6 18 8.7 18 12V17.4H6Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="user-profile">
+        <div class="avatar">SK</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Breadcrumbs -->
+  <div class="breadcrumbs">
+    <div class="breadcrumb-item">Dashboard</div>
+    <div class="breadcrumb-item">Projects</div>
+    <div class="breadcrumb-item">ABC Corp Acquisition</div>
+    <div class="breadcrumb-item">Risk Assessment</div>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="container">
+    <div class="two-column-layout">
+      <!-- Main Content -->
+      <div class="main-content">
+        <!-- Page Header -->
+        <div class="page-header">
+          <h1>ABC Corp Risk Assessment</h1>
+          <div class="header-actions">
+            <button class="button secondary">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 16.5V18.75C3 19.9926 4.00736 21 5.25 21H18.75C19.9926 21 21 19.9926 21 18.75V16.5M16.5 12L12 16.5M12 16.5L7.5 12M12 16.5V3" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Export Report
+            </button>
+            <button class="button primary">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 9V12L14 14M12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Run New Assessment
+            </button>
+          </div>
+        </div>
+
+        <!-- Risk Summary Info Box -->
+        <div class="card" style="margin-bottom: var(--space-xl); background-color: rgba(0, 191, 165, 0.05); border-left: 4px solid var(--amber-yellow);">
+          <div class="card-body" style="display: flex; align-items: flex-start;">
+            <svg class="icon" style="width: 32px; height: 32px; margin-right: var(--space-lg); color: var(--amber-yellow);" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0378 2.66667 10.268 4L3.33978 16C2.56998 17.3333 3.53223 19 5.07183 19Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div>
+              <h4 style="margin-bottom: var(--space-xs);">Risk Assessment Summary</h4>
+              <p style="margin-bottom: var(--space-md);">Based on our comprehensive analysis, ABC Corp presents a moderate overall risk profile. We've identified 14 distinct risk factors across financial, operational, and strategic categories. Of these, 3 are classified as high-risk items requiring immediate attention, particularly around customer concentration and key person dependencies.</p>
+              <div style="display: flex; gap: var(--space-xl);">
+                <div>
+                  <div style="font-weight: 600; color: var(--coral-red);">3 High Risk Items</div>
+                  <div style="font-size: 14px; color: var(--slate-gray);">Immediate attention required</div>
+                </div>
+                <div>
+                  <div style="font-weight: 600; color: var(--amber-yellow);">5 Medium Risk Items</div>
+                  <div style="font-size: 14px; color: var(--slate-gray);">Monitoring required</div>
+                </div>
+                <div>
+                  <div style="font-weight: 600; color: var(--mint-green);">6 Low Risk Items</div>
+                  <div style="font-size: 14px; color: var(--slate-gray);">Standard controls sufficient</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Risk Filters -->
+        <div class="risk-filters">
+          <div class="filter-chip active">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0378 2.66667 10.268 4L3.33978 16C2.56998 17.3333 3.53223 19 5.07183 19Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            All Risks
+          </div>
+          <div class="filter-chip">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0378 2.66667 10.268 4L3.33978 16C2.56998 17.3333 3.53223 19 5.07183 19Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            High Risk
+          </div>
+          <div class="filter-chip">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0378 2.66667 10.268 4L3.33978 16C2.56998 17.3333 3.53223 19 5.07183 19Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Medium Risk
+          </div>
+          <div class="filter-chip">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 9V12L14 14M12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Low Risk
+          </div>
+          <div class="filter-chip">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 12V3M15.5 5.5L8.5 5.5M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Financial
+          </div>
+          <div class="filter-chip">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16 8V16M12 11V16M8 14V16M6 20H18C19.1046 20 20 19.1046 20 18V6C20 4.89543 19.1046 4 18 4H6C4.89543 4 4 4.89543 4 6V18C4 19.1046 4.89543 20 6 20Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Operational
+          </div>
+          <div class="filter-chip">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15.5 10.5L19 7M19 7L22.5 10.5M19 7V17M12 21H8C6.89543 21 6 20.1046 6 19V5C6 3.89543 6.89543 3 8 3H14.1716C14.702 3 15.2107 3.21071 15.5858 3.58579L18.4142 6.41421C18.7893 6.78929 19 7.29799 19 7.82843V9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Legal
+          </div>
+          <div class="filter-chip">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M22 12L18 16M18 16L14 12M18 16V8C18 6.97631 17.346 6.10591 16.4 5.76M11 5.05C10.6856 5.01741 10.3522 5 10 5C5.58172 5 2 8.58172 2 13C2 17.4183 5.58172 21 10 21C13.3861 21 16.286 18.9481 17.4649 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Strategic
+          </div>
+        </div>
+
+        <!-- Tab Navigation for Risk Views -->
+        <div class="tab-container">
+          <div class="tabs">
+            <div class="tab active">Risk Matrix</div>
+            <div class="tab">Risk List</div>
+            <div class="tab">Risk Timeline</div>
+          </div>
+        </div>
+
+        <!-- Risk Matrix Visualization -->
+        <div class="risk-matrix">
+          <h3 style="margin-bottom: var(--space-md);">Risk Impact vs. Probability Matrix</h3>
+          
+          <!-- This would be an interactive chart in a real application -->
+          <svg width="100%" height="90%" viewBox="0 0 800 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Matrix background grid -->
+            <rect x="100" y="20" width="600" height="300" fill="var(--light-gray)" stroke="var(--medium-gray)" stroke-width="1"/>
+            
+            <!-- Grid lines -->
+            <line x1="100" y1="120" x2="700" y2="120" stroke="var(--medium-gray)" stroke-width="1" stroke-dasharray="4 4"/>
+            <line x1="100" y1="220" x2="700" y2="220" stroke="var(--medium-gray)" stroke-width="1" stroke-dasharray="4 4"/>
+            <line x1="300" y1="20" x2="300" y2="320" stroke="var(--medium-gray)" stroke-width="1" stroke-dasharray="4 4"/>
+            <line x1="500" y1="20" x2="500" y2="320" stroke="var(--medium-gray)" stroke-width="1" stroke-dasharray="4 4"/>
+            
+            <!-- Risk zones -->
+            <rect x="500" y="20" width="200" height="100" fill="rgba(255, 82, 82, 0.2)"/>
+            <rect x="300" y="20" width="200" height="100" fill="rgba(255, 193, 7, 0.2)"/>
+            <rect x="500" y="120" width="200" height="100" fill="rgba(255, 193, 7, 0.2)"/>
+            <rect x="300" y="120" width="200" height="100" fill="rgba(0, 191, 165, 0.2)"/>
+            <rect x="100" y="20" width="200" height="100" fill="rgba(0, 191, 165, 0.2)"/>
+            <rect x="100" y="120" width="200" height="100" fill="rgba(0, 191, 165, 0.1)"/>
+            <rect x1="100" y="220" width="600" height="100" fill="rgba(0, 191, 165, 0.1)"/>
+            
+            <!-- Axis labels -->
+            <text x="400" y="340" text-anchor="middle" font-family="var(--font-primary)" font-size="14" font-weight="600" fill="var(--deep-navy)">Probability</text>
+            <text x="70" y="170" text-anchor="middle" font-family="var(--font-primary)" font-size="14" font-weight="600" fill="var(--deep-navy)" transform="rotate(-90, 70, 170)">Impact</text>
+            
+            <!-- Scale labels -->
+            <text x="100" y="15" text-anchor="middle" font-family="var(--font-primary)" font-size="12" fill="var(--slate-gray)">Low</text>
+            <text x="300" y="15" text-anchor="middle" font-family="var(--font-primary)" font-size="12" fill="var(--slate-gray)">Medium</text>
+            <text x="500" y="15" text-anchor="middle" font-family="var(--font-primary)" font-size="12" fill="var(--slate-gray)">High</text>
+            <text x="700" y="15" text-anchor="middle" font-family="var(--font-primary)" font-size="12" fill="var(--slate-gray)">Very High</text>
+            
+            <text x="80" y="70" text-anchor="end" font-family="var(--font-primary)" font-size="12" fill="var(--slate-gray)">High</text>
+            <text x="80" y="170" text-anchor="end" font-family="var(--font-primary)" font-size="12" fill="var(--slate-gray)">Medium</text>
+            <text x="80" y="270" text-anchor="end" font-family="var(--font-primary)" font-size="12" fill="var(--slate-gray)">Low</text>
+            
+            <!-- Risk points -->
+            <!-- Customer Concentration Risk -->
+            <circle cx="650" cy="50" r="15" fill="var(--coral-red)"/>
+            <text x="650" y="50" text-anchor="middle" font-family="var(--font-mono)" font-size="12" font-weight="bold" fill="white" dy="4">1</text>
+            
+            <!-- Key Person Dependency -->
+            <circle cx="600" cy="80" r="15" fill="var(--coral-red)"/>
+            <text x="600" y="80" text-anchor="middle" font-family="var(--font-mono)" font-size="12" font-weight="bold" fill="white" dy="4">2</text>
+            
+            <!-- Foreign Exchange Exposure -->
+            <circle cx="450" cy="70" r="15" fill="var(--amber-yellow)"/>
+            <text x="450" y="70" text-anchor="middle" font-family="var(--font-mono)" font-size="12" font-weight="bold" fill="white" dy="4">3</text>
+            
+            <!-- Debt Leverage -->
+            <circle cx="400" cy="150" r="15" fill="var(--amber-yellow)"/>
+            <text x="400" y="150" text-anchor="middle" font-family="var(--font-mono)" font-size="12" font-weight="bold" fill="white" dy="4">4</text>
+            
+            <!-- IT Security -->
+            <circle cx="350" cy="90" r="15" fill="var(--amber-yellow)"/>
+            <text x="350" y="90" text-anchor="middle" font-family="var(--font-mono)" font-size="12" font-weight="bold" fill="white" dy="4">5</text>
+            
+            <!-- Supply Chain -->
+            <circle cx="520" cy="170" r="15" fill="var(--amber-yellow)"/>
+            <text x="520" y="170" text-anchor="middle" font-family="var(--font-mono)" font-size="12" font-weight="bold" fill="white" dy="4">6</text>
+            
+            <!-- Legal Compliance -->
+            <circle cx="250" cy="140" r="15" fill="var(--mint-green)"/>
+            <text x="250" y="140" text-anchor="middle" font-family="var(--font-mono)" font-size="12" font-weight="bold" fill="white" dy="4">7</text>
+            
+            <!-- Multiple low risk items -->
+            <circle cx="200" cy="230" r="15" fill="var(--mint-green)"/>
+            <text x="200" y="230" text-anchor="middle" font-family="var(--font-mono)" font-size="12" font-weight="bold" fill="white" dy="4">8</text>
+            
+            <circle cx="300" cy="260" r="15" fill="var(--mint-green)"/>
+            <text x="300" y="260" text-anchor="middle" font-family="var(--font-mono)" font-size="12" font-weight="bold" fill="white" dy="4">9</text>
+            
+            <circle cx="450" cy="260" r="15" fill="var(--mint-green)"/>
+            <text x="450" y="260" text-anchor="middle" font-family="var(--font-mono)" font-size="12" font-weight="bold" fill="white" dy="4">10</text>
+          </svg>
+          
+          <div style="font-size: 14px; color: var(--slate-gray); padding-left: 20px;">
+            <p>Hover over risk points to see details. Click to view full risk analysis.</p>
+          </div>
+        </div>
+
+        <!-- High-Risk Items Section -->
+        <div class="section-title">High-Risk Items</div>
+        
+        <!-- Risk Item 1: Customer Concentration -->
+        <div class="risk-item high">
+          <svg class="risk-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0378 2.66667 10.268 4L3.33978 16C2.56998 17.3333 3.53223 19 5.07183 19Z" stroke="var(--coral-red)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div class="risk-content">
+            <div class="risk-header">
+              <div class="risk-title">Customer Concentration Risk</div>
+              <div class="risk-badge high">High Risk</div>
+            </div>
+            <p style="margin-bottom: var(--space-md);">Analysis of client contracts reveals that the top 3 customers account for 45% of ABC Corp's total revenue, significantly above the industry average of 22%. This concentration creates substantial risk if any of these customers were to reduce their business volume or terminate their relationship.</p>
+            <div style="margin-bottom: var(--space-md);">
+              <div style="font-weight: 500; margin-bottom: var(--space-xs);">Key Concerns:</div>
+              <ul style="padding-left: var(--space-xl); margin-bottom: var(--space-md);">
+                <li>Largest customer (XYZ Industries) represents 21% of annual revenue</li>
+                <li>Customer contract renewal coming in 8 months with potential price renegotiation</li>
+                <li>XYZ Industries recently acquired by a larger company, creating relationship uncertainty</li>
+              </ul>
+            </div>
+            <div class="risk-metrics">
+              <div class="risk-metric">
+                <div class="risk-metric-label">Impact</div>
+                <div class="risk-metric-value">Very High</div>
+              </div>
+              <div class="risk-metric">
+                <div class="risk-metric-label">Probability</div>
+                <div class="risk-metric-value">High</div>
+              </div>
+              <div class="risk-metric">
+                <div class="risk-metric-label">Urgency</div>
+                <div class="risk-metric-value">Critical</div>
+              </div>
+            </div>
+            <div class="tag-list">
+              <div class="tag">Financial</div>
+              <div class="tag">Strategic</div>
+              <div class="tag">Sales</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Risk Item 2: Key Person Dependency -->
+        <div class="risk-item high">
+          <svg class="risk-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0378 2.66667 10.268 4L3.33978 16C2.56998 17.3333 3.53223 19 5.07183 19Z" stroke="var(--coral-red)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div class="risk-content">
+            <div class="risk-header">
+              <div class="risk-title">Key Person Dependency</div>
+              <div class="risk-badge high">High Risk</div>
+            </div>
+            <p style="margin-bottom: var(--space-md);">Significant operational dependency on CEO/Founder who manages key client relationships and product development. No formal succession plan in place. Several critical business functions rely heavily on the CEO's personal network and technical expertise.</p>
+            <div style="margin-bottom: var(--space-md);">
+              <div style="font-weight: 500; margin-bottom: var(--space-xs);">Key Concerns:</div>
+              <ul style="padding-left: var(--space-xl); margin-bottom: var(--space-md);">
+                <li>No formalized knowledge transfer process established</li>
+                <li>Client relationships primarily maintained through CEO's personal connections</li>
+                <li>Product roadmap and vision largely undocumented and dependent on CEO</li>
+                <li>CEO approaching retirement age (63) with no announced transition plan</li>
+              </ul>
+            </div>
+            <div class="risk-metrics">
+              <div class="risk-metric">
+                <div class="risk-metric-label">Impact</div>
+                <div class="risk-metric-value">High</div>
+              </div>
+              <div class="risk-metric">
+                <div class="risk-metric-label">Probability</div>
+                <div class="risk-metric-value">High</div>
+              </div>
+              <div class="risk-metric">
+                <div class="risk-metric-label">Urgency</div>
+                <div class="risk-metric-value">High</div>
+              </div>
+            </div>
+            <div class="tag-list">
+              <div class="tag">Operational</div>
+              <div class="tag">Strategic</div>
+              <div class="tag">Management</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Risk Item 3: Debt Covenant -->
+        <div class="risk-item high">
+          <svg class="risk-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0378 2.66667 10.268 4L3.33978 16C2.56998 17.3333 3.53223 19 5.07183 19Z" stroke="var(--coral-red)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div class="risk-content">
+            <div class="risk-header">
+              <div class="risk-title">Debt Covenant Risk</div>
+              <div class="risk-badge high">High Risk</div>
+            </div>
+            <p style="margin-bottom: var(--space-md);">Debt-to-EBITDA ratio has increased to 2.8x, up from 2.4x last year, approaching the covenant threshold of 3.0x. Two major loan agreements contain financial covenants that could trigger default if breached. The company's current trend line indicates potential covenant violation within 6-9 months without corrective action.</p>
+            <div style="margin-bottom: var(--space-md);">
+              <div style="font-weight: 500; margin-bottom: var(--space-xs);">Key Concerns:</div>
+              <ul style="padding-left: var(--space-xl); margin-bottom: var(--space-md);">
+                <li>Projected Q3 performance shows potential decline in EBITDA due to raw material cost increases</li>
+                <li>Cross-default provisions could trigger multiple loan accelerations</li>
+                <li>Limited access to additional capital if covenants are breached</li>
+                <li>No active covenant renegotiation currently underway</li>
+              </ul>
+            </div>
+            <div class="risk-metrics">
+              <div class="risk-metric">
+                <div class="risk-metric-label">Impact</div>
+                <div class="risk-metric-value">Very High</div>
+              </div>
+              <div class="risk-metric">
+                <div class="risk-metric-label">Probability</div>
+                <div class="risk-metric-value">Medium</div>
+              </div>
+              <div class="risk-metric">
+                <div class="risk-metric-label">Urgency</div>
+                <div class="risk-metric-value">High</div>
+              </div>
+            </div>
+            <div class="tag-list">
+              <div class="tag">Financial</div>
+              <div class="tag">Compliance</div>
+              <div class="tag">Liquidity</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Medium-Risk Items Section Header -->
+        <div class="section-title" style="margin-top: var(--space-2xl);">Medium-Risk Items</div>
+
+        <!-- Medium Risk Item Grid -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: var(--space-lg); margin-bottom: var(--space-2xl);">
+          <!-- Medium Risk Item 1 -->
+          <div class="card" style="margin-bottom: 0; border-left: 4px solid var(--amber-yellow);">
+            <div class="card-header">
+              <div class="card-title">Foreign Exchange Exposure</div>
+              <div class="risk-badge medium">Medium Risk</div>
+            </div>
+            <div class="card-body">
+              <p style="margin-bottom: var(--space-md);">30% of revenue is generated in EUR, creating significant FX exposure during a period of currency volatility. No formal hedging strategy currently in place.</p>
+              <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-xs);">
+                <div style="font-size: 12px; color: var(--medium-gray);">Risk Score</div>
+                <div style="font-size: 12px; font-weight: 600;">7.4/10</div>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill medium" style="width: 74%"></div>
+              </div>
+              <div class="tag-list" style="margin-top: var(--space-md);">
+                <div class="tag">Financial</div>
+                <div class="tag">Treasury</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Medium Risk Item 2 -->
+          <div class="card" style="margin-bottom: 0; border-left: 4px solid var(--amber-yellow);">
+            <div class="card-header">
+              <div class="card-title">IT Security</div>
+              <div class="risk-badge medium">Medium Risk</div>
+            </div>
+            <div class="card-body">
+              <p style="margin-bottom: var(--space-md);">Cybersecurity assessment revealed multiple vulnerabilities in legacy systems and poor implementation of access controls. Recent increase in industry-targeted attacks.</p>
+              <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-xs);">
+                <div style="font-size: 12px; color: var(--medium-gray);">Risk Score</div>
+                <div style="font-size: 12px; font-weight: 600;">6.9/10</div>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill medium" style="width: 69%"></div>
+              </div>
+              <div class="tag-list" style="margin-top: var(--space-md);">
+                <div class="tag">IT</div>
+                <div class="tag">Operational</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Medium Risk Item 3 -->
+          <div class="card" style="margin-bottom: 0; border-left: 4px solid var(--amber-yellow);">
+            <div class="card-header">
+              <div class="card-title">Supply Chain Concentration</div>
+              <div class="risk-badge medium">Medium Risk</div>
+            </div>
+            <div class="card-body">
+              <p style="margin-bottom: var(--space-md);">Key component sourced from single supplier in geopolitically unstable region. Alternative suppliers would require 6-month qualification process.</p>
+              <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-xs);">
+                <div style="font-size: 12px; color: var(--medium-gray);">Risk Score</div>
+                <div style="font-size: 12px; font-weight: 600;">6.5/10</div>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill medium" style="width: 65%"></div>
+              </div>
+              <div class="tag-list" style="margin-top: var(--space-md);">
+                <div class="tag">Operational</div>
+                <div class="tag">Procurement</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Medium Risk Item 4 -->
+          <div class="card" style="margin-bottom: 0; border-left: 4px solid var(--amber-yellow);">
+            <div class="card-header">
+              <div class="card-title">Legal Compliance</div>
+              <div class="risk-badge medium">Medium Risk</div>
+            </div>
+            <div class="card-body">
+              <p style="margin-bottom: var(--space-md);">New data privacy regulations in Europe affect 25% of customer base. Compliance gap assessment shows several areas requiring remediation within 6 months.</p>
+              <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-xs);">
+                <div style="font-size: 12px; color: var(--medium-gray);">Risk Score</div>
+                <div style="font-size: 12px; font-weight: 600;">6.2/10</div>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill medium" style="width: 62%"></div>
+              </div>
+              <div class="tag-list" style="margin-top: var(--space-md);">
+                <div class="tag">Legal</div>
+                <div class="tag">Compliance</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Low-Risk Items Section -->
+        <div class="section-title" style="margin-top: var(--space-2xl);">Low-Risk Items</div>
+        
+        <!-- Low Risk Item List -->
+        <div class="card" style="margin-bottom: var(--space-2xl);">
+          <div class="card-header">
+            <div class="card-title">Monitored Risks</div>
+            <div class="card-actions">
+              <button class="button tertiary" style="padding: 4px 8px; font-size: 12px;">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 8V16M8 12H16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>
+                </svg>
+                Add Risk Item
+              </button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table">
+              <div class="table-row header">
+                <div class="table-cell" style="width: 35%;">Risk Item</div>
+                <div class="table-cell" style="width: 40%;">Description</div>
+                <div class="table-cell" style="width: 15%;">Category</div>
+                <div class="table-cell" style="width: 10%;">Score</div>
+              </div>
+              
+              <!-- Low Risk Item 1 -->
+              <div class="table-row">
+                <div class="table-cell">
+                  <div style="display: flex; align-items: center; gap: var(--space-xs);">
+                    <div style="width: 8px; height: 8px; border-radius: 50%; background-color: var(--mint-green);"></div>
+                    Employee Turnover
+                  </div>
+                </div>
+                <div class="table-cell">Turnover rates below industry average, with strong retention programs in place</div>
+                <div class="table-cell">HR</div>
+                <div class="table-cell">
+                  <span style="font-weight: 600; color: var(--mint-green);">3.5</span>
+                </div>
+              </div>
+              
+              <!-- Low Risk Item 2 -->
+              <div class="table-row">
+                <div class="table-cell">
+                  <div style="display: flex; align-items: center; gap: var(--space-xs);">
+                    <div style="width: 8px; height: 8px; border-radius: 50%; background-color: var(--mint-green);"></div>
+                    Product Liability
+                  </div>
+                </div>
+                <div class="table-cell">Strong quality control processes with no history of significant product issues</div>
+                <div class="table-cell">Legal</div>
+                <div class="table-cell">
+                  <span style="font-weight: 600; color: var(--mint-green);">3.2</span>
+                </div>
+              </div>
+              
+              <!-- Low Risk Item 3 -->
+              <div class="table-row">
+                <div class="table-cell">
+                  <div style="display: flex; align-items: center; gap: var(--space-xs);">
+                    <div style="width: 8px; height: 8px; border-radius: 50%; background-color: var(--mint-green);"></div>
+                    Tax Compliance
+                  </div>
+                </div>
+                <div class="table-cell">Clean tax audit history with robust compliance processes in place</div>
+                <div class="table-cell">Financial</div>
+                <div class="table-cell">
+                  <span style="font-weight: 600; color: var(--mint-green);">2.8</span>
+                </div>
+              </div>
+              
+              <!-- Low Risk Item 4 -->
+              <div class="table-row">
+                <div class="table-cell">
+                  <div style="display: flex; align-items: center; gap: var(--space-xs);">
+                    <div style="width: 8px; height: 8px; border-radius: 50%; background-color: var(--mint-green);"></div>
+                    Intellectual Property
+                  </div>
+                </div>
+                <div class="table-cell">Well-maintained patent portfolio with no current litigation or disputes</div>
+                <div class="table-cell">Legal</div>
+                <div class="table-cell">
+                  <span style="font-weight: 600; color: var(--mint-green);">2.5</span>
+                </div>
+              </div>
+              
+              <!-- Low Risk Item 5 -->
+              <div class="table-row">
+                <div class="table-cell">
+                  <div style="display: flex; align-items: center; gap: var(--space-xs);">
+                    <div style="width: 8px; height: 8px; border-radius: 50%; background-color: var(--mint-green);"></div>
+                    Facility Safety
+                  </div>
+                </div>
+                <div class="table-cell">Regular safety inspections with strong compliance record and no major incidents</div>
+                <div class="table-cell">Operational</div>
+                <div class="table-cell">
+                  <span style="font-weight: 600; color: var(--mint-green);">2.1</span>
+                </div>
+              </div>
+              
+              <!-- Low Risk Item 6 -->
+              <div class="table-row">
+                <div class="table-cell">
+                  <div style="display: flex; align-items: center; gap: var(--space-xs);">
+                    <div style="width: 8px; height: 8px; border-radius: 50%; background-color: var(--mint-green);"></div>
+                    Environmental Impact
+                  </div>
+                </div>
+                <div class="table-cell">Minimal environmental footprint with documented compliance procedures</div>
+                <div class="table-cell">Compliance</div>
+                <div class="table-cell">
+                  <span style="font-weight: 600; color: var(--mint-green);">1.8</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Risk Mitigation Recommendations Section -->
+        <div class="section-title">Risk Mitigation Recommendations</div>
+        
+        <div class="card" style="margin-bottom: var(--space-3xl);">
+          <div class="card-header">
+            <div class="card-title">Prioritized Action Plan</div>
+            <button class="button tertiary" style="padding: 4px 8px; font-size: 12px;">
+              Download Full Plan
+            </button>
+          </div>
+          <div class="card-body">
+            <div style="margin-bottom: var(--space-lg);">
+              <div style="font-weight: 600; margin-bottom: var(--space-md); color: var(--deep-navy);">High Priority Actions (Next 90 Days)</div>
+              <ol style="padding-left: var(--space-xl); margin-bottom: var(--space-md);">
+                <li style="margin-bottom: var(--space-md);"><strong>Customer Diversification Strategy:</strong> Develop and implement a structured program to reduce top customer dependency from 45% to below 30% of revenue within 18 months. Begin with targeted sales efforts in adjacent markets.</li>
+                <li style="margin-bottom: var(--space-md);"><strong>Succession Planning:</strong> Formalize succession plan for CEO/Founder including knowledge transfer protocols and relationship transition plans for key clients.</li>
+                <li style="margin-bottom: var(--space-md);"><strong>Debt Covenant Management:</strong> Proactively engage lenders to renegotiate covenant thresholds or implement cash conservation measures to avoid potential breach.</li>
+                <li style="margin-bottom: var(--space-md);"><strong>FX Hedging Program:</strong> Implement formal currency hedging program to reduce EUR exposure using forward contracts with 6-12 month horizons.</li>
+              </ol>
+            </div>
+            
+            <div style="margin-bottom: var(--space-lg);">
+              <div style="font-weight: 600; margin-bottom: var(--space-md); color: var(--deep-navy);">Medium Priority Actions (Next 180 Days)</div>
+              <ol style="padding-left: var(--space-xl); margin-bottom: var(--space-md);">
+                <li style="margin-bottom: var(--space-md);"><strong>IT Security Remediation:</strong> Address highest priority vulnerabilities identified in security assessment, focusing on access controls and legacy system upgrades.</li>
+                <li style="margin-bottom: var(--space-md);"><strong>Supplier Diversification:</strong> Begin qualification process for alternative suppliers of key components to reduce single-source risk.</li>
+                <li style="margin-bottom: var(--space-md);"><strong>GDPR Compliance:</strong> Complete remediation of gaps identified in data privacy assessment to ensure full compliance with European regulations.</li>
+              </ol>
+            </div>
+            
+            <div style="display: flex; justify-content: center; margin-top: var(--space-xl);">
+              <button class="button primary">View Detailed Implementation Plan</button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Historical Risk Trends Section -->
+        <div class="section-title">Historical Risk Trends</div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: var(--space-lg); margin-bottom: var(--space-3xl);">
+          <!-- Risk Trend Chart 1 -->
+          <div class="card" style="margin-bottom: 0;">
+            <div class="card-header">
+              <div class="card-title">Risk Score Trend (Past 12 Months)</div>
+            </div>
+            <div class="card-body">
+              <!-- SVG Chart Visualization -->
+              <svg width="100%" height="200" viewBox="0 0 400 200" style="overflow: visible">
+                <!-- Y Axis -->
+                <line x1="40" y1="20" x2="40" y2="180" stroke="var(--light-gray)" stroke-width="1"/>
+                <!-- X Axis -->
+                <line x1="40" y1="180" x2="380" y2="180" stroke="var(--light-gray)" stroke-width="1"/>
+                
+                <!-- Y Axis Labels -->
+                <text x="30" y="30" font-size="10" text-anchor="end" fill="var(--slate-gray)">10</text>
+                <text x="30" y="70" font-size="10" text-anchor="end" fill="var(--slate-gray)">7.5</text>
+                <text x="30" y="110" font-size="10" text-anchor="end" fill="var(--slate-gray)">5</text>
+                <text x="30" y="150" font-size="10" text-anchor="end" fill="var(--slate-gray)">2.5</text>
+                <text x="30" y="180" font-size="10" text-anchor="end" fill="var(--slate-gray)">0</text>
+                
+                <!-- X Axis Labels -->
+                <text x="40" y="195" font-size="10" text-anchor="middle" fill="var(--slate-gray)">Jan</text>
+                <text x="100" y="195" font-size="10" text-anchor="middle" fill="var(--slate-gray)">Mar</text>
+                <text x="160" y="195" font-size="10" text-anchor="middle" fill="var(--slate-gray)">May</text>
+                <text x="220" y="195" font-size="10" text-anchor="middle" fill="var(--slate-gray)">Jul</text>
+                <text x="280" y="195" font-size="10" text-anchor="middle" fill="var(--slate-gray)">Sep</text>
+                <text x="340" y="195" font-size="10" text-anchor="middle" fill="var(--slate-gray)">Nov</text>
+                
+                <!-- Grid Lines -->
+                <line x1="40" y1="30" x2="380" y2="30" stroke="var(--light-gray)" stroke-width="0.5" stroke-dasharray="4"/>
+                <line x1="40" y1="70" x2="380" y2="70" stroke="var(--light-gray)" stroke-width="0.5" stroke-dasharray="4"/>
+                <line x1="40" y1="110" x2="380" y2="110" stroke="var(--light-gray)" stroke-width="0.5" stroke-dasharray="4"/>
+                <line x1="40" y1="150" x2="380" y2="150" stroke="var(--light-gray)" stroke-width="0.5" stroke-dasharray="4"/>
+                
+                <!-- Data Columns -->
+                <rect x="50" y="50" width="12" height="130" fill="var(--light-blue)" rx="2"/>
+                <rect x="80" y="70" width="12" height="110" fill="var(--light-blue)" rx="2"/>
+                <rect x="110" y="80" width="12" height="100" fill="var(--light-blue)" rx="2"/>
+                <rect x="140" y="90" width="12" height="90" fill="var(--mint-green)" rx="2"/>
+                <rect x="170" y="90" width="12" height="90" fill="var(--mint-green)" rx="2"/>
+                <rect x="200" y="100" width="12" height="80" fill="var(--mint-green)" rx="2"/>
+                <rect x="230" y="110" width="12" height="70" fill="var(--amber-yellow)" rx="2"/>
+                <rect x="260" y="70" width="12" height="110" fill="var(--amber-yellow)" rx="2"/>
+                <rect x="290" y="50" width="12" height="130" fill="var(--coral-red)" rx="2"/>
+                <rect x="320" y="40" width="12" height="140" fill="var(--coral-red)" rx="2"/>
+                <rect x="350" y="55" width="12" height="125" fill="var(--coral-red)" rx="2"/>
+              </svg>
+              
+              <div style="margin-top: var(--space-md); font-size: 13px; color: var(--slate-gray);">
+                Risk levels have increased over the past 6 months, primarily driven by customer concentration and debt covenant concerns.
+              </div>
+            </div>
+          </div>
+          
+          <!-- Risk Trend Chart 2 -->
+          <div class="card" style="margin-bottom: 0;">
+            <div class="card-header">
+              <div class="card-title">Risk Category Distribution</div>
+            </div>
+            <div class="card-body">
+              <!-- SVG Pie Chart Visualization -->
+              <svg width="100%" height="200" viewBox="0 0 200 200">
+                <!-- Pie Segments -->
+                <path d="M100,100 L100,20 A80,80 0 0,1 160,160 L100,100" fill="var(--coral-red)" />
+                <path d="M100,100 L160,160 A80,80 0 0,1 20,160 L100,100" fill="var(--amber-yellow)" />
+                <path d="M100,100 L20,160 A80,80 0 0,1 30,40 L100,100" fill="var(--sky-blue)" />
+                <path d="M100,100 L30,40 A80,80 0 0,1 100,20 L100,100" fill="var(--mint-green)" />
+                
+                <!-- Center Circle (hollow) -->
+                <circle cx="100" cy="100" r="40" fill="white" />
+                
+                <!-- Legend -->
+                <g transform="translate(0, 190)">
+                  <rect x="20" y="0" width="10" height="10" fill="var(--coral-red)" />
+                  <text x="35" y="9" font-size="10" fill="var(--slate-gray)">Financial (35%)</text>
+                  
+                  <rect x="105" y="0" width="10" height="10" fill="var(--amber-yellow)" />
+                  <text x="120" y="9" font-size="10" fill="var(--slate-gray)">Operational (28%)</text>
+                  
+                  <rect x="20" y="15" width="10" height="10" fill="var(--sky-blue)" />
+                  <text x="35" y="24" font-size="10" fill="var(--slate-gray)">Strategic (22%)</text>
+                  
+                  <rect x="105" y="15" width="10" height="10" fill="var(--mint-green)" />
+                  <text x="120" y="24" font-size="10" fill="var(--slate-gray)">Compliance (15%)</text>
+                </g>
+              </svg>
+              
+              <div style="margin-top: var(--space-md); font-size: 13px; color: var(--slate-gray);">
+                Financial risks represent the largest category by impact, requiring more focused mitigation strategies.
+              </div>
+            </div>
+          </div>
+          
+          <!-- Year-over-Year Risk Comparison -->
+          <div class="card" style="margin-bottom: 0;">
+            <div class="card-header">
+              <div class="card-title">Year-over-Year Comparison</div>
+            </div>
+            <div class="card-body">
+              <div style="display: flex; flex-direction: column; gap: var(--space-md);">
+                <div>
+                  <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-xs);">
+                    <div style="font-size: 14px;">Overall Risk Score</div>
+                    <div style="font-size: 14px;">
+                      <span style="color: var(--coral-red); font-weight: 600;">+15%</span> vs Last Year
+                    </div>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: var(--space-xs);">
+                    <div class="progress-bar" style="flex-grow: 1;">
+                      <div class="progress-fill azure" style="width: 65%; background-color: var(--slate-gray); opacity: 0.5;"></div>
+                    </div>
+                    <div style="font-size: 12px; color: var(--slate-gray);">Last Year</div>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: var(--space-xs); margin-top: var(--space-xs);">
+                    <div class="progress-bar" style="flex-grow: 1;">
+                      <div class="progress-fill azure" style="width: 75%; background-color: var(--azure-blue);"></div>
+                    </div>
+                    <div style="font-size: 12px; font-weight: 600; color: var(--slate-gray);">Current</div>
+                  </div>
+                </div>
+                
+                <div style="margin-top: var(--space-md);">
+                  <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                    <thead>
+                      <tr style="border-bottom: 1px solid var(--light-gray);">
+                        <th style="text-align: left; padding: var(--space-xs) 0;">Risk Category</th>
+                        <th style="text-align: center; padding: var(--space-xs) 0;">Previous</th>
+                        <th style="text-align: center; padding: var(--space-xs) 0;">Current</th>
+                        <th style="text-align: right; padding: var(--space-xs) 0;">Change</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr style="border-bottom: 1px solid var(--light-gray);">
+                        <td style="padding: var(--space-xs) 0;">Financial</td>
+                        <td style="text-align: center; padding: var(--space-xs) 0;">7.2</td>
+                        <td style="text-align: center; padding: var(--space-xs) 0;">8.5</td>
+                        <td style="text-align: right; color: var(--coral-red); padding: var(--space-xs) 0;">+18%</td>
+                      </tr>
+                      <tr style="border-bottom: 1px solid var(--light-gray);">
+                        <td style="padding: var(--space-xs) 0;">Operational</td>
+                        <td style="text-align: center; padding: var(--space-xs) 0;">6.1</td>
+                        <td style="text-align: center; padding: var(--space-xs) 0;">6.5</td>
+                        <td style="text-align: right; color: var(--coral-red); padding: var(--space-xs) 0;">+7%</td>
+                      </tr>
+                      <tr style="border-bottom: 1px solid var(--light-gray);">
+                        <td style="padding: var(--space-xs) 0;">Strategic</td>
+                        <td style="text-align: center; padding: var(--space-xs) 0;">5.8</td>
+                        <td style="text-align: center; padding: var(--space-xs) 0;">5.8</td>
+                        <td style="text-align: right; color: var(--slate-gray); padding: var(--space-xs) 0;">0%</td>
+                      </tr>
+                      <tr>
+                        <td style="padding: var(--space-xs) 0;">Compliance</td>
+                        <td style="text-align: center; padding: var(--space-xs) 0;">4.2</td>
+                        <td style="text-align: center; padding: var(--space-xs) 0;">3.2</td>
+                        <td style="text-align: right; color: var(--mint-green); padding: var(--space-xs) 0;">-24%</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <h4 style="margin-bottom: var(--space-lg);">Risk Assessment Overview</h4>
+        
+        <!-- Risk Summary Card -->
+        <div class="card" style="margin-bottom: var(--space-xl);">
+          <div class="card-header">
+            <div class="card-title">Risk Summary</div>
+          </div>
+          <div class="card-body">
+            <div style="display: flex; flex-direction: column; gap: var(--space-md);">
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-xs);">
+                  <div style="font-size: 14px;">High Risk Items</div>
+                  <div style="font-weight: 600; color: var(--coral-red);">3</div>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill high" style="width: 21%"></div>
+                </div>
+              </div>
+              
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-xs);">
+                  <div style="font-size: 14px;">Medium Risk Items</div>
+                  <div style="font-weight: 600; color: var(--amber-yellow);">5</div>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill medium" style="width: 36%"></div>
+                </div>
+              </div>
+              
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-xs);">
+                  <div style="font-size: 14px;">Low Risk Items</div>
+                  <div style="font-weight: 600; color: var(--mint-green);">6</div>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill low" style="width: 43%"></div>
+                </div>
+              </div>
+            </div>
+            
+            <div style="margin-top: var(--space-lg); padding-top: var(--space-lg); border-top: 1px solid var(--light-gray);">
+              <div style="font-weight: 600; margin-bottom: var(--space-xs);">Overall Risk Profile</div>
+              <div style="font-size: 24px; font-weight: 700; color: var(--amber-yellow);">MODERATE</div>
+              <div style="font-size: 14px; color: var(--slate-gray);">Requires proactive monitoring and mitigation strategies</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Risk by Category -->
+        <div class="card" style="margin-bottom: var(--space-xl);">
+          <div class="card-header">
+            <div class="card-title">Risk by Category</div>
+          </div>
+          <div class="card-body">
+            <div style="display: flex; flex-direction: column; gap: var(--space-md);">
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-xs);">
+                  <div style="font-size: 14px;">Financial</div>
+                  <div style="font-weight: 600;">High</div>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill high" style="width: 85%"></div>
+                </div>
+              </div>
+              
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-xs);">
+                  <div style="font-size: 14px;">Operational</div>
+                  <div style="font-weight: 600;">Medium</div>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill medium" style="width: 65%"></div>
+                </div>
+              </div>
+              
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-xs);">
+                  <div style="font-size: 14px;">Strategic</div>
+                  <div style="font-weight: 600;">Medium</div>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill medium" style="width: 58%"></div>
+                </div>
+              </div>
+              
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-xs);">
+                  <div style="font-size: 14px;">Legal/Compliance</div>
+                  <div style="font-weight: 600;">Low</div>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill low" style="width: 32%"></div>
+                </div>
+              </div>
+              
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-xs);">
+                  <div style="font-size: 14px;">Regulatory</div>
+                  <div style="font-weight: 600;">Low</div>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill low" style="width: 25%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Recent Documents -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Risk Assessment Documents</div>
+          </div>
+          <div class="card-body">
+            <div style="display: flex; flex-direction: column; gap: var(--space-md);">
+              <a href="#" class="document-link" style="margin-bottom: 0;">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M14 2V8H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M16 13H8M16 17H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Risk Assessment Methodology
+              </a>
+              
+              <a href="#" class="document-link" style="margin-bottom: 0;">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M14 2V8H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M16 13H8M16 17H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Customer Concentration Analysis
+              </a>
+              
+              <a href="#" class="document-link" style="margin-bottom: 0;">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M14 2V8H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M16 13H8M16 17H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Debt Covenant Compliance Report
+              </a>
+              
+              <a href="#" class="document-link" style="margin-bottom: 0;">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M14 2V8H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M16 13H8M16 17H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                IT Security Assessment
+              </a>
+            </div>
+            
+            <button class="button secondary" style="width: 100%; margin-top: var(--space-lg);">
+              View All Documents
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

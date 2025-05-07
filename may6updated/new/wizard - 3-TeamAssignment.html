@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Due Diligence AI - Team Assignment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7f9;
+        }
+        
+        header {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 2rem;
+            background-color: white;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.25rem;
+            color: #1e40af;
+            margin-right: 2rem;
+        }
+        
+        .logo-icon {
+            width: 24px;
+            height: 24px;
+            background-color: #1e40af;
+            margin-right: 0.5rem;
+            border-radius: 4px;
+        }
+        
+        nav {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        nav a {
+            color: #64748b;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        nav a.active {
+            color: #3b82f6;
+            border-bottom: 2px solid #3b82f6;
+        }
+        
+        .search-container {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .search-box {
+            display: flex;
+            align-items: center;
+            background-color: #f1f5f9;
+            border-radius: 6px;
+            padding: 0.5rem 1rem;
+        }
+        
+        .search-box input {
+            border: none;
+            background: transparent;
+            outline: none;
+            width: 250px;
+        }
+        
+        .avatar {
+            width: 32px;
+            height: 32px;
+            background-color: #3b82f6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .project-header {
+            background-color: #1e3a8a;
+            color: white;
+            padding: 2rem;
+        }
+        
+        .project-header h1 {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .project-header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        .steps {
+            display: flex;
+            background-color: white;
+            padding: 1rem 2rem;
+            gap: 1rem;
+        }
+        
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            color: #64748b;
+        }
+        
+        .step.active {
+            color: #3b82f6;
+        }
+        
+        .step.completed {
+            color: #10b981;
+        }
+        
+        .step-number {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: currentColor;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+        }
+        
+        .step.completed .step-number {
+            background-color: #10b981;
+        }
+        
+        .step.active .step-number {
+            background-color: #3b82f6;
+        }
+        
+        .main-content {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            font-size: 1.25rem;
+            color: #1e3a8a;
+            margin-bottom: 1.5rem;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        
+        .select-container {
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .select-container select {
+            width: 100%;
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 1rem;
+            appearance: none;
+        }
+        
+        .chevron-down {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+        }
+        
+        .team-member {
+            display: flex;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .member-avatar {
+            width: 48px;
+            height: 48px;
+            background-color: #e0e7ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4f46e5;
+            font-weight: bold;
+            margin-right: 1rem;
+        }
+        
+        .member-info {
+            flex: 1;
+        }
+        
+        .member-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .member-role {
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+        
+        .role-select {
+            width: 100%;
+            max-width: 250px;
+        }
+        
+        .add-member {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            color: #3b82f6;
+            cursor: pointer;
+            border: 2px dashed #e2e8f0;
+            margin: 1rem;
+            border-radius: 8px;
+        }
+        
+        .add-member-icon {
+            margin-right: 0.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .section-subtitle {
+            font-size: 1.125rem;
+            color: #1e3a8a;
+            margin: 1.5rem 0 1rem;
+        }
+        
+        .advisor-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .advisor-table th {
+            text-align: left;
+            padding: 1rem;
+            color: #64748b;
+            font-weight: 500;
+            background-color: #f8fafc;
+        }
+        
+        .advisor-table td {
+            padding: 1rem;
+            border-top: 1px solid #f1f5f9;
+        }
+        
+        .add-advisor-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            color: #3b82f6;
+            border: 1px solid #3b82f6;
+            border-radius: 6px;
+            background: none;
+            cursor: pointer;
+            font-size: 0.875rem;
+            margin: 1rem 0;
+        }
+        
+        .add-advisor-icon {
+            margin-right: 0.5rem;
+        }
+        
+        .remove-btn {
+            color: #64748b;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .notification-setting {
+            padding: 1.5rem;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .setting-info h3 {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        
+        .setting-info p {
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e2e8f0;
+            border-radius: 34px;
+            transition: .2s;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            border-radius: 50%;
+            transition: .2s;
+        }
+        
+        input:checked + .slider {
+            background-color: #3b82f6;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .textarea-container {
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            margin: 1.5rem 0;
+        }
+        
+        .textarea-container textarea {
+            width: 100%;
+            border: none;
+            outline: none;
+            padding: 1rem;
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .btn-outline {
+            color: #3b82f6;
+            border: 1px solid #3b82f6;
+            background: none;
+        }
+        
+        .btn-secondary {
+            color: #64748b;
+            background: white;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .btn-primary {
+            color: white;
+            background-color: #3b82f6;
+            border: none;
+        }
+        
+        .btn-icon {
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <div class="logo-icon"></div>
+            DueDiligenceAI
+        </div>
+        <nav>
+            <a href="#">Dashboard</a>
+            <a href="#">Documents</a>
+            <a href="#" class="active">Analysis</a>
+            <a href="#">Reports</a>
+        </nav>
+        <div class="search-container">
+            <div class="search-box">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" placeholder="Search...">
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <div class="avatar">SK</div>
+        </div>
+    </header>
+    
+    <div class="project-header">
+        <h1>New Project Setup</h1>
+        <p>Configure your due diligence project to get started</p>
+    </div>
+    
+    <div class="steps">
+        <div class="step completed">
+            <div class="step-number">✓</div>
+            <span>Project Info</span>
+        </div>
+        <div class="step completed">
+            <div class="step-number">✓</div>
+            <span>Target Company</span>
+        </div>
+        <div class="step active">
+            <div class="step-number">3</div>
+            <span>Team Assignment</span>
+        </div>
+        <div class="step">
+            <div class="step-number">4</div>
+            <span>Timeline</span>
+        </div>
+        <div class="step">
+            <div class="step-number">5</div>
+            <span>Document Requirements</span>
+        </div>
+    </div>
+    
+    <div class="main-content">
+        <h2 class="section-title">Team Assignment</h2>
+        
+        <h3 class="section-subtitle">Project Lead</h3>
+        <div class="select-container">
+            <select>
+                <option>Sarah Kim (You)</option>
+            </select>
+            <div class="chevron-down">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </div>
+        </div>
+        
+        <h3 class="section-subtitle">Team Members</h3>
+        <p style="color: #64748b; margin-bottom: 1rem;">Assign team members to this project and their roles</p>
+        
+        <div class="card">
+            <div class="team-member">
+                <div class="member-avatar">MJ</div>
+                <div class="member-info">
+                    <div class="member-name">Michael Johnson</div>
+                    <div class="member-role">Financial Analyst</div>
+                </div>
+                <div class="role-select">
+                    <div class="select-container" style="margin-bottom: 0;">
+                        <select>
+                            <option>Financial Analysis Lead</option>
+                        </select>
+                        <div class="chevron-down">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="team-member">
+                <div class="member-avatar">JL</div>
+                <div class="member-info">
+                    <div class="member-name">Jennifer Lee</div>
+                    <div class="member-role">Legal Counsel</div>
+                </div>
+                <div class="role-select">
+                    <div class="select-container" style="margin-bottom: 0;">
+                        <select>
+                            <option>Legal Review Lead</option>
+                        </select>
+                        <div class="chevron-down">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="team-member">
+                <div class="member-avatar">DK</div>
+                <div class="member-info">
+                    <div class="member-name">David Kim</div>
+                    <div class="member-role">Technology Director</div>
+                </div>
+                <div class="role-select">
+                    <div class="select-container" style="margin-bottom: 0;">
+                        <select>
+                            <option>Technical Due Diligence Lead</option>
+                        </select>
+                        <div class="chevron-down">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="team-member">
+                <div class="member-avatar">RM</div>
+                <div class="member-info">
+                    <div class="member-name">Rachel Martinez</div>
+                    <div class="member-role">Operations Specialist</div>
+                </div>
+                <div class="role-select">
+                    <div class="select-container" style="margin-bottom: 0;">
+                        <select>
+                            <option>Operational Due Diligence Lead</option>
+                        </select>
+                        <div class="chevron-down">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="team-member">
+                <div class="member-avatar">AT</div>
+                <div class="member-info">
+                    <div class="member-name">Alex Thompson</div>
+                    <div class="member-role">Tax Specialist</div>
+                </div>
+                <div class="role-select">
+                    <div class="select-container" style="margin-bottom: 0;">
+                        <select>
+                            <option>Team Member</option>
+                        </select>
+                        <div class="chevron-down">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="add-member">
+                <div class="add-member-icon">+</div>
+                Add Team Member
+            </div>
+        </div>
+        
+        <h3 class="section-subtitle">External Advisors</h3>
+        <p style="color: #64748b; margin-bottom: 1rem;">Add any external consultants or specialists for this project</p>
+        
+        <div class="card">
+            <table class="advisor-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Organization</th>
+                        <th>Specialty</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>James Wilson</td>
+                        <td>Wilson Technology Advisors</td>
+                        <td>Technology Stack Assessment</td>
+                        <td>
+                            <button class="remove-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Maria Rodriguez</td>
+                        <td>Global M&A Tax Services</td>
+                        <td>International Tax Structures</td>
+                        <td>
+                            <button class="remove-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <button class="add-advisor-btn">
+                <span class="add-advisor-icon">+</span>
+                Add External Advisor
+            </button>
+        </div>
+        
+        <h3 class="section-subtitle">Stakeholder Communication</h3>
+        <p style="color: #64748b; margin-bottom: 1rem;">Configure how project stakeholders will receive updates</p>
+        
+        <div class="card">
+            <div class="notification-setting">
+                <div class="setting-info">
+                    <h3>Weekly Progress Reports</h3>
+                    <p>Automatically generate and send weekly reports to all team leads and project stakeholders</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            
+            <div class="notification-setting">
+                <div class="setting-info">
+                    <h3>Document Collection Notifications</h3>
+                    <p>Send notifications when new documents are added to the data room</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            
+            <div class="notification-setting">
+                <div class="setting-info">
+                    <h3>Milestone Alerts</h3>
+                    <p>Notify team when milestones are approaching or completed</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        
+        <h3 class="section-subtitle">Additional Notes</h3>
+        <div class="textarea-container">
+            <textarea placeholder="Add any additional notes about team assignments or responsibilities"></textarea>
+        </div>
+        
+        <div class="nav-buttons">
+            <button class="btn btn-secondary">
+                <span class="btn-icon">←</span>
+                Previous
+            </button>
+            <div>
+                <button class="btn btn-outline" style="margin-right: 0.5rem;">Save as Draft</button>
+                <button class="btn btn-primary">
+                    Next
+                    <span class="btn-icon" style="margin-left: 0.5rem;">→</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

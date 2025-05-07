@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DueDiligenceAI - Integration Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Color System */
+    :root {
+      --deep-navy: #0A2342;
+      --azure-blue: #2D72D9;
+      --slate-gray: #3C4858;
+      --mint-green: #00BFA5;
+      --coral-red: #FF5252;
+      --amber-yellow: #FFC107;
+      --light-blue: #E1F5FE;
+      --sky-blue: #81D4FA;
+      --dark-blue: #01579B;
+      --charcoal: #263238;
+      --medium-gray: #78909C;
+      --light-gray: #ECEFF1;
+      --white: #FFFFFF;
+      
+      /* Typography */
+      --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-display: 'Manrope', var(--font-primary);
+      --font-mono: 'JetBrains Mono', SFMono-Regular, Consolas, monospace;
+      
+      /* Spacing */
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 12px;
+      --space-lg: 16px;
+      --space-xl: 24px;
+      --space-2xl: 32px;
+      --space-3xl: 48px;
+      
+      /* Shadows */
+      --shadow-sm: 0px 1px 3px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0px 2px 6px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      
+      /* Border Radius */
+      --radius-sm: 2px;
+      --radius-md: 4px;
+      --radius-lg: 8px;
+    }
+
+    /* Global Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-primary);
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--slate-gray);
+      background-color: var(--light-gray);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-display);
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      line-height: 1.2;
+      font-weight: 800;
+      color: var(--deep-navy);
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      line-height: 1.2;
+      font-weight: 700;
+      color: var(--slate-gray);
+    }
+
+    h4 {
+      font-size: 1.125rem;
+      line-height: 1.4;
+      font-weight: 600;
+      color: var(--deep-navy);
+    }
+
+    /* Top Navigation */
+    .top-nav {
+      background-color: var(--white);
+      height: 64px;
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 var(--space-xl);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .top-nav-left, .top-nav-right {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--deep-navy);
+      margin-right: var(--space-2xl);
+    }
+
+    .logo svg {
+      margin-right: var(--space-sm);
+    }
+
+    .nav-items {
+      display: flex;
+    }
+
+    .nav-item {
+      padding: 0 var(--space-lg);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      color: var(--slate-gray);
+      cursor: pointer;
+      transition: color 0.15s;
+      position: relative;
+    }
+
+    .nav-item:hover {
+      color: var(--azure-blue);
+    }
+
+    .nav-item.active {
+      color: var(--azure-blue);
+    }
+
+    .nav-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--azure-blue);
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      background-color: var(--light-gray);
+      border-radius: 4px;
+      padding: 0 var(--space-md);
+      margin-right: var(--space-lg);
+      height: 36px;
+      width: 240px;
+    }
+
+    .search-bar input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 14px;
+      width: 100%;
+      margin-left: var(--space-xs);
+    }
+
+    .notifications, .user-profile {
+      margin-left: var(--space-lg);
+      cursor: pointer;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      background-color: var(--azure-blue);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    /* Breadcrumbs */
+    .breadcrumbs {
+      display: flex;
+      padding: var(--space-md) var(--space-xl);
+      background-color: var(--white);
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .breadcrumb-item {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: var(--medium-gray);
+    }
+
+    .breadcrumb-item:not(:last-child)::after {
+      content: '';
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2378909C' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 18l6-6-6-6'%3E%3C/path%3E%3C/svg%3E");
+      background-position: center;
+      background-repeat: no-repeat;
+      margin: 0 var(--space-sm);
+    }
+
+    .breadcrumb-item:last-child {
+      color: var(--charcoal);
+      font-weight: 500;
+    }
+
+    /* Main Layout */
+    .container {
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 64px);
+    }
+
+    .main-content {
+      padding: var(--space-xl);
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    /* Page Header */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-xl);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: var(--space-md);
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--light-gray);
+      margin-bottom: var(--space-xl);
+      background-color: var(--white);
+      border-radius: var(--radius-md) var(--radius-md) 0 0;
+    }
+
+    .tab {
+      padding: var(--space-md) var(--space-xl);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--slate-gray);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .tab:hover {
+      background-color: var(--light-blue);
+    }
+
+    .tab.active {
+      color: var(--azure-blue);
+    }
+
+    .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--azure-blue);
+    }
+
+    /* Button Styles */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      border-radius: var(--radius-md);
+      font-weight: 500;
+      font-size: 14px;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .button .icon {
+      width: 18px;
+      height: 18px;
+      margin-right: var(--space-xs);
+    }
+
+    .primary {
+      background-color: var(--azure-blue);
+      color: var(--white);
+    }
+
+    .primary:hover {
+      background-color: #1A5DC7;
+    }
+
+    .secondary {
+      background-color: var(--white);
+      color: var(--azure-blue);
+      border: 1px solid var(--azure-blue);
+    }
+
+    .secondary:hover {
+      background-color: var(--light-blue);
+    }
+
+    .tertiary {
+      background-color: transparent;
+      color: var(--azure-blue);
+      padding: 8px 12px;
+    }
+
+    .tertiary:hover {
+      background-color: var(--light-blue);
+    }
+
+    .icon-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-md);
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+    }
+
+    .icon-button:hover {
+      background-color: var(--light-gray);
+    }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      stroke-width: 1.5;
+    }
+
+    /* Cards */
+    .card {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      margin-bottom: var(--space-xl);
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: var(--space-lg);
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+    }
+
+    .card-body {
+      padding: var(--space-lg);
+    }
+
+    /* Integrations Grid */
+    .integrations-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: var(--space-lg);
+      margin-bottom: var(--space-xl);
+    }
+
+    .integration-card {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: var(--space-lg);
+      display: flex;
+      flex-direction: column;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      height: 100%;
+    }
+
+    .integration-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .integration-logo {
+      display: flex;
+      align-items: center;
+      margin-bottom: var(--space-md);
+      height: 48px;
+    }
+
+    .integration-logo img {
+      max-height: 48px;
+      max-width: 120px;
+    }
+
+    .integration-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-xs);
+    }
+
+    .integration-description {
+      font-size: 14px;
+      flex: 1;
+      margin-bottom: var(--space-md);
+    }
+
+    .integration-status {
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 12px;
+      width: fit-content;
+      margin-bottom: var(--space-md);
+    }
+
+    .status-connected {
+      background-color: rgba(0, 191, 165, 0.1);
+      color: var(--mint-green);
+    }
+
+    .status-available {
+      background-color: rgba(45, 114, 217, 0.1);
+      color: var(--azure-blue);
+    }
+
+    .integration-footer {
+      display: flex;
+      justify-content: space-between;
+      margin-top: auto;
+    }
+
+    .integration-meta {
+      font-size: 12px;
+      color: var(--medium-gray);
+      display: flex;
+      align-items: center;
+    }
+
+    /* API Documentation */
+    .api-doc-section {
+      margin-bottom: var(--space-xl);
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+
+    .api-header {
+      padding: var(--space-lg);
+      border-bottom: 1px solid var(--light-gray);
+      background-color: rgba(45, 114, 217, 0.05);
+    }
+
+    .api-title {
+      font-weight: 600;
+      font-size: 18px;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-xs);
+    }
+
+    .api-subtitle {
+      font-size: 14px;
+      color: var(--slate-gray);
+    }
+
+    .api-body {
+      padding: var(--space-lg);
+    }
+
+    .api-endpoint {
+      margin-bottom: var(--space-lg);
+    }
+
+    .endpoint-header {
+      display: flex;
+      margin-bottom: var(--space-sm);
+      align-items: center;
+    }
+
+    .endpoint-method {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-right: var(--space-sm);
+      font-weight: 500;
+    }
+
+    .method-get {
+      background-color: rgba(0, 191, 165, 0.1);
+      color: var(--mint-green);
+    }
+
+    .method-post {
+      background-color: rgba(45, 114, 217, 0.1);
+      color: var(--azure-blue);
+    }
+
+    .method-put {
+      background-color: rgba(255, 193, 7, 0.1);
+      color: var(--amber-yellow);
+    }
+
+    .method-delete {
+      background-color: rgba(255, 82, 82, 0.1);
+      color: var(--coral-red);
+    }
+
+    .endpoint-path {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--deep-navy);
+    }
+
+    .endpoint-description {
+      font-size: 14px;
+      margin-bottom: var(--space-md);
+    }
+
+    .code-block {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      background-color: var(--light-gray);
+      padding: var(--space-md);
+      border-radius: var(--radius-md);
+      overflow-x: auto;
+      margin-bottom: var(--space-md);
+    }
+
+    .parameter-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      margin-bottom: var(--space-md);
+    }
+
+    .parameter-table th, .parameter-table td {
+      padding: 8px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .parameter-table th {
+      font-weight: 600;
+      color: var(--deep-navy);
+      background-color: rgba(45, 114, 217, 0.05);
+    }
+    
+    .parameter-table td {
+      vertical-align: top;
+    }
+
+    .parameter-type {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      padding: 2px 6px;
+      background-color: var(--light-gray);
+      border-radius: 4px;
+    }
+
+    .required-badge {
+      font-size: 11px;
+      background-color: rgba(255, 82, 82, 0.1);
+      color: var(--coral-red);
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-left: var(--space-xs);
+    }
+
+    /* Search and Filter */
+    .search-filter {
+      margin-bottom: var(--space-xl);
+      display: flex;
+      gap: var(--space-md);
+      flex-wrap: wrap;
+    }
+
+    .search-input {
+      flex: 1;
+      min-width: 300px;
+      display: flex;
+      align-items: center;
+      background-color: var(--white);
+      border-radius: var(--radius-md);
+      padding: 0 var(--space-md);
+      height: 40px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .search-input input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 14px;
+      width: 100%;
+      margin-left: var(--space-xs);
+    }
+
+    .filter-dropdown {
+      display: flex;
+      align-items: center;
+      background-color: var(--white);
+      border-radius: var(--radius-md);
+      padding: 0 var(--space-md);
+      height: 40px;
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .filter-dropdown .icon {
+      margin-left: var(--space-sm);
+    }
+
+    /* Custom Integrations */
+    .custom-integration-card {
+      background-color: rgba(45, 114, 217, 0.05);
+      border: 2px dashed var(--sky-blue);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .custom-integration-card:hover {
+      background-color: rgba(45, 114, 217, 0.1);
+    }
+
+    .custom-integration-icon {
+      width: 48px;
+      height: 48px;
+      background-color: var(--azure-blue);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--space-md);
+    }
+
+    .custom-integration-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-xs);
+    }
+
+    .custom-integration-description {
+      font-size: 14px;
+      color: var(--slate-gray);
+      margin-bottom: var(--space-lg);
+    }
+
+    /* Section Header */
+    .section-header {
+      margin-bottom: var(--space-lg);
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-xs);
+    }
+
+    .section-description {
+      font-size: 14px;
+      color: var(--slate-gray);
+    }
+
+    /* Connection Status */
+    .connection-status {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      margin-bottom: var(--space-md);
+    }
+
+    .status-indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: var(--space-sm);
+    }
+
+    .status-active {
+      background-color: var(--mint-green);
+    }
+
+    .status-inactive {
+      background-color: var(--medium-gray);
+    }
+
+    /* Integration Stats */
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-lg);
+      margin-bottom: var(--space-xl);
+    }
+
+    .stat-card {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg);
+      box-shadow: var(--shadow-md);
+    }
+
+    .stat-title {
+      font-size: 14px;
+      color: var(--medium-gray);
+      margin-bottom: var(--space-xs);
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--deep-navy);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1024px) {
+      .stats-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .integrations-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .stats-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .search-filter {
+        flex-direction: column;
+      }
+      
+      .search-input {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <div class="top-nav-left">
+      <div class="logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 8H16C20.4183 8 24 11.5817 24 16C24 20.4183 20.4183 24 16 24H8V8Z" fill="#0A2342"/>
+          <path d="M16 8H24V16C24 20.4183 20.4183 24 16 24V8Z" fill="#2D72D9"/>
+        </svg>
+        <span>DueDiligenceAI</span>
+      </div>
+      <div class="nav-items">
+        <div class="nav-item">Dashboard</div>
+        <div class="nav-item">Documents</div>
+        <div class="nav-item">Analysis</div>
+        <div class="nav-item">Reports</div>
+        <div class="nav-item active">Integration Hub</div>
+      </div>
+    </div>
+    <div class="top-nav-right">
+      <div class="search-bar">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6 9L12 15L18 9" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="filter-dropdown">
+        <span>Status: All</span>
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6 9L12 15L18 9" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="filter-dropdown">
+        <span>Last Updated: Any Time</span>
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6 9L12 15L18 9" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- CRM Integrations Section -->
+    <div class="section-header">
+      <h3 class="section-title">CRM Integrations</h3>
+      <div class="section-description">Connect your CRM systems to import customer data, company profiles, and opportunity pipelines.</div>
+    </div>
+
+    <div class="integrations-grid">
+      <!-- Salesforce Integration -->
+      <div class="integration-card">
+        <div class="integration-logo">
+          <img src="/api/placeholder/120/48" alt="Salesforce Logo" />
+        </div>
+        <div class="integration-title">Salesforce</div>
+        <div class="integration-description">
+          Import accounts, contacts, opportunities and custom objects from Salesforce to enhance your due diligence process.
+        </div>
+        <div class="integration-status status-connected">
+          <div class="status-indicator status-active"></div>
+          Connected
+        </div>
+        <div class="integration-footer">
+          <div class="integration-meta">Last synced: 2 hours ago</div>
+          <button class="button tertiary">Configure</button>
+        </div>
+      </div>
+
+      <!-- HubSpot Integration -->
+      <div class="integration-card">
+        <div class="integration-logo">
+          <img src="/api/placeholder/120/48" alt="HubSpot Logo" />
+        </div>
+        <div class="integration-title">HubSpot</div>
+        <div class="integration-description">
+          Sync contacts, companies, deals and marketing data from HubSpot to enrich your analysis and reports.
+        </div>
+        <div class="integration-status status-available">
+          <div class="status-indicator status-inactive"></div>
+          Available
+        </div>
+        <div class="integration-footer">
+          <div class="integration-meta">Premium Integration</div>
+          <button class="button tertiary">Connect</button>
+        </div>
+      </div>
+
+      <!-- Microsoft Dynamics Integration -->
+      <div class="integration-card">
+        <div class="integration-logo">
+          <img src="/api/placeholder/120/48" alt="Microsoft Dynamics Logo" />
+        </div>
+        <div class="integration-title">Microsoft Dynamics 365</div>
+        <div class="integration-description">
+          Import sales data, customer information, and financial records from Microsoft Dynamics to strengthen your analysis.
+        </div>
+        <div class="integration-status status-connected">
+          <div class="status-indicator status-active"></div>
+          Connected
+        </div>
+        <div class="integration-footer">
+          <div class="integration-meta">Last synced: 1 day ago</div>
+          <button class="button tertiary">Configure</button>
+        </div>
+      </div>
+
+      <!-- Zoho CRM Integration -->
+      <div class="integration-card">
+        <div class="integration-logo">
+          <img src="/api/placeholder/120/48" alt="Zoho CRM Logo" />
+        </div>
+        <div class="integration-title">Zoho CRM</div>
+        <div class="integration-description">
+          Connect your Zoho CRM to import leads, accounts, contacts and sales opportunities into your due diligence platform.
+        </div>
+        <div class="integration-status status-available">
+          <div class="status-indicator status-inactive"></div>
+          Available
+        </div>
+        <div class="integration-footer">
+          <div class="integration-meta">Enterprise Plan</div>
+          <button class="button tertiary">Connect</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ERP Integrations Section -->
+    <div class="section-header">
+      <h3 class="section-title">ERP Data Import Tools</h3>
+      <div class="section-description">Integrate with ERP systems to access financial data, inventory management, and operational metrics.</div>
+    </div>
+
+    <div class="integrations-grid">
+      <!-- SAP Integration -->
+      <div class="integration-card">
+        <div class="integration-logo">
+          <img src="/api/placeholder/120/48" alt="SAP Logo" />
+        </div>
+        <div class="integration-title">SAP ERP</div>
+        <div class="integration-description">
+          Import financial data, inventory metrics, and operational KPIs from SAP to power comprehensive due diligence reports.
+        </div>
+        <div class="integration-status status-connected">
+          <div class="status-indicator status-active"></div>
+          Connected
+        </div>
+        <div class="integration-footer">
+          <div class="integration-meta">Last synced: 4 hours ago</div>
+          <button class="button tertiary">Configure</button>
+        </div>
+      </div>
+
+      <!-- Oracle NetSuite Integration -->
+      <div class="integration-card">
+        <div class="integration-logo">
+          <img src="/api/placeholder/120/48" alt="NetSuite Logo" />
+        </div>
+        <div class="integration-title">Oracle NetSuite</div>
+        <div class="integration-description">
+          Sync financial records, procurement data, and operational metrics from NetSuite for in-depth company analysis.
+        </div>
+        <div class="integration-status status-available">
+          <div class="status-indicator status-inactive"></div>
+          Available
+        </div>
+        <div class="integration-footer">
+          <div class="integration-meta">Premium Integration</div>
+          <button class="button tertiary">Connect</button>
+        </div>
+      </div>
+
+      <!-- Microsoft Dynamics 365 Finance -->
+      <div class="integration-card">
+        <div class="integration-logo">
+          <img src="/api/placeholder/120/48" alt="Microsoft Dynamics Logo" />
+        </div>
+        <div class="integration-title">Dynamics 365 Finance</div>
+        <div class="integration-description">
+          Import comprehensive financial data, supply chain info, and accounting records from Microsoft Dynamics 365 Finance.
+        </div>
+        <div class="integration-status status-connected">
+          <div class="status-indicator status-active"></div>
+          Connected
+        </div>
+        <div class="integration-footer">
+          <div class="integration-meta">Last synced: 12 hours ago</div>
+          <button class="button tertiary">Configure</button>
+        </div>
+      </div>
+
+      <!-- Sage Integration -->
+      <div class="integration-card">
+        <div class="integration-logo">
+          <img src="/api/placeholder/120/48" alt="Sage Logo" />
+        </div>
+        <div class="integration-title">Sage</div>
+        <div class="integration-description">
+          Access financial reports, accounting data, and business metrics from Sage to enhance your financial analysis and reporting.
+        </div>
+        <div class="integration-status status-available">
+          <div class="status-indicator status-inactive"></div>
+          Available
+        </div>
+        <div class="integration-footer">
+          <div class="integration-meta">Enterprise Plan</div>
+          <button class="button tertiary">Connect</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Third-Party Data Sources -->
+    <div class="section-header">
+      <h3 class="section-title">Third-Party Data Sources</h3>
+      <div class="section-description">Connect to external data providers for market intelligence, financial information, and industry benchmarks.</div>
+    </div>
+
+    <div class="integrations-grid">
+      <!-- Bloomberg Integration -->
+      <div class="integration-card">
+        <div class="integration-logo">
+          <img src="/api/placeholder/120/48" alt="Bloomberg Logo" />
+        </div>
+        <div class="integration-title">Bloomberg</div>
+        <div class="integration-description">
+          Access real-time market data, financial information, news, and analytics from Bloomberg to enhance your due diligence.
+        </div>
+        <div class="integration-status status-connected">
+          <div class="status-indicator status-active"></div>
+          Connected
+        </div>
+        <div class="integration-footer">
+          <div class="integration-meta">Last synced: 30 minutes ago</div>
+          <button class="button tertiary">Configure</button>
+        </div>
+      </div>
+
+      <!-- S&P Capital IQ Integration -->
+      <div class="integration-card">
+        <div class="integration-logo">
+          <img src="/api/placeholder/120/48" alt="S&P Capital IQ Logo" />
+        </div>
+        <div class="integration-title">S&P Capital IQ</div>
+        <div class="integration-description">
+          Import company financials, market data, and industry benchmarks from Capital IQ for comprehensive analysis.
+        </div>
+        <div class="integration-status status-available">
+          <div class="status-indicator status-inactive"></div>
+          Available
+        </div>
+        <div class="integration-footer">
+          <div class="integration-meta">Premium Integration</div>
+          <button class="button tertiary">Connect</button>
+        </div>
+      </div>
+
+      <!-- Thomson Reuters Integration -->
+      <div class="integration-card">
+        <div class="integration-logo">
+          <img src="/api/placeholder/120/48" alt="Thomson Reuters Logo" />
+        </div>
+        <div class="integration-title">Thomson Reuters</div>
+        <div class="integration-description">
+          Connect to Thomson Reuters to access financial data, legal and regulatory information for comprehensive due diligence.
+        </div>
+        <div class="integration-status status-connected">
+          <div class="status-indicator status-active"></div>
+          Connected
+        </div>
+        <div class="integration-footer">
+          <div class="integration-meta">Last synced: 1 hour ago</div>
+          <button class="button tertiary">Configure</button>
+        </div>
+      </div>
+
+      <!-- Custom Integration -->
+      <div class="custom-integration-card">
+        <div class="custom-integration-icon">
+          <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 6V12M12 12V18M12 12H18M12 12H6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="custom-integration-title">Add Custom Data Source</div>
+        <div class="custom-integration-description">
+          Connect to a custom data provider or internal database using our flexible API integration framework.
+        </div>
+        <button class="button secondary">Create Integration</button>
+      </div>
+    </div>
+
+    <!-- API Documentation Section -->
+    <div class="section-header">
+      <h3 class="section-title">API Documentation</h3>
+      <div class="section-description">Build custom integrations with our comprehensive API. Access data, trigger workflows, and extend functionality.</div>
+    </div>
+
+    <div class="api-doc-section">
+      <div class="api-header">
+        <div class="api-title">DueDiligenceAI Integration API v2.0</div>
+        <div class="api-subtitle">Use our RESTful API to create custom integrations and extend platform capabilities.</div>
+      </div>
+      <div class="api-body">
+        <div class="api-endpoint">
+          <div class="endpoint-header">
+            <span class="endpoint-method method-get">GET</span>
+            <span class="endpoint-path">/api/v2/integrations</span>
+          </div>
+          <div class="endpoint-description">
+            Retrieve all available and connected integrations for your account.
+          </div>
+          <div class="code-block">
+// Example Request
+GET /api/v2/integrations HTTP/1.1
+Host: api.duediligenceai.com
+Authorization: Bearer YOUR_API_KEY
+          </div>
+          <div class="code-block">
+// Example Response
+{
+  "status": "success",
+  "data": {
+    "integrations": [
+      {
+        "id": "int_12345",
+        "name": "Salesforce",
+        "type": "crm",
+        "status": "connected",
+        "last_sync": "2025-05-07T12:30:45Z"
+      },
+      {
+        "id": "int_67890",
+        "name": "SAP ERP",
+        "type": "erp",
+        "status": "connected",
+        "last_sync": "2025-05-07T10:15:22Z"
+      }
+    ]
+  }
+}
+          </div>
+        </div>
+
+        <div class="api-endpoint">
+          <div class="endpoint-header">
+            <span class="endpoint-method method-post">POST</span>
+            <span class="endpoint-path">/api/v2/integrations/connect</span>
+          </div>
+          <div class="endpoint-description">
+            Initialize a new integration connection with specified platform.
+          </div>
+          <div class="code-block">
+// Example Request
+POST /api/v2/integrations/connect HTTP/1.1
+Host: api.duediligenceai.com
+Authorization: Bearer YOUR_API_KEY
+Content-Type: application/json
+
+{
+  "integration_id": "hubspot",
+  "credentials": {
+    "api_key": "YOUR_HUBSPOT_API_KEY"
+  },
+  "settings": {
+    "sync_frequency": "hourly",
+    "data_types": ["contacts", "companies", "deals"]
+  }
+}
+          </div>
+          <h4 style="margin-top: var(--space-lg); margin-bottom: var(--space-sm); font-size: 14px;">Parameters</h4>
+          <table class="parameter-table">
+            <thead>
+              <tr>
+                <th>Parameter</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>integration_id <span class="required-badge">Required</span></td>
+                <td><span class="parameter-type">string</span></td>
+                <td>Identifier for the integration platform</td>
+              </tr>
+              <tr>
+                <td>credentials <span class="required-badge">Required</span></td>
+                <td><span class="parameter-type">object</span></td>
+                <td>Authentication credentials for the integration</td>
+              </tr>
+              <tr>
+                <td>settings</td>
+                <td><span class="parameter-type">object</span></td>
+                <td>Configuration settings for the integration</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="api-endpoint">
+          <div class="endpoint-header">
+            <span class="endpoint-method method-post">POST</span>
+            <span class="endpoint-path">/api/v2/data/import</span>
+          </div>
+          <div class="endpoint-description">
+            Import data from a connected integration into your DueDiligenceAI project.
+          </div>
+          <div class="code-block">
+// Example Request
+POST /api/v2/data/import HTTP/1.1
+Host: api.duediligenceai.com
+Authorization: Bearer YOUR_API_KEY
+Content-Type: application/json
+
+{
+  "integration_id": "int_12345",
+  "project_id": "proj_67890",
+  "data_types": ["accounts", "contacts", "opportunities"],
+  "filters": {
+    "created_after": "2024-01-01T00:00:00Z",
+    "status": ["active", "qualified"]
+  }
+}
+          </div>
+        </div>
+
+        <div class="api-endpoint">
+          <div class="endpoint-header">
+            <span class="endpoint-method method-put">PUT</span>
+            <span class="endpoint-path">/api/v2/integrations/:integration_id</span>
+          </div>
+          <div class="endpoint-description">
+            Update configuration or credentials for an existing integration.
+          </div>
+        </div>
+
+        <div class="api-endpoint">
+          <div class="endpoint-header">
+            <span class="endpoint-method method-delete">DELETE</span>
+            <span class="endpoint-path">/api/v2/integrations/:integration_id</span>
+          </div>
+          <div class="endpoint-description">
+            Disconnect and remove an integration from your account.
+          </div>
+        </div>
+
+        <div style="margin-top: var(--space-xl);">
+          <button class="button secondary">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 16.5V18.75C3 19.9926 4.00736 21 5.25 21H18.75C19.9926 21 21 19.9926 21 18.75V16.5M16.5 12L12 16.5M12 16.5L7.5 12M12 16.5V3" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Download Full API Documentation
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <input type="text" placeholder="Search..." />
+      </div>
+      <div class="notifications">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 17H9M12 3V4M12 21V20M5.6 5.6L6.3 6.3M18.4 5.6L17.7 6.3M3 12H4M20 12H21M6 17.4V12C6 8.7 8.7 6 12 6C15.3 6 18 8.7 18 12V17.4H6Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="user-profile">
+        <div class="avatar">SK</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Breadcrumbs -->
+  <div class="breadcrumbs">
+    <div class="breadcrumb-item">Dashboard</div>
+    <div class="breadcrumb-item">Settings</div>
+    <div class="breadcrumb-item">Integration Hub</div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1>Integration Hub</h1>
+      <div class="header-actions">
+        <button class="button secondary">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 6V12M12 12V18M12 12H18M12 12H6" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Custom Integration
+        </button>
+        <button class="button primary">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M15 12L12 12M12 12L9 12M12 12L12 9M12 12L12 15" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Connect New Integration
+        </button>
+      </div>
+    </div>
+
+    <!-- Integration Stats -->
+    <div class="stats-container">
+      <div class="stat-card">
+        <div class="stat-title">Active Integrations</div>
+        <div class="stat-value">12</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">Data Sources</div>
+        <div class="stat-value">8</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">API Calls (Last 30 Days)</div>
+        <div class="stat-value">1,254</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">Data Points Synced</div>
+        <div class="stat-value">28.4K</div>
+      </div>
+    </div>
+
+    <!-- Tabs Navigation -->
+    <div class="tabs">
+      <div class="tab active">All Integrations</div>
+      <div class="tab">CRM Systems</div>
+      <div class="tab">ERP Systems</div>
+      <div class="tab">Financial Data</div>
+      <div class="tab">Document Management</div>
+      <div class="tab">API Documentation</div>
+    </div>
+
+    <!-- Search and Filter -->
+    <div class="search-filter">
+      <div class="search-input">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <input type="text" placeholder="Search integrations..." />
+      </div>
+      <div class="filter-dropdown">
+        <span>Integration Type: All</span>
+        <svg class="icon" viewBox="0 0 24 24" fill="

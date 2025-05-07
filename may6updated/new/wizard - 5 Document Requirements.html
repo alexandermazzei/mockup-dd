@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DueDiligenceAI - Document Requirements</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Color System */
+    :root {
+      --deep-navy: #0A2342;
+      --azure-blue: #2D72D9;
+      --slate-gray: #3C4858;
+      --mint-green: #00BFA5;
+      --coral-red: #FF5252;
+      --amber-yellow: #FFC107;
+      --light-blue: #E1F5FE;
+      --sky-blue: #81D4FA;
+      --dark-blue: #01579B;
+      --charcoal: #263238;
+      --medium-gray: #78909C;
+      --light-gray: #ECEFF1;
+      --white: #FFFFFF;
+      
+      /* Typography */
+      --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-display: 'Manrope', var(--font-primary);
+      --font-mono: 'JetBrains Mono', SFMono-Regular, Consolas, monospace;
+      
+      /* Spacing */
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 12px;
+      --space-lg: 16px;
+      --space-xl: 24px;
+      --space-2xl: 32px;
+      --space-3xl: 48px;
+      
+      /* Shadows */
+      --shadow-sm: 0px 1px 3px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0px 2px 6px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      
+      /* Border Radius */
+      --radius-sm: 2px;
+      --radius-md: 4px;
+      --radius-lg: 8px;
+    }
+
+    /* Global Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-primary);
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--slate-gray);
+      background-color: var(--light-gray);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-display);
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      line-height: 1.2;
+      font-weight: 800;
+      color: var(--deep-navy);
+    }
+
+    h2 {
+      font-size: 1.75rem;
+      line-height: 1.3;
+      font-weight: 700;
+      color: var(--deep-navy);
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      line-height: 1.2;
+      font-weight: 700;
+      color: var(--slate-gray);
+    }
+
+    h4 {
+      font-size: 1.125rem;
+      line-height: 1.4;
+      font-weight: 600;
+      color: var(--deep-navy);
+    }
+
+    /* Top Navigation */
+    .top-nav {
+      background-color: var(--white);
+      height: 64px;
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 var(--space-xl);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .top-nav-left, .top-nav-right {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--deep-navy);
+      margin-right: var(--space-2xl);
+    }
+
+    .logo svg {
+      margin-right: var(--space-sm);
+    }
+
+    .nav-items {
+      display: flex;
+    }
+
+    .nav-item {
+      padding: 0 var(--space-lg);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      color: var(--slate-gray);
+      cursor: pointer;
+      transition: color 0.15s;
+      position: relative;
+    }
+
+    .nav-item:hover {
+      color: var(--azure-blue);
+    }
+
+    .nav-item.active {
+      color: var(--azure-blue);
+    }
+
+    .nav-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--azure-blue);
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      background-color: var(--light-gray);
+      border-radius: 4px;
+      padding: 0 var(--space-md);
+      margin-right: var(--space-lg);
+      height: 36px;
+      width: 240px;
+    }
+
+    .search-bar input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 14px;
+      width: 100%;
+      margin-left: var(--space-xs);
+    }
+
+    .notifications, .user-profile {
+      margin-left: var(--space-lg);
+      cursor: pointer;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      background-color: var(--azure-blue);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    /* Wizard Container */
+    .wizard-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--space-xl);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .wizard-header {
+      margin-bottom: var(--space-xl);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Wizard Step Progress */
+    .wizard-progress {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: var(--space-2xl);
+      position: relative;
+    }
+
+    .wizard-progress::before {
+      content: '';
+      position: absolute;
+      top: 24px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--light-gray);
+      z-index: 0;
+    }
+
+    .wizard-progress::after {
+      content: '';
+      position: absolute;
+      top: 24px;
+      left: 0;
+      width: 100%; /* Represents progress - final step */
+      height: 2px;
+      background-color: var(--azure-blue);
+      z-index: 1;
+    }
+
+    .wizard-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+      width: 160px;
+    }
+
+    .step-circle {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background-color: var(--white);
+      border: 2px solid var(--light-gray);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--space-sm);
+      font-weight: 600;
+      font-size: 20px;
+      color: var(--medium-gray);
+    }
+
+    .step-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--medium-gray);
+      text-align: center;
+    }
+
+    .wizard-step.completed .step-circle {
+      background-color: var(--azure-blue);
+      border-color: var(--azure-blue);
+      color: var(--white);
+    }
+
+    .wizard-step.completed .step-title {
+      color: var(--azure-blue);
+    }
+
+    .wizard-step.active .step-circle {
+      border-color: var(--azure-blue);
+      color: var(--azure-blue);
+      border-width: 2px;
+    }
+
+    .wizard-step.active .step-title {
+      color: var(--azure-blue);
+      font-weight: 600;
+    }
+
+    /* Button Styles */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      border-radius: var(--radius-md);
+      font-weight: 500;
+      font-size: 14px;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .button .icon {
+      width: 18px;
+      height: 18px;
+      margin-right: var(--space-xs);
+    }
+
+    .primary {
+      background-color: var(--azure-blue);
+      color: var(--white);
+    }
+
+    .primary:hover {
+      background-color: #1A5DC7;
+    }
+
+    .secondary {
+      background-color: var(--white);
+      color: var(--azure-blue);
+      border: 1px solid var(--azure-blue);
+    }
+
+    .secondary:hover {
+      background-color: var(--light-blue);
+    }
+
+    .tertiary {
+      background-color: transparent;
+      color: var(--azure-blue);
+      padding: 8px 12px;
+    }
+
+    .tertiary:hover {
+      background-color: var(--light-blue);
+    }
+
+    /* Wizard Content */
+    .wizard-content {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: var(--space-2xl);
+      margin-bottom: var(--space-xl);
+      flex: 1;
+    }
+
+    .content-header {
+      margin-bottom: var(--space-xl);
+    }
+
+    .content-description {
+      margin-top: var(--space-md);
+      color: var(--slate-gray);
+      max-width: 800px;
+    }
+
+    /* Document Styles */
+    .document-container {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xl);
+    }
+
+    .document-category {
+      background-color: var(--white);
+      border: 1px solid var(--light-gray);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .category-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-lg) var(--space-xl);
+      background-color: rgba(236, 239, 241, 0.5);
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .category-title {
+      font-weight: 600;
+      color: var(--deep-navy);
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+
+    .category-subtitle {
+      font-size: 0.875rem;
+      color: var(--medium-gray);
+      margin-top: var(--space-xs);
+    }
+
+    .document-list {
+      padding: var(--space-lg) var(--space-xl);
+    }
+
+    .document-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-md) 0;
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .document-item:last-child {
+      border-bottom: none;
+    }
+
+    .document-info {
+      flex: 1;
+    }
+
+    .document-name {
+      font-weight: 500;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-xs);
+      display: flex;
+      align-items: center;
+    }
+
+    .document-description {
+      font-size: 0.875rem;
+      color: var(--medium-gray);
+    }
+
+    .document-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 40px;
+      height: 20px;
+    }
+
+    .toggle-input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--light-gray);
+      border-radius: 20px;
+      transition: background-color 0.15s ease-in-out;
+    }
+
+    .toggle-slider::before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 2px;
+      bottom: 2px;
+      background-color: var(--white);
+      border-radius: 50%;
+      transition: transform 0.15s ease-in-out;
+    }
+
+    .toggle-input:checked + .toggle-slider {
+      background-color: var(--azure-blue);
+    }
+
+    .toggle-input:checked + .toggle-slider::before {
+      transform: translateX(20px);
+    }
+
+    .category-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-left: var(--space-sm);
+    }
+
+    .pill.required {
+      background-color: rgba(255, 82, 82, 0.1);
+      color: var(--coral-red);
+    }
+
+    .pill.optional {
+      background-color: rgba(45, 114, 217, 0.1);
+      color: var(--azure-blue);
+    }
+
+    /* Wizard Actions */
+    .wizard-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: var(--space-2xl);
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .container {
+        padding: var(--space-md);
+      }
+
+      .top-nav {
+        padding: 0 var(--space-md);
+      }
+
+      .nav-items {
+        display: none;
+      }
+
+      .search-bar {
+        width: 160px;
+      }
+
+      .wizard-actions {
+        flex-direction: column-reverse;
+        gap: var(--space-md);
+      }
+
+      .wizard-actions button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <div class="top-nav-left">
+      <div class="logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 8H16C20.4183 8 24 11.5817 24 16C24 20.4183 20.4183 24 16 24H8V8Z" fill="#0A2342"/>
+          <path d="M16 8H24V16C24 20.4183 20.4183 24 16 24V8Z" fill="#2D72D9"/>
+        </svg>
+        <span>DueDiligenceAI</span>
+      </div>
+      <div class="nav-items">
+        <div class="nav-item">Dashboard</div>
+        <div class="nav-item active">Projects</div>
+        <div class="nav-item">Analysis</div>
+        <div class="nav-item">Reports</div>
+      </div>
+    </div>
+    <div class="top-nav-right">
+      <div class="search-bar">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <input type="text" placeholder="Search..." />
+      </div>
+      <div class="notifications">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 17H9M12 3V4M12 21V20M5.6 5.6L6.3 6.3M18.4 5.6L17.7 6.3M3 12H4M20 12H21M6 17.4V12C6 8.7 8.7 6 12 6C15.3 6 18 8.7 18 12V17.4H6Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="user-profile">
+        <div class="avatar">SK</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Wizard Container -->
+  <div class="wizard-container">
+    <!-- Wizard Header -->
+    <div class="wizard-header">
+      <h1>Create New Due Diligence Project</h1>
+      <button class="button secondary">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 19L8 12L15 5" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Back to Projects
+      </button>
+    </div>
+
+    <!-- Wizard Progress -->
+    <div class="wizard-progress">
+      <div class="wizard-step completed">
+        <div class="step-circle">1</div>
+        <div class="step-title">Project Details</div>
+      </div>
+      <div class="wizard-step completed">
+        <div class="step-circle">2</div>
+        <div class="step-title">Target Information</div>
+      </div>
+      <div class="wizard-step completed">
+        <div class="step-circle">3</div>
+        <div class="step-title">Team Assignment</div>
+      </div>
+      <div class="wizard-step completed">
+        <div class="step-circle">4</div>
+        <div class="step-title">Timeline</div>
+      </div>
+      <div class="wizard-step active">
+        <div class="step-circle">5</div>
+        <div class="step-title">Document Requirements</div>
+      </div>
+    </div>
+
+    <!-- Wizard Content -->
+    <div class="wizard-content">
+      <div class="content-header">
+        <h2>Define Document Requirements</h2>
+        <p class="content-description">
+          Customize the documents you'll need for this due diligence project. Required documents are pre-selected based on your project scope, but you can add or remove items as needed.
+        </p>
+      </div>
+
+      <div class="document-container">
+        <!-- Financial Documents Category -->
+        <div class="document-category">
+          <div class="category-header">
+            <div>
+              <h3 class="category-title">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 7.8C3 6.11984 3 5.27976 3.32698 4.63803C3.6146 4.07354 4.07354 3.6146 4.63803 3.32698C5.27976 3 6.11984 3 7.8 3H16.2C17.8802 3 18.7202 3 19.362 3.32698C19.9265 3.6146 20.3854 4.07354 20.673 4.63803C21 5.27976 21 6.11984 21 7.8V16.2C21 17.8802 21 18.7202 20.673 19.362C20.3854 19.9265 19.9265 20.3854 19.362 20.673C18.7202 21 17.8802 21 16.2 21H7.8C6.11984 21 5.27976 21 4.63803 20.673C4.07354 20.3854 3.6146 19.9265 3.32698 19.362C3 18.7202 3 17.8802 3 16.2V7.8Z" stroke="#0A2342" stroke-width="1.5"/>
+                  <path d="M7.5 15.5H9.5M7.5 12H9.5M7.5 8.5H9.5M14.5 15.5H16.5M14.5 12H16.5M14.5 8.5H16.5" stroke="#0A2342" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                Financial Documents
+              </h3>
+              <p class="category-subtitle">Documents related to financial statements, projections, and tax records.</p>
+            </div>
+            <div class="category-actions">
+              <button class="button tertiary">
+                <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 5V19M5 12H19" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Add Custom Document
+              </button>
+            </div>
+          </div>
+          <div class="document-list">
+            <div class="document-item">
+              <div class="document-info">
+                <div class="document-name">
+                  Annual Financial Statements (3 years)
+                  <span class="pill required">Required</span>
+                </div>
+                <div class="document-description">Audited income statements, balance sheets, and cash flow statements.</div>
+              </div>
+              <div class="document-actions">
+                <label class="toggle-switch">
+                  <input type="checkbox" class="toggle-input" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+            
+            <div class="document-item">
+              <div class="document-info">
+                <div class="document-name">
+                  Quarterly Financial Statements (Current Year)
+                  <span class="pill required">Required</span>
+                </div>
+                <div class="document-description">Unaudited quarterly financial reports for the current fiscal year.</div>
+              </div>
+              <div class="document-actions">
+                <label class="toggle-switch">
+                  <input type="checkbox" class="toggle-input" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+            
+            <div class="document-item">
+              <div class="document-info">
+                <div class="document-name">
+                  Financial Projections
+                  <span class="pill required">Required</span>
+                </div>
+                <div class="document-description">Forward-looking financial forecasts and budget plans.</div>
+              </div>
+              <div class="document-actions">
+                <label class="toggle-switch">
+                  <input type="checkbox" class="toggle-input" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+            
+            <div class="document-item">
+              <div class="document-info">
+                <div class="document-name">
+                  Tax Returns (3 years)
+                  <span class="pill required">Required</span>
+                </div>
+                <div class="document-description">Federal, state, and local tax filings for the past three fiscal years.</div>
+              </div>
+              <div class="document-actions">
+                <label class="toggle-switch">
+                  <input type="checkbox" class="toggle-input" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+            
+            <div class="document-item">
+              <div class="document-info">
+                <div class="document-name">
+                  Debt Schedule
+                  <span class="pill optional">Optional</span>
+                </div>
+                <div class="document-description">Detailed breakdown of all outstanding debt obligations and payment terms.</div>
+              </div>
+              <div class="document-actions">
+                <label class="toggle-switch">
+                  <input type="checkbox" class="toggle-input" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+            
+            <div class="document-item">
+              <div class="document-info">
+                <div class="document-name">
+                  Capital Expenditure Schedule
+                  <span class="pill optional">Optional</span>
+                </div>
+                <div class="document-description">Historical capex spending and planned future capital investments.</div>
+              </div>
+              <div class="document-actions">
+                <label class="toggle-switch">
+                  <input type="checkbox" class="toggle-input" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+            
+            <div class="document-item">
+              <div class="document-info">
+                <div class="document-name">
+                  Accounts Receivable Aging Report
+                  <span class="pill optional">Optional</span>
+                </div>
+                <div class="document-description">Current A/R aging with details on outstanding receivables.</div>
+              </div>
+              <div class="document-actions">
+                <label class="toggle-switch">
+                  <input type="checkbox" class="toggle-input" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Legal Documents Category -->
+        <div class="document-category">
+          <div class="category-header">
+            <div>
+              <h3 class="category-title">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2V4M12 20V22M12.0001 15L9.00006 11M12.0001 15L15.0001 11M12.0001 15V6.5M19 10L21 9M5 10L3 9M20.4945 16.5L18.737 15.75M3.50543 16.5L5.26293 15.75M7 6L5.26295 5.25M17 6L18.737 5.25" stroke="#0A2342" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Legal Documents
+              </h3>
+              <p class="category-subtitle">Corporate formation, contracts, intellectual property, and compliance documentation.</p>
+            </div>
+            <div class="category-actions">
+              <button class="button tertiary">
+                <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 5V19M5 12H19" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Add Custom Document
+              </button>
+            </div>
+          </div>
+          <div class="document-list">
+            <div class="document-item">
+              <div class="document-info">
+                <div class="document-name">
+                  Articles of Incorporation
+                  <span class="pill required">Required</span>
+                </div>
+                <div class="document-description">Official company formation documents filed with the state.</div>
+              </div>
+              <div class="document-actions">
+                <label class="toggle-switch">
+                  <input type="checkbox" class="toggle-input" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+            
+            <div class="document-item">
+              <div class="document-info">
+                <div class="document-name">
+                  Bylaws
+                  <span class="pill required">Required</span>
+                </div>
+                <div class="document-description">Internal rules governing the company's operations and management structure.</div>
+              </div>
+              <div class="document-actions">
+                <label class="toggle-switch">
+                  <input type="checkbox" class="toggle-input" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+            
+            <div class="document-item">
+              <div class="document-info">
+                <div class="document-name">
+                  Material Contracts
+                  <span class="pill required">Required</span>
+                </div>
+                <div class="document-description">All significant contracts with customers, vendors, and partners.</div>
+              </div>
+              <div class="document-actions">
+                <label class="toggle-switch">
+                  <input type="checkbox" class="toggle-input" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+            
+            <div class="document-item">
+              <div class="document-info">
+                <div class="document-name">
+                  Intellectual Property Documentation
+                  <span class="pill required">Required</span>
+                </div>
+                <div class="document-description">Patents, trademarks, copyrights, and trade secrets documentation.</div>
+              </div>
+              <div class="document-actions">
+                <label class="toggle-switch">
+                  <input type="checkbox" class="toggle-input" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+            
+            <div class="document-item">
+              <div class="document-info">
+                <div class="document-name">
+                  Litigation Documentation
+                  <span class="pill optional">Optional</span>
+                </div>
+                <div class="document-description">Records of ongoing or threatened legal proceedings and settlements.</div>
+              </div>
+              <div class="document-actions">
+                <label class="toggle-switch">
+                  <input type="checkbox" class="toggle-input" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+            
+            <div class="document-item">
+              <div class="document-info">
+                <div class="document-name">
+                  Regulatory Filings
+                  <span class="pill optional">Optional</span>
+                </div>
+                <div class="document-description">Industry-specific regulatory submissions and compliance documentation.</div>
+              </div>
+              <div class="document-actions">
+                <label class="toggle-switch">
+                  <input type="checkbox" class="toggle-input" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Operational Documents Category -->
+        <div class="document-category">
+          <div class="category-header">
+            <div>
+              <h3 class="category-title">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M4 13V19C4 19.5304 4.21071 20.0391 4.58579 20.4142C4.96086 20.7893 5.46957 21 6 21H18C18.5304 21 19.0391 20.7893 19.4142 20.4142C19.7893 20.0391 20 19.5304 20 19V13" stroke="#0A2342" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M16 8L12 4L8 8" stroke="#0A2342" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 4V16" stroke="#0A2342" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Operational Documents
+              </h3>
+              <p class="category-subtitle">Information about company operations, infrastructure, and business processes.</p>
+            </div>
+            <div class="category-actions">
+              <button class="button tertiary">
+                <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 5V19M5 12H19" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Add Custom Document
+              </button>
+            </div>
+          </div>
+          <div class="document-list">
+            <div class="document-item">
+              <div class="document-info">
+                <div class="document-name">
+                  Organization Chart
+                  <span class="pill required">Required</span>
+                </div>
+                <div class="document-description">Current organizational structure showing departmental relationships.</div>
+              </div>
+              <div class="document-actions">
+                <label class="toggle-switch">
+                  <input type="checkbox" class="toggle-input" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+            
+            <div class="document-item">
+              <div class="document-info">
+                <div class="document-name">
+                  Employee Handbook
+                  <span class="pill optional">Optional</span>
+                </div>
+                <div class="document-description">Company policies, procedures, and employee guides.</div>
+              </div>
+              <div class="document-actions">
+                <label class="toggle-switch">
+                  <input type="checkbox" class="toggle-input" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+            
+            <div class="document-item">
+              <div class="document-info">
+                <div class="document-name">
+                  Key Customer Agreements
+                  <span class="pill required">Required</span>
+                </div>
+                <div class="document-description">Contracts with top customers, including terms and conditions.</div>
+              </div>
+              <div class="document-actions">
+                <label class="toggle-switch">
+                  <input type="checkbox" class="toggle-input" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+            
+            <div class="document-item">
+              <div class="document-info">
+                <div class="document-name">
+                  Vendor Agreements
+                  <span class="pill optional">Optional</span>
+                </div>
+                <div class="document-description">Contracts with key suppliers and service providers.</div>
+              </div>
+              <div class="document-actions">
+                <label class="toggle-switch">
+                  <input type="checkbox" class="toggle-input" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+            
+            <div class="document-item">
+              <div class="document-info">
+                <div class="document-name">
+                  Property Leases
+                  <span class="pill optional">Optional</span>
+                </div>
+                <div class="document-description">Real estate leases and property documentation.</div>
+              </div>
+              <div class="document-actions">
+                <label class="toggle-switch">
+                  <input type="checkbox" class="toggle-input" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+            
+            <div class="document-item">
+              <div class="document-info">
+                <div class="document-name">
+                  Insurance Policies
+                  <span class="pill optional">Optional</span>
+                </div>
+                <div class="document-description">Business insurance coverage details and policy documentation.</div>
+              </div>
+              <div class="document-actions">
+                <label class="toggle-switch">
+                  <input type="checkbox" class="toggle-input" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Technology Documents Category -->
+        <div class="document-category">
+          <div class="category-header">
+            <div>
+              <h3 class="category-title">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M20 7H4C2.89543 7 2 7.89543 2 9V19C2 20.1046 2.89543 21 4 21H20C21.1046 21 22 20.1046 22 19V9C22 7.89543 21.1046 7 20 7Z" stroke="#0A2342" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M16 21V5C16 4.46957 15.7893 3.96086 15.4142 3.58579C15.0391 3.21071 14.5304 3 14 3H10C9.46957 3 8.96086 3.21071 8.58579 3.58579C8.21071 3.96086 8 4.46957 8 5V21" stroke="#0A2342" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Technology Documents
+              </h3>
+              <p class="category-subtitle">Documentation related to IT systems, software, and digital infrastructure.</p>
+            </div>
+            <div class="category-actions">
+              <button class="button tertiary">
+                <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 5V19M5 12H19" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Add Custom Document
+              </button>
+            </div>
+          </div>
+          <div class="document-list">
+            <div class="document-item">
+              <div class="document-info">
+                <div class="document-name">
+                  Technology Stack Overview
+                  <span class="pill required">Required</span>
+                </div>
+                <div class="document-description">Complete list of technologies, frameworks, and platforms used.</div>
+              </div>
+              <div class="document-actions">
+                <label class="toggle-switch">
+                  <input type="checkbox" class="toggle-input" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+            
+            <div class="document-item">
+              <div class="document-info">
+                <div class="document-name">
+                  Software Licenses
+                  <span class="pill required">Required</span>
+                </div>
+                <div class="document-description">Inventory of all licensed software and associated agreements.</div>
+              </div>
+              <div class="document-actions">
+                <label class="toggle-switch">
+                  <input type="checkbox" class="toggle-input" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+            
+            <div class="document-item">
+              <div class="document-info">
+                <div class="document-name">
+                  System Architecture Diagrams
+                  <span class="pill optional">Optional</span>
+                </div>
+                <div class="document-description">Technical diagrams showing the infrastructure architecture.</div>
+              </div>
+              <div class="document-actions">
+                <label class="toggle-switch">
+                  <input type="checkbox" class="toggle-input" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+            
+            <div class="document-item">
+              <div class="document-info">
+                <div class="document-name">
+                  IT Security Policies
+                  <span class="pill optional">Optional</span>
+                </div>
+                <div class="document-description">Security protocols, policies, and compliance documentation.</div>
+              </div>
+              <div class="document-actions">
+                <label class="toggle-switch">
+                  <input type="checkbox" class="toggle-input" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+            
+            <div class="document-item">
+              <div class="document-info">
+                <div class="document-name">
+                  Technology Roadmap
+                  <span class="pill optional">Optional</span>
+                </div>
+                <div class="document-description">Future technology plans and development initiatives.</div>
+              </div>
+              <div class="document-actions">
+                <label class="toggle-switch">
+                  <input type="checkbox" class="toggle-input" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+            
+            <div class="document-item">
+              <div class="document-info">
+                <div class="document-name">
+                  Data Center Information
+                  <span class="pill optional">Optional</span>
+                </div>
+                <div class="document-description">Details on data center facilities and infrastructure.</div>
+              </div>
+              <div class="document-actions">
+                <label class="toggle-switch">
+                  <input type="checkbox" class="toggle-input">
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Market & Industry Documents Category -->
+        <div class="document-category">
+          <div class="category-header">
+            <div>
+              <h3 class="category-title">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#0A2342" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M2 17L12 22L22 17" stroke="#0A2342" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M2 12L12 17L22 12" stroke="#0A2342" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Market & Industry Documents
+              </h3>
+              <p class="category-subtitle">Information about market positioning, competition, and industry trends.</p>
+            </div>
+            <div class="category-actions">
+              <button class="button tertiary">
+                <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 5V19M5 12H19" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Add Custom Document
+              </button>
+            </div>
+          </div>
+          <div class="document-list">
+            <div class="document-item">
+              <div class="document-info">
+                <div class="document-name">
+                  Market Analysis Reports
+                  <span class="pill optional">Optional</span>
+                </div>
+                <div class="document-description">Reports analyzing the relevant market size, trends, and growth potential.</div>
+              </div>
+              <div class="document-actions">
+                <label class="toggle-switch">
+                  <input type="checkbox" class="toggle-input" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+            
+            <div class="document-item">
+              <div class="document-info">
+                <div class="document-name">
+                  Competitor Analysis
+                  <span class="pill optional">Optional</span>
+                </div>
+                <div class="document-description">Detailed analysis of key competitors and competitive positioning.</div>
+              </div>
+              <div class="document-actions">
+                <label class="toggle-switch">
+                  <input type="checkbox" class="toggle-input" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+            
+            <div class="document-item">
+              <div class="document-info">
+                <div class="document-name">
+                  Industry Reports
+                  <span class="pill optional">Optional</span>
+                </div>
+                <div class="document-description">Third-party research and industry analysis.</div>
+              </div>
+              <div class="document-actions">
+                <label class="toggle-switch">
+                  <input type="checkbox" class="toggle-input">
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add Custom Category Button -->
+        <div style="text-align: center; margin-top: var(--space-xl);">
+          <button class="button secondary">
+            <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 5V19M5 12H19" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Add Custom Document Category
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wizard Actions -->
+    <div class="wizard-actions">
+      <button class="button secondary">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 19L8 12L15 5" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Previous: Timeline
+      </button>
+      <div>
+        <button class="button secondary" style="margin-right: var(--space-md);">
+          Save as Draft
+        </button>
+        <button class="button primary">
+          Complete Setup
+          <svg class="icon" style="margin-left: var(--space-xs); margin-right: 0;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 12L9 16L19 6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Toggle document selection
+    document.addEventListener('DOMContentLoaded', function() {
+      // Handle toggle switches
+      const toggleSwitches = document.querySelectorAll('.toggle-input');
+      toggleSwitches.forEach(toggle => {
+        toggle.addEventListener('change', function() {
+          const documentItem = this.closest('.document-item');
+          if (this.checked) {
+            documentItem.style.opacity = '1';
+          } else {
+            documentItem.style.opacity = '0.5';
+          }
+        });
+      });
+      
+      // Handle "Add Custom Document" buttons
+      const addCustomDocBtns = document.querySelectorAll('.category-actions .button');
+      addCustomDocBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          alert('In a real application, this would open a modal to add a custom document to this category.');
+        });
+      });
+      
+      // Handle "Add Custom Category" button
+      const addCustomCategoryBtn = document.querySelector('.button.secondary:not(.wizard-actions .button)');
+      addCustomCategoryBtn.addEventListener('click', function() {
+        alert('In a real application, this would open a modal to create a new document category.');
+      });
+      
+      // Handle navigation buttons
+      const prevButton = document.querySelector('.wizard-actions .button.secondary');
+      prevButton.addEventListener('click', function() {
+        window.location.href = 'wizard - 4  Timeline.html';
+      });
+      
+      const completeButton = document.querySelector('.wizard-actions .button.primary');
+      completeButton.addEventListener('click', function() {
+        alert('Project setup completed! In a real application, this would finalize the project creation and redirect to the project dashboard.');
+      });
+    });
+  </script>
+</body>
+</html>

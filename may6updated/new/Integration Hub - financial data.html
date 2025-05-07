@@ -1,0 +1,1967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DueDiligenceAI - Financial Data Integration</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Color System */
+    :root {
+      --deep-navy: #0A2342;
+      --azure-blue: #2D72D9;
+      --slate-gray: #3C4858;
+      --mint-green: #00BFA5;
+      --coral-red: #FF5252;
+      --amber-yellow: #FFC107;
+      --light-blue: #E1F5FE;
+      --sky-blue: #81D4FA;
+      --dark-blue: #01579B;
+      --charcoal: #263238;
+      --medium-gray: #78909C;
+      --light-gray: #ECEFF1;
+      --white: #FFFFFF;
+      
+      /* Typography */
+      --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-display: 'Manrope', var(--font-primary);
+      --font-mono: 'JetBrains Mono', SFMono-Regular, Consolas, monospace;
+      
+      /* Spacing */
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 12px;
+      --space-lg: 16px;
+      --space-xl: 24px;
+      --space-2xl: 32px;
+      --space-3xl: 48px;
+      
+      /* Shadows */
+      --shadow-sm: 0px 1px 3px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0px 2px 6px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      
+      /* Border Radius */
+      --radius-sm: 2px;
+      --radius-md: 4px;
+      --radius-lg: 8px;
+    }
+
+    /* Global Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-primary);
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--slate-gray);
+      background-color: var(--light-gray);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-display);
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      line-height: 1.2;
+      font-weight: 800;
+      color: var(--deep-navy);
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      line-height: 1.2;
+      font-weight: 700;
+      color: var(--slate-gray);
+    }
+
+    h4 {
+      font-size: 1.125rem;
+      line-height: 1.4;
+      font-weight: 600;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-md);
+    }
+
+    p {
+      margin-bottom: var(--space-md);
+    }
+
+    /* Top Navigation */
+    .top-nav {
+      background-color: var(--white);
+      height: 64px;
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 var(--space-xl);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .top-nav-left, .top-nav-right {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--deep-navy);
+      margin-right: var(--space-2xl);
+    }
+
+    .logo svg {
+      margin-right: var(--space-sm);
+    }
+
+    .nav-items {
+      display: flex;
+    }
+
+    .nav-item {
+      padding: 0 var(--space-lg);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      color: var(--slate-gray);
+      cursor: pointer;
+      transition: color 0.15s;
+      position: relative;
+    }
+
+    .nav-item:hover {
+      color: var(--azure-blue);
+    }
+
+    .nav-item.active {
+      color: var(--azure-blue);
+    }
+
+    .nav-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--azure-blue);
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      background-color: var(--light-gray);
+      border-radius: 4px;
+      padding: 0 var(--space-md);
+      margin-right: var(--space-lg);
+      height: 36px;
+      width: 240px;
+    }
+
+    .search-bar input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 14px;
+      width: 100%;
+      margin-left: var(--space-xs);
+    }
+
+    .notifications, .user-profile {
+      margin-left: var(--space-lg);
+      cursor: pointer;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      background-color: var(--azure-blue);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    /* Breadcrumbs */
+    .breadcrumbs {
+      display: flex;
+      padding: var(--space-md) var(--space-xl);
+      background-color: var(--white);
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .breadcrumb-item {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: var(--medium-gray);
+    }
+
+    .breadcrumb-item:not(:last-child)::after {
+      content: '';
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2378909C' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 18l6-6-6-6'%3E%3C/path%3E%3C/svg%3E");
+      background-position: center;
+      background-repeat: no-repeat;
+      margin: 0 var(--space-sm);
+    }
+
+    .breadcrumb-item:last-child {
+      color: var(--charcoal);
+      font-weight: 500;
+    }
+
+    /* Main Layout */
+    .main-content {
+      padding: var(--space-xl);
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    /* Page Header */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-xl);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: var(--space-md);
+    }
+
+    /* Button Styles */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      border-radius: var(--radius-md);
+      font-weight: 500;
+      font-size: 14px;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .button .icon {
+      width: 18px;
+      height: 18px;
+      margin-right: var(--space-xs);
+    }
+
+    .primary {
+      background-color: var(--azure-blue);
+      color: var(--white);
+    }
+
+    .primary:hover {
+      background-color: #1A5DC7;
+    }
+
+    .secondary {
+      background-color: var(--white);
+      color: var(--azure-blue);
+      border: 1px solid var(--azure-blue);
+    }
+
+    .secondary:hover {
+      background-color: var(--light-blue);
+    }
+
+    .tertiary {
+      background-color: transparent;
+      color: var(--azure-blue);
+      padding: 8px 12px;
+    }
+
+    .tertiary:hover {
+      background-color: var(--light-blue);
+    }
+
+    .button-sm {
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+
+    .icon-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-md);
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+    }
+
+    .icon-button:hover {
+      background-color: var(--light-gray);
+    }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      stroke-width: 1.5;
+    }
+
+    /* Cards */
+    .card {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      margin-bottom: var(--space-xl);
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: var(--space-lg);
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+    }
+
+    .card-body {
+      padding: var(--space-lg);
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--light-gray);
+      margin-bottom: var(--space-xl);
+      background-color: var(--white);
+      border-radius: var(--radius-md) var(--radius-md) 0 0;
+    }
+
+    .tab {
+      padding: var(--space-md) var(--space-xl);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--slate-gray);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .tab:hover {
+      background-color: var(--light-blue);
+    }
+
+    .tab.active {
+      color: var(--azure-blue);
+    }
+
+    .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--azure-blue);
+    }
+
+    /* Integration Grid */
+    .integration-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: var(--space-lg);
+      margin-bottom: var(--space-xl);
+    }
+
+    .integration-card {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: var(--space-lg);
+      display: flex;
+      flex-direction: column;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      height: 100%;
+    }
+
+    .integration-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .integration-logo {
+      display: flex;
+      align-items: center;
+      margin-bottom: var(--space-md);
+      height: 48px;
+    }
+
+    .integration-logo img {
+      max-height: 48px;
+      max-width: 120px;
+    }
+
+    .integration-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-xs);
+    }
+
+    .integration-description {
+      font-size: 14px;
+      flex: 1;
+      margin-bottom: var(--space-md);
+    }
+
+    .integration-status {
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 12px;
+      width: fit-content;
+      margin-bottom: var(--space-md);
+    }
+
+    .status-connected {
+      background-color: rgba(0, 191, 165, 0.1);
+      color: var(--mint-green);
+    }
+
+    .status-available {
+      background-color: rgba(45, 114, 217, 0.1);
+      color: var(--azure-blue);
+    }
+
+    .status-setup {
+      background-color: rgba(255, 193, 7, 0.1);
+      color: var(--amber-yellow);
+    }
+
+    .integration-footer {
+      display: flex;
+      justify-content: space-between;
+      margin-top: auto;
+      align-items: center;
+    }
+
+    .integration-meta {
+      font-size: 12px;
+      color: var(--medium-gray);
+      display: flex;
+      align-items: center;
+    }
+
+    .status-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: var(--space-xs);
+    }
+
+    .status-active {
+      background-color: var(--mint-green);
+    }
+
+    .status-inactive {
+      background-color: var(--medium-gray);
+    }
+
+    /* Features Grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: var(--space-lg);
+      margin-bottom: var(--space-xl);
+    }
+
+    .feature-card {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: var(--space-lg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background-color: var(--light-blue);
+      color: var(--azure-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--space-xs);
+    }
+
+    .feature-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+    }
+
+    .feature-description {
+      font-size: 14px;
+      color: var(--slate-gray);
+      flex: 1;
+    }
+
+    /* Form Styles */
+    .form-group {
+      margin-bottom: var(--space-lg);
+    }
+
+    .form-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-xs);
+    }
+
+    .form-input {
+      width: 100%;
+      height: 40px;
+      padding: 0 var(--space-md);
+      border: 1px solid var(--light-gray);
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      color: var(--charcoal);
+      transition: border-color 0.15s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--azure-blue);
+    }
+
+    .form-select {
+      width: 100%;
+      height: 40px;
+      padding: 0 var(--space-md);
+      border: 1px solid var(--light-gray);
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      color: var(--charcoal);
+      background-color: var(--white);
+      transition: border-color 0.15s ease;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233C4858' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 16px;
+    }
+
+    .form-select:focus {
+      outline: none;
+      border-color: var(--azure-blue);
+    }
+
+    .form-hint {
+      font-size: 12px;
+      color: var(--medium-gray);
+      margin-top: var(--space-xs);
+    }
+
+    /* Toggle Switch */
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 36px;
+      height: 20px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--light-gray);
+      transition: .4s;
+      border-radius: 20px;
+    }
+
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 2px;
+      bottom: 2px;
+      background-color: var(--white);
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .toggle-slider {
+      background-color: var(--azure-blue);
+    }
+
+    input:checked + .toggle-slider:before {
+      transform: translateX(16px);
+    }
+
+    /* Alert Styles */
+    .alert {
+      padding: var(--space-md) var(--space-lg);
+      border-radius: var(--radius-md);
+      margin-bottom: var(--space-lg);
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .alert-icon {
+      margin-right: var(--space-md);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .alert-content {
+      flex: 1;
+    }
+
+    .alert-title {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: var(--space-xs);
+    }
+
+    .alert-message {
+      font-size: 14px;
+    }
+
+    .alert-info {
+      background-color: rgba(45, 114, 217, 0.1);
+      border-left: 4px solid var(--azure-blue);
+    }
+
+    .alert-warning {
+      background-color: rgba(255, 193, 7, 0.1);
+      border-left: 4px solid var(--amber-yellow);
+    }
+
+    .alert-success {
+      background-color: rgba(0, 191, 165, 0.1);
+      border-left: 4px solid var(--mint-green);
+    }
+
+    /* Dashboard Cards */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--space-lg);
+      margin-bottom: var(--space-xl);
+    }
+
+    .dashboard-card {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: var(--space-lg);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .dashboard-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--space-md);
+    }
+
+    .dashboard-card-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+    }
+
+    .dashboard-card-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .metric-value {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-xs);
+    }
+
+    .metric-label {
+      font-size: 14px;
+      color: var(--medium-gray);
+      margin-bottom: var(--space-md);
+    }
+
+    .metric-chart {
+      flex: 1;
+      min-height: 120px;
+      background-color: var(--light-gray);
+      border-radius: var(--radius-md);
+      margin-bottom: var(--space-md);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chart-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(129, 212, 250, 0.2) 0%, rgba(45, 114, 217, 0.2) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .metric-comparison {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: var(--medium-gray);
+    }
+
+    .comparison-up {
+      color: var(--mint-green);
+    }
+
+    .comparison-down {
+      color: var(--coral-red);
+    }
+
+    /* Table Styles */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      margin-bottom: var(--space-lg);
+    }
+
+    .data-table th, .data-table td {
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .data-table th {
+      font-weight: 600;
+      color: var(--deep-navy);
+      background-color: rgba(45, 114, 217, 0.05);
+    }
+
+    .data-table tbody tr:hover {
+      background-color: rgba(45, 114, 217, 0.03);
+    }
+
+    /* File Upload Component */
+    .file-upload {
+      border: 2px dashed var(--light-gray);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
+      text-align: center;
+      margin-bottom: var(--space-xl);
+      background-color: rgba(0, 0, 0, 0.01);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .file-upload:hover {
+      border-color: var(--azure-blue);
+      background-color: rgba(45, 114, 217, 0.03);
+    }
+
+    .upload-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background-color: var(--light-blue);
+      color: var(--azure-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto var(--space-md);
+    }
+
+    .upload-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-xs);
+    }
+
+    .upload-description {
+      font-size: 14px;
+      color: var(--medium-gray);
+      margin-bottom: var(--space-lg);
+    }
+
+    /* Badge Styles */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .badge-blue {
+      background-color: rgba(45, 114, 217, 0.1);
+      color: var(--azure-blue);
+    }
+
+    .badge-green {
+      background-color: rgba(0, 191, 165, 0.1);
+      color: var(--mint-green);
+    }
+
+    .badge-amber {
+      background-color: rgba(255, 193, 7, 0.1);
+      color: var(--amber-yellow);
+    }
+
+    .badge-red {
+      background-color: rgba(255, 82, 82, 0.1);
+      color: var(--coral-red);
+    }
+
+    /* Finance-specific components */
+    .metric-tile {
+      padding: var(--space-lg);
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+    }
+
+    .metric-tile-title {
+      font-size: 14px;
+      color: var(--medium-gray);
+      margin-bottom: var(--space-xs);
+    }
+
+    .metric-tile-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-xs);
+    }
+
+    .metric-tile-trend {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+    }
+
+    .trend-up {
+      color: var(--mint-green);
+    }
+
+    .trend-down {
+      color: var(--coral-red);
+    }
+
+    .trend-neutral {
+      color: var(--medium-gray);
+    }
+
+    /* Financial Chart Component */
+    .chart-container {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: var(--space-lg);
+      margin-bottom: var(--space-xl);
+    }
+
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-md);
+    }
+
+    .chart-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+    }
+
+    .chart-controls {
+      display: flex;
+      gap: var(--space-sm);
+    }
+
+    .chart-area {
+      height: 300px;
+      background-color: var(--light-gray);
+      border-radius: var(--radius-md);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1024px) {
+      .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .integration-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <div class="top-nav-left">
+      <div class="logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 8H16C20.4183 8 24 11.5817 24 16C24 20.4183 20.4183 24 16 24H8V8Z" fill="#0A2342"/>
+          <path d="M16 8H24V16C24 20.4183 20.4183 24 16 24V8Z" fill="#2D72D9"/>
+        </svg>
+        <span>DueDiligenceAI</span>
+      </div>
+      <div class="nav-items">
+        <div class="nav-item">Dashboard</div>
+        <div class="nav-item">Documents</div>
+        <div class="nav-item">Analysis</div>
+        <div class="nav-item">Reports</div>
+        <div class="nav-item active">Integration Hub</div>
+      </div>
+    </div>
+    <div class="top-nav-right">
+      <div class="search-bar">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <input type="text" placeholder="Search..." />
+      </div>
+      <div class="notifications">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 17H9M12 3V4M12 21V20M5.6 5.6L6.3 6.3M18.4 5.6L17.7 6.3M3 12H4M20 12H21M6 17.4V12C6 8.7 8.7 6 12 6C15.3 6 18 8.7 18 12V17.4H6Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="user-profile">
+        <div class="avatar">SK</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Breadcrumbs -->
+  <div class="breadcrumbs">
+    <div class="breadcrumb-item">Dashboard</div>
+    <div class="breadcrumb-item">Settings</div>
+    <div class="breadcrumb-item">Integration Hub</div>
+    <div class="breadcrumb-item">Financial Data</div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1>Financial Data Integration</h1>
+      <div class="header-actions">
+        <button class="button secondary">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 6H20M9 12H20M9 18H20M5 6V6.01M5 12V12.01M5 18V18.01" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          View Documentation
+        </button>
+        <button class="button primary">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 6V12M12 12V18M12 12H18M12 12H6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Add Data Source
+        </button>
+      </div>
+    </div>
+
+    <!-- Financial Dashboard Overview -->
+    <div class="dashboard-grid">
+      <!-- Total Data Sources Card -->
+      <div class="dashboard-card">
+        <div class="dashboard-card-header">
+          <div class="dashboard-card-title">Connected Data Sources</div>
+          <div class="badge badge-blue">6 Active</div>
+        </div>
+        <div class="dashboard-card-body">
+          <div class="metric-value">8</div>
+          <div class="metric-label">Financial Data Sources</div>
+          <div class="metric-chart">
+            <svg viewBox="0 0 300 120" width="100%" height="100%" preserveAspectRatio="none">
+              <!-- Connection History Chart -->
+              <path d="M0,120 L0,90 L30,85 L60,80 L90,70 L120,65 L150,60 L180,50 L210,45 L240,40 L270,30 L300,20 L300,120 Z" fill="rgba(45, 114, 217, 0.1)"></path>
+              <path d="M0,90 L30,85 L60,80 L90,70 L120,65 L150,60 L180,50 L210,45 L240,40 L270,30 L300,20" stroke="#2D72D9" stroke-width="2" fill="none"></path>
+              
+              <!-- Data Points -->
+              <circle cx="0" cy="90" r="3" fill="#2D72D9"></circle>
+              <circle cx="30" cy="85" r="3" fill="#2D72D9"></circle>
+              <circle cx="60" cy="80" r="3" fill="#2D72D9"></circle>
+              <circle cx="90" cy="70" r="3" fill="#2D72D9"></circle>
+              <circle cx="120" cy="65" r="3" fill="#2D72D9"></circle>
+              <circle cx="150" cy="60" r="3" fill="#2D72D9"></circle>
+              <circle cx="180" cy="50" r="3" fill="#2D72D9"></circle>
+              <circle cx="210" cy="45" r="3" fill="#2D72D9"></circle>
+              <circle cx="240" cy="40" r="3" fill="#2D72D9"></circle>
+              <circle cx="270" cy="30" r="3" fill="#2D72D9"></circle>
+              <circle cx="300" cy="20" r="3" fill="#2D72D9"></circle>
+            </svg>
+          </div>
+          <div class="metric-comparison">
+            <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="comparison-up">+2 since last month</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Data Volume Card -->
+      <div class="dashboard-card">
+        <div class="dashboard-card-header">
+          <div class="dashboard-card-title">Financial Data Volume</div>
+          <div class="badge badge-blue">Last 30 Days</div>
+        </div>
+        <div class="dashboard-card-body">
+          <div class="metric-value">4.3M</div>
+          <div class="metric-label">Records Imported</div>
+          <div class="metric-chart">
+            <svg viewBox="0 0 300 120" width="100%" height="100%" preserveAspectRatio="none">
+              <!-- Volume Chart -->
+              <path d="M0,120 L0,100 L30,90 L60,70 L90,80 L120,60 L150,40 L180,55 L210,30 L240,45 L270,25 L300,20 L300,120 Z" fill="rgba(0, 191, 165, 0.1)"></path>
+              <path d="M0,100 L30,90 L60,70 L90,80 L120,60 L150,40 L180,55 L210,30 L240,45 L270,25 L300,20" stroke="#00BFA5" stroke-width="2" fill="none"></path>
+              
+              <!-- Data Points -->
+              <circle cx="0" cy="100" r="3" fill="#00BFA5"></circle>
+              <circle cx="30" cy="90" r="3" fill="#00BFA5"></circle>
+              <circle cx="60" cy="70" r="3" fill="#00BFA5"></circle>
+              <circle cx="90" cy="80" r="3" fill="#00BFA5"></circle>
+              <circle cx="120" cy="60" r="3" fill="#00BFA5"></circle>
+              <circle cx="150" cy="40" r="3" fill="#00BFA5"></circle>
+              <circle cx="180" cy="55" r="3" fill="#00BFA5"></circle>
+              <circle cx="210" cy="30" r="3" fill="#00BFA5"></circle>
+              <circle cx="240" cy="45" r="3" fill="#00BFA5"></circle>
+              <circle cx="270" cy="25" r="3" fill="#00BFA5"></circle>
+              <circle cx="300" cy="20" r="3" fill="#00BFA5"></circle>
+            </svg>
+          </div>
+          <div class="metric-comparison">
+            <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="comparison-up">+18.4% vs. previous period</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Data Coverage Card -->
+      <div class="dashboard-card">
+        <div class="dashboard-card-header">
+          <div class="dashboard-card-title">Financial Data Coverage</div>
+          <div class="badge badge-green">Strong</div>
+        </div>
+        <div class="dashboard-card-body">
+          <div class="metric-value">92%</div>
+          <div class="metric-label">Coverage Score</div>
+          <div class="metric-chart">
+            <svg viewBox="0 0 300 120" width="100%" height="100%" preserveAspectRatio="none">
+              <!-- Background -->
+              <rect x="0" y="0" width="300" height="120" fill="#F5F7FA" rx="4"></rect>
+              
+              <!-- Coverage Segments -->
+              <rect x="10" y="20" width="280" height="25" rx="4" fill="#00BFA5" opacity="0.8"></rect>
+              <rect x="10" y="50" width="250" height="25" rx="4" fill="#2D72D9" opacity="0.8"></rect>
+              <rect x="10" y="80" width="210" height="25" rx="4" fill="#FFC107" opacity="0.8"></rect>
+              
+              <!-- Labels -->
+              <text x="20" y="35" font-family="Inter, sans-serif" font-size="12" fill="#FFFFFF">Financial Statements (100%)</text>
+              <text x="20" y="65" font-family="Inter, sans-serif" font-size="12" fill="#FFFFFF">Transaction Data (89%)</text>
+              <text x="20" y="95" font-family="Inter, sans-serif" font-size="12" fill="#FFFFFF">Forecast & Budget (75%)</text>
+            </svg>
+          </div>
+          <div class="metric-comparison">
+            <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="comparison-up">+5% since last quarter</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Data Freshness Card -->
+      <div class="dashboard-card">
+        <div class="dashboard-card-header">
+          <div class="dashboard-card-title">Data Freshness</div>
+          <div class="badge badge-amber">Updating</div>
+        </div>
+        <div class="dashboard-card-body">
+          <div class="metric-value">4.2h</div>
+          <div class="metric-label">Average Data Age</div>
+          <div class="metric-chart">
+            <svg viewBox="0 0 300 120" width="100%" height="100%" preserveAspectRatio="none">
+              <!-- Freshness Chart -->
+              <path d="M0,60 L30,40 L60,50 L90,30 L120,45 L150,20 L180,35 L210,15 L240,25 L270,10 L300,30" stroke="#FFC107" stroke-width="2" fill="none"></path>
+              
+              <!-- Threshold Line -->
+              <path d="M0,80 L300,80" stroke="#FF5252" stroke-width="1" stroke-dasharray="4,4" fill="none"></path>
+              <text x="280" y="75" font-family="Inter, sans-serif" font-size="10" fill="#FF5252">Threshold</text>
+              
+              <!-- Data Points -->
+              <circle cx="0" cy="60" r="3" fill="#FFC107"></circle>
+              <circle cx="30" cy="40" r="3" fill="#FFC107"></circle>
+              <circle cx="60" cy="50" r="3" fill="#FFC107"></circle>
+              <circle cx="90" cy="30" r="3" fill="#FFC107"></circle>
+              <circle cx="120" cy="45" r="3" fill="#FFC107"></circle>
+              <circle cx="150" cy="20" r="3" fill="#FFC107"></circle>
+              <circle cx="180" cy="35" r="3" fill="#FFC107"></circle>
+              <circle cx="210" cy="15" r="3" fill="#FFC107"></circle>
+              <circle cx="240" cy="25" r="3" fill="#FFC107"></circle>
+              <circle cx="270" cy="10" r="3" fill="#FFC107"></circle>
+              <circle cx="300" cy="30" r="3" fill="#FFC107"></circle>
+            </svg>
+          </div>
+          <div class="metric-comparison">
+            <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7 7L17 17M17 17V7M17 17H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="comparison-down">+1.5h since yesterday</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs Navigation -->
+    <div class="tabs">
+      <div class="tab active">Financial Data Sources</div>
+      <div class="tab">Market Data</div>
+      <div class="tab">Banking Connections</div>
+      <div class="tab">Accounting Systems</div>
+      <div class="tab">Custom Data</div>
+    </div>
+
+    <!-- Alert Info -->
+    <div class="alert alert-info">
+      <div class="alert-icon">
+        <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 16V12M12 8H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="alert-content">
+        <div class="alert-title">Financial Data Security</div>
+        <div class="alert-message">
+          All financial data connections are secured with end-to-end encryption and follow SOC 2 Type II, GDPR, and financial industry security standards. Financial data is stored in isolated, encrypted environments with strict access controls.
+        </div>
+      </div>
+    </div>
+
+    <!-- Financial Data Sources Grid -->
+    <h4>Connected Financial Data Sources</h4>
+    <div class="integration-grid">
+      <!-- Bloomberg Terminal Integration -->
+      <div class="integration-card">
+        <div class="integration-logo">
+          <img src="/api/placeholder/120/48" alt="Bloomberg Logo" />
+        </div>
+        <div class="integration-title">Bloomberg Terminal</div>
+        <div class="integration-description">
+          Access real-time market data, historical financial information, and analytics from Bloomberg Terminal for comprehensive financial analysis.
+        </div>
+        <div class="integration-status status-connected">
+          <div class="status-indicator status-active"></div>
+          Connected
+        </div>
+        <div class="integration-footer">
+          <div class="integration-meta">Last synced: 35 minutes ago</div>
+          <button class="button tertiary button-sm">Configure</button>
+        </div>
+      </div>
+
+      <!-- S&P Capital IQ Integration -->
+      <div class="integration-card">
+        <div class="integration-logo">
+          <img src="/api/placeholder/120/48" alt="S&P Capital IQ Logo" />
+        </div>
+        <div class="integration-title">S&P Capital IQ</div>
+        <div class="integration-description">
+          Import company financials, market data, industry benchmarks, and analyst estimates from S&P Capital IQ for due diligence analysis.
+        </div>
+        <div class="integration-status status-connected">
+          <div class="status-indicator status-active"></div>
+          Connected
+        </div>
+        <div class="integration-footer">
+          <div class="integration-meta">Last synced: 2 hours ago</div>
+          <button class="button tertiary button-sm">Configure</button>
+        </div>
+      </div>
+
+      <!-- Refinitiv Eikon Integration -->
+      <div class="integration-card">
+        <div class="integration-logo">
+          <img src="/api/placeholder/120/48" alt="Refinitiv Logo" />
+        </div>
+        <div class="integration-title">Refinitiv Eikon</div>
+        <div class="integration-description">
+          Access financial market data, news, analytics, and research from Refinitiv Eikon for comprehensive market and company analysis.
+        </div>
+        <div class="integration-status status-connected">
+          <div class="status-indicator status-active"></div>
+          Connected
+        </div>
+        <div class="integration-footer">
+          <div class="integration-meta">Last synced: 1 hour ago</div>
+          <button class="button tertiary button-sm">Configure</button>
+        </div>
+      </div>
+
+      <!-- Morningstar Integration -->
+      <div class="integration-card">
+        <div class="integration-logo">
+          <img src="/api/placeholder/120/48" alt="Morningstar Logo" />
+        </div>
+        <div class="integration-title">Morningstar</div>
+        <div class="integration-description">
+          Import financial data, equity research, fund analysis, and investment information from Morningstar's database for valuation analysis.
+        </div>
+        <div class="integration-status status-setup">
+          <div class="status-indicator status-inactive"></div>
+          Setup in Progress
+        </div>
+        <div class="integration-footer">
+          <div class="integration-meta">Stage: Field Mapping</div>
+          <button class="button tertiary button-sm">Continue</button>
+        </div>
+      </div>
+
+      <!-- Factset Integration -->
+      <div class="integration-card">
+        <div class="integration-logo">
+          <img src="/api/placeholder/120/48" alt="Factset Logo" />
+        </div>
+        <div class="integration-title">FactSet</div>
+        <div class="integration-description">
+          Connect to FactSet's financial data platform for company analytics, market data, portfolio analysis, and investment research.
+        </div>
+        <div class="integration-status status-connected">
+          <div class="status-indicator status-active"></div>
+          Connected
+        </div>
+        <div class="integration-footer">
+          <div class="integration-meta">Last synced: 3 hours ago</div>
+          <button class="button tertiary button-sm">Configure</button>
+        </div>
+      </div>
+
+      <!-- Financial Modeling Prep API -->
+      <div class="integration-card">
+        <div class="integration-logo">
+          <img src="/api/placeholder/120/48" alt="FMP API Logo" />
+        </div>
+        <div class="integration-title">Financial Modeling Prep API</div>
+        <div class="integration-description">
+          Access financial statements, stock data, ratios, and key metrics from the Financial Modeling Prep API for company valuation.
+        </div>
+        <div class="integration-status status-connected">
+          <div class="status-indicator status-active"></div>
+          Connected
+        </div>
+        <div class="integration-footer">
+          <div class="integration-meta">Last synced: 45 minutes ago</div>
+          <button class="button tertiary button-sm">Configure</button>
+        </div>
+      </div>
+
+      <!-- Alpha Vantage Integration -->
+      <div class="integration-card">
+        <div class="integration-logo">
+          <img src="/api/placeholder/120/48" alt="Alpha Vantage Logo" />
+        </div>
+        <div class="integration-title">Alpha Vantage</div>
+        <div class="integration-description">
+          Import stock market data, forex, cryptocurrencies, technical indicators, and fundamental data through the Alpha Vantage API.
+        </div>
+        <div class="integration-status status-connected">
+          <div class="status-indicator status-active"></div>
+          Connected
+        </div>
+        <div class="integration-footer">
+          <div class="integration-meta">Last synced: 30 minutes ago</div>
+          <button class="button tertiary button-sm">Configure</button>
+        </div>
+      </div>
+
+      <!-- XBRL Financial Reports Integration -->
+      <div class="integration-card">
+        <div class="integration-logo">
+          <img src="/api/placeholder/120/48" alt="XBRL Logo" />
+        </div>
+        <div class="integration-title">XBRL Financial Reports</div>
+        <div class="integration-description">
+          Import standardized XBRL (eXtensible Business Reporting Language) financial reports from SEC EDGAR and global regulators.
+        </div>
+        <div class="integration-status status-available">
+          <div class="status-indicator status-inactive"></div>
+          Available
+        </div>
+        <div class="integration-footer">
+          <div class="integration-meta">Premium Integration</div>
+          <button class="button tertiary button-sm">Connect</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Financial Data Analytics Dashboard -->
+    <h4>Financial Data Analytics</h4>
+    <div class="chart-container">
+      <div class="chart-header">
+        <div class="chart-title">Financial Data Coverage Analysis</div>
+        <div class="chart-controls">
+          <button class="button tertiary button-sm">Last 30 Days</button>
+          <button class="button tertiary button-sm">Last Quarter</button>
+          <button class="button tertiary button-sm">Year to Date</button>
+          <button class="button tertiary button-sm">All Time</button>
+        </div>
+      </div>
+      <div class="chart-area">
+        <svg viewBox="0 0 800 300" width="100%" height="100%" preserveAspectRatio="none">
+          <!-- Chart Area Background -->
+          <rect x="50" y="30" width="720" height="220" fill="#F5F7FA" rx="4"></rect>
+          
+          <!-- Vertical Grid Lines -->
+          <line x1="190" y1="30" x2="190" y2="250" stroke="#ECEFF1" stroke-width="1"></line>
+          <line x1="330" y1="30" x2="330" y2="250" stroke="#ECEFF1" stroke-width="1"></line>
+          <line x1="470" y1="30" x2="470" y2="250" stroke="#ECEFF1" stroke-width="1"></line>
+          <line x1="610" y1="30" x2="610" y2="250" stroke="#ECEFF1" stroke-width="1"></line>
+          
+          <!-- Horizontal Grid Lines -->
+          <line x1="50" y1="80" x2="770" y2="80" stroke="#ECEFF1" stroke-width="1"></line>
+          <line x1="50" y1="130" x2="770" y2="130" stroke="#ECEFF1" stroke-width="1"></line>
+          <line x1="50" y1="180" x2="770" y2="180" stroke="#ECEFF1" stroke-width="1"></line>
+          <line x1="50" y1="230" x2="770" y2="230" stroke="#ECEFF1" stroke-width="1"></line>
+          
+          <!-- X-Axis Labels -->
+          <text x="120" y="270" font-family="Inter, sans-serif" font-size="12" fill="#78909C" text-anchor="middle">Market Data</text>
+          <text x="260" y="270" font-family="Inter, sans-serif" font-size="12" fill="#78909C" text-anchor="middle">Financial Statements</text>
+          <text x="400" y="270" font-family="Inter, sans-serif" font-size="12" fill="#78909C" text-anchor="middle">Company Metrics</text>
+          <text x="540" y="270" font-family="Inter, sans-serif" font-size="12" fill="#78909C" text-anchor="middle">Industry Benchmarks</text>
+          <text x="680" y="270" font-family="Inter, sans-serif" font-size="12" fill="#78909C" text-anchor="middle">Analyst Estimates</text>
+          
+          <!-- Y-Axis Labels -->
+          <text x="40" y="235" font-family="Inter, sans-serif" font-size="12" fill="#78909C" text-anchor="end">0%</text>
+          <text x="40" y="185" font-family="Inter, sans-serif" font-size="12" fill="#78909C" text-anchor="end">25%</text>
+          <text x="40" y="135" font-family="Inter, sans-serif" font-size="12" fill="#78909C" text-anchor="end">50%</text>
+          <text x="40" y="85" font-family="Inter, sans-serif" font-size="12" fill="#78909C" text-anchor="end">75%</text>
+          <text x="40" y="35" font-family="Inter, sans-serif" font-size="12" fill="#78909C" text-anchor="end">100%</text>
+          
+          <!-- Data Bars -->
+          <rect x="70" y="40" width="100" height="190" rx="4" fill="#2D72D9" opacity="0.7"></rect>
+          <rect x="210" y="60" width="100" height="170" rx="4" fill="#2D72D9" opacity="0.7"></rect>
+          <rect x="350" y="90" width="100" height="140" rx="4" fill="#2D72D9" opacity="0.7"></rect>
+          <rect x="490" y="120" width="100" height="110" rx="4" fill="#2D72D9" opacity="0.7"></rect>
+          <rect x="630" y="150" width="100" height="80" rx="4" fill="#2D72D9" opacity="0.7"></rect>
+          
+          <!-- Data Values -->
+          <text x="120" y="245" font-family="Inter, sans-serif" font-size="12" fill="#2D72D9" font-weight="600" text-anchor="middle">95%</text>
+          <text x="260" y="245" font-family="Inter, sans-serif" font-size="12" fill="#2D72D9" font-weight="600" text-anchor="middle">89%</text>
+          <text x="400" y="245" font-family="Inter, sans-serif" font-size="12" fill="#2D72D9" font-weight="600" text-anchor="middle">73%</text>
+          <text x="540" y="245" font-family="Inter, sans-serif" font-size="12" fill="#2D72D9" font-weight="600" text-anchor="middle">58%</text>
+          <text x="680" y="245" font-family="Inter, sans-serif" font-size="12" fill="#2D72D9" font-weight="600" text-anchor="middle">42%</text>
+          
+          <!-- Target Line -->
+          <line x1="50" y1="60" x2="770" y2="60" stroke="#00BFA5" stroke-width="2" stroke-dasharray="5,3"></line>
+          <text x="760" y="55" font-family="Inter, sans-serif" font-size="12" fill="#00BFA5" text-anchor="end">Target (90%)</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Bloomberg Terminal Configuration -->
+    <h4>Bloomberg Terminal Integration</h4>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Bloomberg Terminal Configuration</div>
+        <span class="badge badge-green">Connected</span>
+      </div>
+      <div class="card-body">
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--space-xl);">
+          <!-- Connection Details -->
+          <div>
+            <h4 style="font-size: 16px; margin-bottom: var(--space-md);">Connection Details</h4>
+            <div class="form-group">
+              <div class="form-label">Connection Type</div>
+              <div style="font-size: 14px;">Bloomberg Server API</div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">API Version</div>
+              <div style="font-size: 14px;">Bloomberg API v3.14.5</div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Connection Status</div>
+              <div style="display: flex; align-items: center; margin-top: var(--space-xs);">
+                <div style="width: 12px; height: 12px; border-radius: 50%; background-color: var(--mint-green); margin-right: var(--space-sm);"></div>
+                <span style="font-size: 14px;">Connected & Active</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Authentication Method</div>
+              <div style="font-size: 14px;">OAuth 2.0 / API Key</div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Bloomberg Account</div>
+              <div style="font-size: 14px;">BBRG-ACCT-123456</div>
+            </div>
+          </div>
+
+          <!-- Data Subscription -->
+          <div>
+            <h4 style="font-size: 16px; margin-bottom: var(--space-md);">Data Subscription</h4>
+            <div class="form-group">
+              <div class="form-label">Data Package</div>
+              <div style="font-size: 14px;">Premium Financial Package</div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Data Categories</div>
+              <div style="font-size: 14px; display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px;">
+                <span class="badge badge-blue">Market Data</span>
+                <span class="badge badge-blue">Financial Statements</span>
+                <span class="badge badge-blue">Analyst Reports</span>
+                <span class="badge badge-blue">ESG Metrics</span>
+                <span class="badge badge-blue">News & Events</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Refresh Frequency</div>
+              <select class="form-select">
+                <option>Real-time</option>
+                <option>Every 15 minutes</option>
+                <option selected>Every hour</option>
+                <option>Every 4 hours</option>
+                <option>Daily</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Last Data Update</div>
+              <div style="font-size: 14px;">May 7, 2025, 10:45 AM</div>
+            </div>
+          </div>
+
+          <!-- Company Coverage -->
+          <div>
+            <h4 style="font-size: 16px; margin-bottom: var(--space-md);">Company Coverage</h4>
+            <div class="form-group">
+              <div class="form-label">Company Watchlist</div>
+              <div style="font-size: 14px;">Enterprise Portfolio (352 companies)</div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Watchlist Management</div>
+              <button class="button secondary" style="width: 100%;">
+                <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 6H20M9 12H20M9 18H20M5 6V6.01M5 12V12.01M5 18V18.01" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Manage Company Watchlist
+              </button>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Geographic Coverage</div>
+              <div style="font-size: 14px; display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px;">
+                <span class="badge badge-blue">North America</span>
+                <span class="badge badge-blue">Europe</span>
+                <span class="badge badge-blue">Asia Pacific</span>
+                <span class="badge badge-blue">LATAM</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Industry Coverage</div>
+              <div style="font-size: 14px;">All Industries (GICS Classification)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Historical Data Settings -->
+        <h4 style="font-size: 16px; margin: var(--space-xl) 0 var(--space-md);">Historical Data Settings</h4>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--space-lg); margin-bottom: var(--space-lg);">
+          <div class="form-group">
+            <div class="form-label">Historical Data Timeframe</div>
+            <select class="form-select">
+              <option>Last 1 Year</option>
+              <option>Last 3 Years</option>
+              <option selected>Last 5 Years</option>
+              <option>Last 10 Years</option>
+              <option>Maximum Available</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <div class="form-label">Financial Statement Periods</div>
+            <select class="form-select">
+              <option>Annual Only</option>
+              <option selected>Annual & Quarterly</option>
+              <option>All Available Periods</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <div class="form-label">Market Data Frequency</div>
+            <select class="form-select">
+              <option>Daily</option>
+              <option selected>Daily & Weekly</option>
+              <option>Daily, Weekly & Monthly</option>
+              <option>All Available</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <div class="form-label">Historical Storage Limit</div>
+            <select class="form-select">
+              <option>10 GB</option>
+              <option>50 GB</option>
+              <option selected>100 GB</option>
+              <option>Unlimited</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="alert alert-info" style="margin-bottom: var(--space-lg);">
+          <div class="alert-icon">
+            <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 16V12M12 8H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="alert-content">
+            <div class="alert-title">Historical Data Storage Note</div>
+            <div class="alert-message">
+              Increasing historical data storage may result in additional usage costs. Historical data is cached in a secure, encrypted database with restricted access controls.
+            </div>
+          </div>
+        </div>
+
+        <!-- Data Preview Section -->
+        <h4 style="font-size: 16px; margin-bottom: var(--space-md);">Bloomberg Data Preview</h4>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-md);">
+          <div style="display: flex; gap: var(--space-md); align-items: center;">
+            <div style="display: flex; align-items: center;">
+              <label for="data-type-select" style="font-size: 14px; margin-right: var(--space-xs);">Data Type:</label>
+              <select id="data-type-select" class="form-select" style="width: 200px; height: 32px;">
+                <option value="market">Market Data</option>
+                <option value="financial">Financial Statements</option>
+                <option value="ratio">Financial Ratios</option>
+                <option value="estimate">Analyst Estimates</option>
+              </select>
+            </div>
+            <div style="display: flex; align-items: center;">
+              <label for="company-select" style="font-size: 14px; margin-right: var(--space-xs);">Company:</label>
+              <select id="company-select" class="form-select" style="width: 200px; height: 32px;">
+                <option value="aapl">Apple Inc. (AAPL)</option>
+                <option value="msft">Microsoft Corp. (MSFT)</option>
+                <option value="amzn">Amazon.com Inc. (AMZN)</option>
+                <option value="googl">Alphabet Inc. (GOOGL)</option>
+              </select>
+            </div>
+          </div>
+          <button class="button tertiary button-sm">
+            <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 16.5V18.75C3 19.9926 4.00736 21 5.25 21H18.75C19.9926 21 21 19.9926 21 18.75V16.5M16.5 12L12 16.5M12 16.5L7.5 12M12 16.5V3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Export Data
+          </button>
+        </div>
+
+        <div style="overflow-x: auto; margin-bottom: var(--space-xl);">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Open</th>
+                <th>High</th>
+                <th>Low</th>
+                <th>Close</th>
+                <th>Volume</th>
+                <th>Market Cap</th>
+                <th>52W High</th>
+                <th>52W Low</th>
+                <th>P/E Ratio</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>May 7, 2025</td>
+                <td>$192.45</td>
+                <td>$195.78</td>
+                <td>$190.23</td>
+                <td>$194.52</td>
+                <td>68.2M</td>
+                <td>$3.12T</td>
+                <td>$198.75</td>
+                <td>$142.18</td>
+                <td>28.4</td>
+              </tr>
+              <tr>
+                <td>May 6, 2025</td>
+                <td>$190.10</td>
+                <td>$193.25</td>
+                <td>$189.45</td>
+                <td>$192.45</td>
+                <td>72.8M</td>
+                <td>$3.09T</td>
+                <td>$198.75</td>
+                <td>$142.18</td>
+                <td>28.1</td>
+              </tr>
+              <tr>
+                <td>May 5, 2025</td>
+                <td>$187.80</td>
+                <td>$191.50</td>
+                <td>$186.92</td>
+                <td>$190.10</td>
+                <td>85.4M</td>
+                <td>$3.05T</td>
+                <td>$198.75</td>
+                <td>$142.18</td>
+                <td>27.7</td>
+              </tr>
+              <tr>
+                <td>May 4, 2025</td>
+                <td>$189.25</td>
+                <td>$190.75</td>
+                <td>$186.20</td>
+                <td>$187.80</td>
+                <td>62.1M</td>
+                <td>$3.01T</td>
+                <td>$198.75</td>
+                <td>$142.18</td>
+                <td>27.4</td>
+              </tr>
+              <tr>
+                <td>May 3, 2025</td>
+                <td>$191.50</td>
+                <td>$192.80</td>
+                <td>$188.70</td>
+                <td>$189.25</td>
+                <td>58.6M</td>
+                <td>$3.04T</td>
+                <td>$198.75</td>
+                <td>$142.18</td>
+                <td>27.6</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Custom Financial Data Import -->
+    <h4>Custom Financial Data Import</h4>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Import Custom Financial Data</div>
+      </div>
+      <div class="card-body">
+        <p>Upload custom financial data files to supplement your integrated data sources. We support various financial data formats including Excel spreadsheets, CSV files, and structured financial data formats.</p>
+        
+        <!-- File Upload Component -->
+        <div class="file-upload">
+          <div class="upload-icon">
+            <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 15L12 3M12 3L16 7M12 3L8 7M3 15V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="upload-title">Upload Financial Data Files</div>
+          <div class="upload-description">
+            Drag & drop or click to upload financial data files<br>
+            Supports Excel (XLSX), CSV, JSON, and XBRL formats
+          </div>
+          <button class="button secondary">Select Files</button>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: var(--space-lg); margin-top: var(--space-xl);">
+          <!-- Financial Data Templates -->
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 3v4a1 1 0 001 1h4M16.8 17.8l-3 3c-.2.2-.5.2-.7 0l-3-3M13.5 14v7M9.5 6h-3c-.3 0-.5.2-.5.5v11c0 .3.2.5.5.5h11c.3 0 .5-.2.5-.5v-11c0-.3-.2-.5-.5-.5h-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="feature-title">Financial Data Templates</div>
+            <div class="feature-description">
+              Download standardized templates for financial statements, valuation models, and financial metrics to ensure proper data formatting.
+            </div>
+            <button class="button tertiary button-sm">Download Templates</button>
+          </div>
+          
+          <!-- Data Mapping Tool -->
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 7L12 3L4 7M20 7L12 11M20 7V17L12 21M12 11L4 7M12 11V21M4 7V17L12 21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="feature-title">Data Mapping Tool</div>
+            <div class="feature-description">
+              Map custom financial data fields to standard platform fields. Create and save mapping templates for recurring imports.
+            </div>
+            <button class="button tertiary button-sm">Open Mapping Tool</button>
+          </div>
+          
+          <!-- Financial Data Validation -->
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="feature-title">Financial Data Validation</div>
+            <div class="feature-description">
+              Automatically validate financial data for consistency, accuracy, and compliance with accounting standards before import.
+            </div>
+            <button class="button tertiary button-sm">Configure Validation</button>
+          </div>
+          
+          <!-- Scheduled Data Imports -->
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="feature-title">Scheduled Data Imports</div>
+            <div class="feature-description">
+              Set up scheduled imports for recurring financial data feeds. Configure automated processing and notifications.
+            </div>
+            <button class="button tertiary button-sm">Schedule Imports</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Advanced Integration Settings -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Advanced Integration Settings</div>
+        <button class="tertiary">Edit</button>
+      </div>
+      <div class="card-body">
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--space-xl);">
+          <!-- API Configuration -->
+          <div>
+            <h4 style="font-size: 16px; margin-bottom: var(--space-md);">API Configuration</h4>
+            <div class="form-group">
+              <div class="form-label">API Rate Limit</div>
+              <select class="form-select">
+                <option>100 requests/minute</option>
+                <option>500 requests/minute</option>
+                <option selected>1,000 requests/minute</option>
+                <option>5,000 requests/minute</option>
+              </select>
+              <div class="form-hint">Bloomberg API rate limit configuration</div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">API Response Timeout</div>
+              <select class="form-select">
+                <option>10 seconds</option>
+                <option selected>30 seconds</option>
+                <option>60 seconds</option>
+                <option>120 seconds</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="form-label">Automatic API Key Rotation</div>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="form-hint">Periodically rotate API keys for security</div>
+            </div>
+          </div>
+
+          <!-- Data Processing -->
+          <div>
+            <h4 style="font-size: 16px; margin-bottom: var(--space-md);">Data Processing</h4>
+            <div class="form-group">
+              <div class="form-label">Currency Conversion</div>
+              <select class="form-select">
+                <option>No Conversion</option>
+                <option selected>Convert to USD</option>
+                <option>Convert to EUR</option>
+                <option>Convert to Local Currency</option>
+              </select>
+              <div class="form-hint">Standardize currency for financial analysis</div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Normalization Method</div>
+              <select class="form-select">
+                <option>None</option>
+                <option selected>Standard Industry Classification</option>
+                <option>Custom Mapping</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="form-label">Automated Data Cleansing</div>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="form-hint">Remove outliers and inconsistencies</div>
+            </div>
+          </div>
+
+          <!-- Security & Access -->
+          <div>
+            <h4 style="font-size: 16px; margin-bottom: var(--space-md);">Security & Access</h4>
+            <div class="form-group">
+              <div class="form-label">Data Access Level</div>
+              <select class="form-select">
+                <option>Viewer (Read Only)</option>
+                <option selected>Analyst (Read/Write)</option>
+                <option>Administrator (Full Access)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Access Control</div>
+              <select class="form-select">
+                <option>Public (All Users)</option>
+                <option>Team (Selected Users)</option>
+                <option selected>Role-Based Access</option>
+                <option>Custom Permissions</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="form-label">Audit Logging</div>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="form-hint">Log all data access and operations</div>
+            </div>
+          </div>
+
+          <!-- Notifications -->
+          <div>
+            <h4 style="font-size: 16px; margin-bottom: var(--space-md);">Notifications</h4>
+            <div class="form-group">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="form-label">Data Update Notifications</div>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="form-hint">Notify when new data is available</div>
+            </div>
+            <div class="form-group">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="form-label">Error Notifications</div>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="form-hint">Notify on connection or data errors</div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Notification Recipients</div>
+              <input type="text" class="form-input" value="finance-team@company.com, admin@company.com" />
+            </div>
+            <div class="form-group">
+              <div class="form-label">Notification Channel</div>
+              <select class="form-select">
+                <option selected>Email</option>
+                <option>Slack</option>
+                <option>Email & Slack</option>
+                <option>Custom Webhook</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Integration Actions -->
+    <div style="display: flex; justify-content: flex-end; gap: var(--space-md); margin-bottom: var(--space-2xl);">
+      <button class="button secondary">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 16.5V18.75C3 19.9926 4.00736 21 5.25 21H18.75C19.9926 21 21 19.9926 21 18.75V16.5M16.5 12L12 16.5M12 16.5L7.5 12M12 16.5V3" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Export Configuration
+      </button>
+      <button class="button secondary">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 4V9H4.58152M19.9381 11C19.446 7.05369 16.0796 4 12 4C8.64262 4 5.76829 6.06817 4.58152 9M4.58152 9H9M20 20V15H19.4185M19.4185 15C18.2317 17.9318 15.3574 20 12 20C7.92038 20 4.55399 16.9463 4.06189 13M19.4185 15H15" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Refresh Connection
+      </button>
+      <button class="button secondary">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 15V17M12 7V13M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#FF5252" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Disconnect Source
+      </button>
+      <button class="button primary">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5 12L9 16L19 6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Save All Changes
+      </button>
+    </div>
+  </div>
+</body>
+</html>
+         

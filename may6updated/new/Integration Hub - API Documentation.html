@@ -1,0 +1,1543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DueDiligenceAI - API Documentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Color System */
+    :root {
+      --deep-navy: #0A2342;
+      --azure-blue: #2D72D9;
+      --slate-gray: #3C4858;
+      --mint-green: #00BFA5;
+      --coral-red: #FF5252;
+      --amber-yellow: #FFC107;
+      --light-blue: #E1F5FE;
+      --sky-blue: #81D4FA;
+      --dark-blue: #01579B;
+      --charcoal: #263238;
+      --medium-gray: #78909C;
+      --light-gray: #ECEFF1;
+      --white: #FFFFFF;
+      --code-bg: #F5F7F9;
+      
+      /* Typography */
+      --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-display: 'Manrope', var(--font-primary);
+      --font-mono: 'JetBrains Mono', SFMono-Regular, Consolas, monospace;
+      
+      /* Spacing */
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 12px;
+      --space-lg: 16px;
+      --space-xl: 24px;
+      --space-2xl: 32px;
+      --space-3xl: 48px;
+      
+      /* Shadows */
+      --shadow-sm: 0px 1px 3px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0px 2px 6px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      
+      /* Border Radius */
+      --radius-sm: 2px;
+      --radius-md: 4px;
+      --radius-lg: 8px;
+    }
+
+    /* Global Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-primary);
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--slate-gray);
+      background-color: var(--light-gray);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-display);
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      line-height: 1.2;
+      font-weight: 800;
+      color: var(--deep-navy);
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      line-height: 1.2;
+      font-weight: 700;
+      color: var(--slate-gray);
+    }
+
+    h4 {
+      font-size: 1.125rem;
+      line-height: 1.4;
+      font-weight: 600;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-md);
+    }
+
+    p {
+      margin-bottom: var(--space-md);
+    }
+
+    /* Top Navigation */
+    .top-nav {
+      background-color: var(--white);
+      height: 64px;
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 var(--space-xl);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .top-nav-left, .top-nav-right {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--deep-navy);
+      margin-right: var(--space-2xl);
+    }
+
+    .logo svg {
+      margin-right: var(--space-sm);
+    }
+
+    .nav-items {
+      display: flex;
+    }
+
+    .nav-item {
+      padding: 0 var(--space-lg);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      color: var(--slate-gray);
+      cursor: pointer;
+      transition: color 0.15s;
+      position: relative;
+    }
+
+    .nav-item:hover {
+      color: var(--azure-blue);
+    }
+
+    .nav-item.active {
+      color: var(--azure-blue);
+    }
+
+    .nav-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--azure-blue);
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      background-color: var(--light-gray);
+      border-radius: 4px;
+      padding: 0 var(--space-md);
+      margin-right: var(--space-lg);
+      height: 36px;
+      width: 240px;
+    }
+
+    .search-bar input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 14px;
+      width: 100%;
+      margin-left: var(--space-xs);
+    }
+
+    .notifications, .user-profile {
+      margin-left: var(--space-lg);
+      cursor: pointer;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      background-color: var(--azure-blue);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    /* Breadcrumbs */
+    .breadcrumbs {
+      display: flex;
+      padding: var(--space-md) var(--space-xl);
+      background-color: var(--white);
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .breadcrumb-item {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: var(--medium-gray);
+    }
+
+    .breadcrumb-item:not(:last-child)::after {
+      content: '';
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2378909C' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 18l6-6-6-6'%3E%3C/path%3E%3C/svg%3E");
+      background-position: center;
+      background-repeat: no-repeat;
+      margin: 0 var(--space-sm);
+    }
+
+    .breadcrumb-item:last-child {
+      color: var(--charcoal);
+      font-weight: 500;
+    }
+
+    /* Main Layout */
+    .main-content {
+      padding: var(--space-xl);
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    /* Page Header */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-xl);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: var(--space-md);
+    }
+
+    /* Button Styles */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      border-radius: var(--radius-md);
+      font-weight: 500;
+      font-size: 14px;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .button .icon {
+      width: 18px;
+      height: 18px;
+      margin-right: var(--space-xs);
+    }
+
+    .primary {
+      background-color: var(--azure-blue);
+      color: var(--white);
+    }
+
+    .primary:hover {
+      background-color: #1A5DC7;
+    }
+
+    .secondary {
+      background-color: var(--white);
+      color: var(--azure-blue);
+      border: 1px solid var(--azure-blue);
+    }
+
+    .secondary:hover {
+      background-color: var(--light-blue);
+    }
+
+    .tertiary {
+      background-color: transparent;
+      color: var(--azure-blue);
+      padding: 8px 12px;
+    }
+
+    .tertiary:hover {
+      background-color: var(--light-blue);
+    }
+
+    .button-sm {
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+
+    .icon-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-md);
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+    }
+
+    .icon-button:hover {
+      background-color: var(--light-gray);
+    }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      stroke-width: 1.5;
+    }
+
+    /* Cards */
+    .card {
+      background-color: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      margin-bottom: var(--space-xl);
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: var(--space-lg);
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+    }
+
+    .card-body {
+      padding: var(--space-lg);
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--light-gray);
+      margin-bottom: var(--space-xl);
+      background-color: var(--white);
+      border-radius: var(--radius-md) var(--radius-md) 0 0;
+    }
+
+    .tab {
+      padding: var(--space-md) var(--space-xl);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--slate-gray);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .tab:hover {
+      background-color: var(--light-blue);
+    }
+
+    .tab.active {
+      color: var(--azure-blue);
+    }
+
+    .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--azure-blue);
+    }
+
+    /* Alert Styles */
+    .alert {
+      padding: var(--space-md) var(--space-lg);
+      border-radius: var(--radius-md);
+      margin-bottom: var(--space-lg);
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .alert-icon {
+      margin-right: var(--space-md);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .alert-content {
+      flex: 1;
+    }
+
+    .alert-title {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: var(--space-xs);
+    }
+
+    .alert-message {
+      font-size: 14px;
+    }
+
+    .alert-info {
+      background-color: rgba(45, 114, 217, 0.1);
+      border-left: 4px solid var(--azure-blue);
+    }
+
+    .alert-warning {
+      background-color: rgba(255, 193, 7, 0.1);
+      border-left: 4px solid var(--amber-yellow);
+    }
+
+    .alert-success {
+      background-color: rgba(0, 191, 165, 0.1);
+      border-left: 4px solid var(--mint-green);
+    }
+
+    /* Badge Styles */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .badge-blue {
+      background-color: rgba(45, 114, 217, 0.1);
+      color: var(--azure-blue);
+    }
+
+    .badge-green {
+      background-color: rgba(0, 191, 165, 0.1);
+      color: var(--mint-green);
+    }
+
+    .badge-amber {
+      background-color: rgba(255, 193, 7, 0.1);
+      color: var(--amber-yellow);
+    }
+
+    .badge-red {
+      background-color: rgba(255, 82, 82, 0.1);
+      color: var(--coral-red);
+    }
+
+    /* Table Styles */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      margin-bottom: var(--space-lg);
+    }
+
+    .data-table th, .data-table td {
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .data-table th {
+      font-weight: 600;
+      color: var(--deep-navy);
+      background-color: rgba(45, 114, 217, 0.05);
+    }
+
+    .data-table tbody tr:hover {
+      background-color: rgba(45, 114, 217, 0.03);
+    }
+
+    /* Code Styles */
+    .code-block {
+      background-color: var(--code-bg);
+      border-radius: var(--radius-md);
+      padding: var(--space-lg);
+      margin-bottom: var(--space-lg);
+      font-family: var(--font-mono);
+      font-size: 14px;
+      overflow-x: auto;
+      color: var(--charcoal);
+    }
+
+    .code-block .method {
+      color: #E53935;
+      font-weight: 500;
+    }
+
+    .code-block .url-path {
+      color: #7B1FA2;
+    }
+
+    .code-block .key {
+      color: #0288D1;
+    }
+
+    .code-block .string {
+      color: #388E3C;
+    }
+
+    .code-block .number {
+      color: #F57C00;
+    }
+
+    .code-block .boolean {
+      color: #0097A7;
+    }
+
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: var(--deep-navy);
+      color: var(--white);
+      padding: var(--space-sm) var(--space-lg);
+      border-radius: var(--radius-md) var(--radius-md) 0 0;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .code-header + .code-block {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      margin-top: 0;
+    }
+
+    .copy-button {
+      background-color: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: var(--white);
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      padding: 4px 8px;
+      cursor: pointer;
+    }
+
+    .copy-button:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* API Endpoint */
+    .endpoint {
+      margin-bottom: var(--space-2xl);
+    }
+
+    .endpoint-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: var(--space-md);
+    }
+
+    .method-badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 600;
+      margin-right: var(--space-md);
+      min-width: 60px;
+      text-align: center;
+    }
+
+    .get {
+      background-color: rgba(0, 191, 165, 0.1);
+      color: var(--mint-green);
+    }
+
+    .post {
+      background-color: rgba(45, 114, 217, 0.1);
+      color: var(--azure-blue);
+    }
+
+    .put {
+      background-color: rgba(255, 193, 7, 0.1);
+      color: var(--amber-yellow);
+    }
+
+    .delete {
+      background-color: rgba(255, 82, 82, 0.1);
+      color: var(--coral-red);
+    }
+
+    .endpoint-path {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--charcoal);
+    }
+
+    /* Sidebar */
+    .layout {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .sidebar {
+      width: 280px;
+      background-color: var(--white);
+      border-right: 1px solid var(--light-gray);
+      overflow-y: auto;
+      flex-shrink: 0;
+    }
+
+    .sidebar-content {
+      padding: var(--space-lg);
+    }
+
+    .sidebar-section {
+      margin-bottom: var(--space-xl);
+    }
+
+    .sidebar-section-title {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-md);
+      padding-bottom: var(--space-xs);
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .sidebar-link {
+      display: block;
+      padding: var(--space-xs) 0;
+      font-size: 14px;
+      color: var(--slate-gray);
+      margin-bottom: var(--space-xs);
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .sidebar-link:hover {
+      color: var(--azure-blue);
+    }
+
+    .sidebar-link.active {
+      color: var(--azure-blue);
+      font-weight: 500;
+    }
+
+    .content-wrapper {
+      flex: 1;
+      overflow-y: auto;
+      padding: var(--space-xl);
+    }
+
+    /* Parameter Table */
+    .param-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      margin-bottom: var(--space-lg);
+    }
+
+    .param-table th, .param-table td {
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .param-table th {
+      font-weight: 600;
+      color: var(--deep-navy);
+      background-color: rgba(45, 114, 217, 0.05);
+    }
+
+    .param-name {
+      font-family: var(--font-mono);
+      font-size: 13px;
+    }
+
+    .param-type {
+      font-size: 12px;
+      color: var(--medium-gray);
+      background-color: var(--light-gray);
+      padding: 2px 6px;
+      border-radius: 10px;
+    }
+
+    .param-required {
+      font-size: 12px;
+      color: var(--white);
+      background-color: var(--coral-red);
+      padding: 2px 6px;
+      border-radius: 10px;
+    }
+
+    .param-optional {
+      font-size: 12px;
+      color: var(--white);
+      background-color: var(--medium-gray);
+      padding: 2px 6px;
+      border-radius: 10px;
+    }
+
+    /* Response Codes */
+    .response-code {
+      display: inline-flex;
+      align-items: center;
+      margin-right: var(--space-md);
+      margin-bottom: var(--space-md);
+    }
+
+    .response-badge {
+      display: inline-block;
+      width: 60px;
+      text-align: center;
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 600;
+      margin-right: var(--space-xs);
+    }
+
+    .success {
+      background-color: rgba(0, 191, 165, 0.1);
+      color: var(--mint-green);
+    }
+
+    .redirect {
+      background-color: rgba(45, 114, 217, 0.1);
+      color: var(--azure-blue);
+    }
+
+    .client-error {
+      background-color: rgba(255, 193, 7, 0.1);
+      color: var(--amber-yellow);
+    }
+
+    .server-error {
+      background-color: rgba(255, 82, 82, 0.1);
+      color: var(--coral-red);
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+      .layout {
+        flex-direction: column;
+      }
+      
+      .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--light-gray);
+      }
+      
+      .content-wrapper {
+        padding: var(--space-lg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <div class="top-nav-left">
+      <div class="logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 8H16C20.4183 8 24 11.5817 24 16C24 20.4183 20.4183 24 16 24H8V8Z" fill="#0A2342"/>
+          <path d="M16 8H24V16C24 20.4183 20.4183 24 16 24V8Z" fill="#2D72D9"/>
+        </svg>
+        <span>DueDiligenceAI</span>
+      </div>
+      <div class="nav-items">
+        <div class="nav-item">Dashboard</div>
+        <div class="nav-item">Documents</div>
+        <div class="nav-item">Analysis</div>
+        <div class="nav-item">Reports</div>
+        <div class="nav-item active">Integration Hub</div>
+      </div>
+    </div>
+    <div class="top-nav-right">
+      <div class="search-bar">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <input type="text" placeholder="Search..." />
+      </div>
+      <div class="notifications">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 17H9M12 3V4M12 21V20M5.6 5.6L6.3 6.3M18.4 5.6L17.7 6.3M3 12H4M20 12H21M6 17.4V12C6 8.7 8.7 6 12 6C15.3 6 18 8.7 18 12V17.4H6Z" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="user-profile">
+        <div class="avatar">SK</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Breadcrumbs -->
+  <div class="breadcrumbs">
+    <div class="breadcrumb-item">Dashboard</div>
+    <div class="breadcrumb-item">Developer</div>
+    <div class="breadcrumb-item">API Documentation</div>
+  </div>
+
+  <!-- Main Layout -->
+  <div class="layout">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-content">
+        <div class="sidebar-section">
+          <div class="sidebar-section-title">Getting Started</div>
+          <div class="sidebar-link active">Introduction</div>
+          <div class="sidebar-link">Authentication</div>
+          <div class="sidebar-link">Rate Limiting</div>
+          <div class="sidebar-link">Errors</div>
+          <div class="sidebar-link">Versioning</div>
+        </div>
+        
+        <div class="sidebar-section">
+          <div class="sidebar-section-title">Core Resources</div>
+          <div class="sidebar-link">Documents</div>
+          <div class="sidebar-link">Companies</div>
+          <div class="sidebar-link">Projects</div>
+          <div class="sidebar-link">Analysis</div>
+          <div class="sidebar-link">Reports</div>
+        </div>
+        
+        <div class="sidebar-section">
+          <div class="sidebar-section-title">Integration Endpoints</div>
+          <div class="sidebar-link">Document Collection</div>
+          <div class="sidebar-link">Financial Data</div>
+          <div class="sidebar-link">ERP Systems</div>
+          <div class="sidebar-link">CRM Integration</div>
+          <div class="sidebar-link">Data Export</div>
+        </div>
+        
+        <div class="sidebar-section">
+          <div class="sidebar-section-title">Webhooks</div>
+          <div class="sidebar-link">Setting Up Webhooks</div>
+          <div class="sidebar-link">Event Types</div>
+          <div class="sidebar-link">Security</div>
+        </div>
+        
+        <div class="sidebar-section">
+          <div class="sidebar-section-title">SDKs & Libraries</div>
+          <div class="sidebar-link">JavaScript</div>
+          <div class="sidebar-link">Python</div>
+          <div class="sidebar-link">Java</div>
+          <div class="sidebar-link">Ruby</div>
+          <div class="sidebar-link">.NET</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content-wrapper">
+      <!-- Page Header -->
+      <div class="page-header">
+        <h1>API Documentation</h1>
+        <div class="header-actions">
+          <button class="button secondary">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">            
+              <path d="M9 6H20M9 12H20M9 18H20M5 6V6.01M5 12V12.01M5 18V18.01" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            API Changelog
+          </button>
+          <button class="button primary">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 20L14 4M18 8L22 12L18 16M6 16L2 12L6 8" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            API Keys
+          </button>
+        </div>
+      </div>
+
+      <!-- Alert Info -->
+      <div class="alert alert-info">
+        <div class="alert-icon">
+          <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 8V12M12 16H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="alert-content">
+          <div class="alert-title">API Version v2.0</div>
+          <div class="alert-message">
+            This documentation is for the latest API version (v2.0). For older versions, please see the <a href="#" style="color: var(--azure-blue); text-decoration: none;">version history</a>. Support for v1.x will be discontinued on December 31, 2025.
+          </div>
+        </div>
+      </div>
+
+      <!-- Introduction Section -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Introduction</div>
+        </div>
+        <div class="card-body">
+          <p>The DueDiligenceAI API provides programmatic access to all the features of our platform, allowing you to integrate due diligence workflows into your own systems and applications. With our API, you can automate document collection, analyze financial data, generate reports, and more.</p>
+          
+          <h4 style="margin-top: var(--space-lg);">Base URL</h4>
+          <p>All API requests should be made to the following base URL:</p>
+          <div class="code-block">
+            https://api.duediligenceai.com/v2/
+          </div>
+          
+          <h4>Content Types</h4>
+          <p>Our API accepts and returns JSON data. All requests should include the following header:</p>
+          <div class="code-block">
+            Content-Type: application/json
+          </div>
+          
+          <h4>Request Examples</h4>
+          <p>Throughout this documentation, we'll use curl commands to demonstrate API calls:</p>
+          <div class="code-header">
+            <span>Example Request</span>
+            <button class="copy-button">Copy</button>
+          </div>
+          <div class="code-block">
+curl -X <span class="method">GET</span> "https://api.duediligenceai.com/v2/<span class="url-path">documents</span>" \
+-H "Authorization: Bearer YOUR_API_KEY" \
+-H "Content-Type: application/json"
+          </div>
+        </div>
+      </div>
+      
+      <!-- Authentication Section -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Authentication</div>
+        </div>
+        <div class="card-body">
+          <p>DueDiligenceAI API uses API keys to authenticate requests. You can view and manage your API keys in the Developer Dashboard.</p>
+          
+          <div class="alert alert-warning" style="margin: var(--space-lg) 0;">
+            <div class="alert-icon">
+              <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0378 2.66667 10.268 4L3.33978 16C2.56998 17.3333 3.53223 19 5.07183 19Z" stroke="#FFC107" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="alert-content">
+              <div class="alert-title">API Key Security</div>
+              <div class="alert-message">
+                Keep your API keys secure and never share them in publicly accessible areas such as GitHub, client-side code, or in plain text. API keys should only be stored on your servers.
+              </div>
+            </div>
+          </div>
+          
+          <h4>Bearer Authentication</h4>
+          <p>All API requests must include your API key in the Authorization header using Bearer authentication:</p>
+          <div class="code-block">
+Authorization: Bearer YOUR_API_KEY
+          </div>
+          
+          <h4>API Key Types</h4>
+          <p>DueDiligenceAI offers two types of API keys:</p>
+          
+          <div class="param-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Key Type</th>
+                  <th>Description</th>
+                  <th>Permissions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Production Keys</strong></td>
+                  <td>For use in production environments</td>
+                  <td>Full access to all API features based on your subscription plan</td>
+                </tr>
+                <tr>
+                  <td><strong>Test Keys</strong></td>
+                  <td>For development and testing</td>
+                  <td>Same access as production keys but connect to a sandbox environment with test data</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <h4>Creating API Keys</h4>
+          <p>To create a new API key:</p>
+          <ol style="margin-left: var(--space-xl); margin-bottom: var(--space-lg);">
+            <li>Navigate to the Developer Dashboard</li>
+            <li>Click on API Keys in the sidebar</li>
+            <li>Click Create New API Key</li>
+            <li>Select the key type (Production or Test)</li>
+            <li>Add a description for the key</li>
+            <li>Click Create</li>
+          </ol>
+          
+          <div class="alert alert-info">
+            <div class="alert-icon">
+              <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 8V12M12 16H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="alert-content">
+              <div class="alert-title">Important Note</div>
+              <div class="alert-message">
+                API keys are only displayed once at creation time. Make sure to copy and securely store your API key, as you won't be able to view it again.
+              </div>
+            </div>
+          </div>
+          
+          <h4>API Key Permissions</h4>
+          <p>Access to specific API endpoints is determined by your subscription plan and the permissions granted to your API key. If you receive a 403 Forbidden error, your API key may not have the necessary permissions to access the requested endpoint.</p>
+        </div>
+      </div>
+      
+      <!-- Rate Limiting Section -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Rate Limiting</div>
+        </div>
+        <div class="card-body">
+          <p>To ensure the stability and availability of our API for all users, we implement rate limiting based on your subscription plan. Rate limits are applied per API key.</p>
+          
+          <h4>Rate Limit Headers</h4>
+          <p>All API responses include headers that provide information about your current rate limit status:</p>
+          
+          <div class="param-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Header</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="param-name">X-RateLimit-Limit</td>
+                  <td>The maximum number of requests allowed in a time window</td>
+                </tr>
+                <tr>
+                  <td class="param-name">X-RateLimit-Remaining</td>
+                  <td>The number of requests remaining in the current time window</td>
+                </tr>
+                <tr>
+                  <td class="param-name">X-RateLimit-Reset</td>
+                  <td>The time when the current rate limit window resets (Unix timestamp)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <h4>Rate Limit Tiers</h4>
+          <p>Rate limits vary based on your subscription plan:</p>
+          
+          <div class="param-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Plan</th>
+                  <th>Rate Limit</th>
+                  <th>Burst Limit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Basic</td>
+                  <td>100 requests per minute</td>
+                  <td>150 requests</td>
+                </tr>
+                <tr>
+                  <td>Professional</td>
+                  <td>300 requests per minute</td>
+                  <td>450 requests</td>
+                </tr>
+                <tr>
+                  <td>Enterprise</td>
+                  <td>1000 requests per minute</td>
+                  <td>1500 requests</td>
+                </tr>
+                <tr>
+                  <td>Custom</td>
+                  <td>Contact sales for custom limits</td>
+                  <td>Contact sales</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <h4>Rate Limit Exceeded</h4>
+          <p>If you exceed your rate limit, you will receive a 429 Too Many Requests response. The response will include the X-RateLimit-Reset header indicating when you can resume making requests.</p>
+          
+          <div class="code-header">
+            <span>Rate Limit Exceeded Response</span>
+            <button class="copy-button">Copy</button>
+          </div>
+          <div class="code-block">
+{
+  <span class="key">"error"</span>: {
+    <span class="key">"code"</span>: <span class="string">"rate_limit_exceeded"</span>,
+    <span class="key">"message"</span>: <span class="string">"Rate limit exceeded. Please retry after 60 seconds."</span>,
+    <span class="key">"retry_after"</span>: <span class="number">60</span>
+  }
+}
+          </div>
+          
+          <h4>Best Practices</h4>
+          <p>To avoid rate limiting issues, we recommend the following best practices:</p>
+          <ul style="margin-left: var(--space-xl); margin-bottom: var(--space-lg);">
+            <li>Implement exponential backoff when retrying failed requests</li>
+            <li>Cache responses when appropriate to reduce the number of API calls</li>
+            <li>Batch API calls when possible instead of making multiple individual requests</li>
+            <li>Monitor your usage with the rate limit headers</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Errors Section -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Errors</div>
+        </div>
+        <div class="card-body">
+          <p>DueDiligenceAI uses conventional HTTP response codes to indicate the success or failure of an API request. In general, codes in the 2xx range indicate success, codes in the 4xx range indicate an error that resulted from the provided information (e.g., missing parameters, invalid values), and codes in the 5xx range indicate an error with DueDiligenceAI's servers.</p>
+          
+          <h4>HTTP Status Codes</h4>
+          <div class="response-codes" style="display: flex; flex-wrap: wrap; margin-bottom: var(--space-lg);">
+            <div class="response-code">
+              <span class="response-badge success">200</span>
+              <span>OK - Request succeeded</span>
+            </div>
+            <div class="response-code">
+              <span class="response-badge success">201</span>
+              <span>Created - Resource created</span>
+            </div>
+            <div class="response-code">
+              <span class="response-badge success">204</span>
+              <span>No Content - Request succeeded with no response body</span>
+            </div>
+            <div class="response-code">
+              <span class="response-badge redirect">301</span>
+              <span>Moved Permanently - Resource has moved</span>
+            </div>
+            <div class="response-code">
+              <span class="response-badge client-error">400</span>
+              <span>Bad Request - Invalid request format</span>
+            </div>
+            <div class="response-code">
+              <span class="response-badge client-error">401</span>
+              <span>Unauthorized - Authentication failed</span>
+            </div>
+            <div class="response-code">
+              <span class="response-badge client-error">403</span>
+              <span>Forbidden - Insufficient permissions</span>
+            </div>
+            <div class="response-code">
+              <span class="response-badge client-error">404</span>
+              <span>Not Found - Resource not found</span>
+            </div>
+            <div class="response-code">
+              <span class="response-badge client-error">409</span>
+              <span>Conflict - Resource conflict</span>
+            </div>
+            <div class="response-code">
+              <span class="response-badge client-error">422</span>
+              <span>Unprocessable Entity - Validation failed</span>
+            </div>
+            <div class="response-code">
+              <span class="response-badge client-error">429</span>
+              <span>Too Many Requests - Rate limit exceeded</span>
+            </div>
+            <div class="response-code">
+              <span class="response-badge server-error">500</span>
+              <span>Internal Server Error - Server error</span>
+            </div>
+            <div class="response-code">
+              <span class="response-badge server-error">503</span>
+              <span>Service Unavailable - Server unavailable</span>
+            </div>
+          </div>
+          
+          <h4>Error Object</h4>
+          <p>When an error occurs, the API returns an error object with the following structure:</p>
+          
+          <div class="code-header">
+            <span>Error Response Format</span>
+            <button class="copy-button">Copy</button>
+          </div>
+          <div class="code-block">
+{
+  <span class="key">"error"</span>: {
+    <span class="key">"code"</span>: <span class="string">"error_code"</span>,
+    <span class="key">"message"</span>: <span class="string">"A human-readable message providing more details about the error."</span>,
+    <span class="key">"details"</span>: {
+      <span class="comment">// Additional error details specific to the error type (optional)</span>
+    },
+    <span class="key">"request_id"</span>: <span class="string">"request-id-for-support"</span>
+  }
+}
+          </div>
+          
+          <h4>Common Error Codes</h4>
+          <p>Below are some common error codes you might encounter when using the API:</p>
+          
+          <div class="param-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Error Code</th>
+                  <th>Description</th>
+                  <th>HTTP Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="param-name">authentication_failed</td>
+                  <td>Invalid API key provided</td>
+                  <td>401</td>
+                </tr>
+                <tr>
+                  <td class="param-name">permission_denied</td>
+                  <td>The API key doesn't have permission to perform the request</td>
+                  <td>403</td>
+                </tr>
+                <tr>
+                  <td class="param-name">resource_not_found</td>
+                  <td>The requested resource does not exist</td>
+                  <td>404</td>
+                </tr>
+                <tr>
+                  <td class="param-name">validation_error</td>
+                  <td>The request parameters failed validation</td>
+                  <td>422</td>
+                </tr>
+                <tr>
+                  <td class="param-name">rate_limit_exceeded</td>
+                  <td>Request rate limit exceeded</td>
+                  <td>429</td>
+                </tr>
+                <tr>
+                  <td class="param-name">internal_error</td>
+                  <td>An unexpected error occurred on the server</td>
+                  <td>500</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <h4>Validation Errors</h4>
+          <p>For validation errors (HTTP 422), the response includes additional details about the validation failures:</p>
+          
+          <div class="code-header">
+            <span>Validation Error Example</span>
+            <button class="copy-button">Copy</button>
+          </div>
+          <div class="code-block">
+{
+  <span class="key">"error"</span>: {
+    <span class="key">"code"</span>: <span class="string">"validation_error"</span>,
+    <span class="key">"message"</span>: <span class="string">"The given data is invalid."</span>,
+    <span class="key">"details"</span>: {
+      <span class="key">"project_name"</span>: [
+        <span class="string">"The project name field is required."</span>
+      ],
+      <span class="key">"due_date"</span>: [
+        <span class="string">"The due date must be a valid date."</span>
+      ]
+    },
+    <span class="key">"request_id"</span>: <span class="string">"req_1a2b3c4d5e6f"</span>
+  }
+}
+          </div>
+          
+          <h4>Error Handling Best Practices</h4>
+          <p>When handling errors from the API, we recommend the following best practices:</p>
+          <ul style="margin-left: var(--space-xl); margin-bottom: var(--space-lg);">
+            <li>Always check the HTTP status code and error code in your API client</li>
+            <li>Implement appropriate retry logic with exponential backoff for 429 and 5xx errors</li>
+            <li>Log the request_id for debugging and support purposes</li>
+            <li>Handle validation errors by showing appropriate feedback to users</li>
+          </ul>
+        </div>
+      </div>
+      
+      <!-- API Endpoints Section -->
+      <h4 style="margin-top: var(--space-2xl);">Core Resources</h4>
+      
+      <!-- Documents Endpoint -->
+      <div class="card endpoint">
+        <div class="card-header">
+          <div class="card-title">Documents</div>
+        </div>
+        <div class="card-body">
+          <p>The Documents API lets you manage documents in your due diligence projects. You can upload, list, search, and categorize documents.</p>
+          
+          <!-- List Documents -->
+          <div class="endpoint">
+            <div class="endpoint-header">
+              <span class="method-badge get">GET</span>
+              <span class="endpoint-path">/v2/documents</span>
+            </div>
+            <p>Returns a list of documents in your account. The documents are returned sorted by creation date, with the most recently created documents appearing first.</p>
+            
+            <h4>Query Parameters</h4>
+            <div class="param-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="param-name">project_id</td>
+                    <td><span class="param-type">string</span> <span class="param-optional">optional</span></td>
+                    <td>Filter documents by project ID</td>
+                  </tr>
+                  <tr>
+                    <td class="param-name">category</td>
+                    <td><span class="param-type">string</span> <span class="param-optional">optional</span></td>
+                    <td>Filter documents by category (e.g. 'financial', 'legal', 'corporate')</td>
+                  </tr>
+                  <tr>
+                    <td class="param-name">status</td>
+                    <td><span class="param-type">string</span> <span class="param-optional">optional</span></td>
+                    <td>Filter documents by status (e.g. 'pending', 'processed', 'failed')</td>
+                  </tr>
+                  <tr>
+                    <td class="param-name">limit</td>
+                    <td><span class="param-type">integer</span> <span class="param-optional">optional</span></td>
+                    <td>Limit the number of documents returned (default: 20, max: 100)</td>
+                  </tr>
+                  <tr>
+                    <td class="param-name">offset</td>
+                    <td><span class="param-type">integer</span> <span class="param-optional">optional</span></td>
+                    <td>Offset for pagination (default: 0)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
+            <h4>Example Request</h4>
+            <div class="code-header">
+              <span>List Documents in a Project</span>
+              <button class="copy-button">Copy</button>
+            </div>
+            <div class="code-block">
+curl -X <span class="method">GET</span> "https://api.duediligenceai.com/v2/<span class="url-path">documents?project_id=proj_1a2b3c4d&limit=10</span>" \
+-H "Authorization: Bearer YOUR_API_KEY" \
+-H "Content-Type: application/json"
+            </div>
+            
+            <h4>Example Response</h4>
+            <div class="code-header">
+              <span>200 OK</span>
+              <button class="copy-button">Copy</button>
+            </div>
+            <div class="code-block">
+{
+  <span class="key">"data"</span>: [
+    {
+      <span class="key">"id"</span>: <span class="string">"doc_1a2b3c4d"</span>,
+      <span class="key">"project_id"</span>: <span class="string">"proj_1a2b3c4d"</span>,
+      <span class="key">"name"</span>: <span class="string">"Financial_Statement_2024.pdf"</span>,
+      <span class="key">"file_type"</span>: <span class="string">"pdf"</span>,
+      <span class="key">"file_size"</span>: <span class="number">2548725</span>,
+      <span class="key">"category"</span>: <span class="string">"financial"</span>,
+      <span class="key">"status"</span>: <span class="string">"processed"</span>,
+      <span class="key">"uploaded_by"</span>: <span class="string">"user_2b3c4d5e"</span>,
+      <span class="key">"created_at"</span>: <span class="string">"2024-05-01T14:30:25Z"</span>,
+      <span class="key">"updated_at"</span>: <span class="string">"2024-05-01T14:35:12Z"</span>,
+      <span class="key">"url"</span>: <span class="string">"https://api.duediligenceai.com/v2/documents/doc_1a2b3c4d/content"</span>
+    },
+    {
+      <span class="key">"id"</span>: <span class="string">"doc_2b3c4d5e"</span>,
+      <span class="key">"project_id"</span>: <span class="string">"proj_1a2b3c4d"</span>,
+      <span class="key">"name"</span>: <span class="string">"Articles_of_Incorporation.pdf"</span>,
+      <span class="key">"file_type"</span>: <span class="string">"pdf"</span>,
+      <span class="key">"file_size"</span>: <span class="number">1358642</span>,
+      <span class="key">"category"</span>: <span class="string">"legal"</span>,
+      <span class="key">"status"</span>: <span class="string">"processed"</span>,
+      <span class="key">"uploaded_by"</span>: <span class="string">"user_2b3c4d5e"</span>,
+      <span class="key">"created_at"</span>: <span class="string">"2024-04-28T09:12:05Z"</span>,
+      <span class="key">"updated_at"</span>: <span class="string">"2024-04-28T09:15:45Z"</span>,
+      <span class="key">"url"</span>: <span class="string">"https://api.duediligenceai.com/v2/documents/doc_2b3c4d5e/content"</span>
+    }
+  ],
+  <span class="key">"meta"</span>: {
+    <span class="key">"total"</span>: <span class="number">42</span>,
+    <span class="key">"limit"</span>: <span class="number">10</span>,
+    <span class="key">"offset"</span>: <span class="number">0</span>,
+    <span class="key">"next_offset"</span>: <span class="number">10</span>
+  }
+}
+            </div>
+          </div>
+          
+          <!-- Upload Document -->
+          <div class="endpoint">
+            <div class="endpoint-header">
+              <span class="method-badge post">POST</span>
+              <span class="endpoint-path">/v2/documents</span>
+            </div>
+            <p>Upload a new document to a project. The document will be processed asynchronously, and its status will initially be set to 'pending'.</p>
+            
+            <h4>Request Parameters</h4>
+            <div class="param-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="param-name">project_id</td>
+                    <td><span class="param-type">string</span> <span class="param-required">required</span></td>
+                    <td>The ID of the project to upload the document to</td>
+                  </tr>
+                  <tr>
+                    <td class="param-name">file</td>
+                    <td><span class="param-type">file</span> <span class="param-required">required</span></td>
+                    <td>The file to upload (multipart/form-data)</td>
+                  </tr>
+                  <tr>
+                    <td class="param-name">category</td>
+                    <td><span class="param-type">string</span> <span class="param-optional">optional</span></td>
+                    <td>Document category (e.g. 'financial', 'legal', 'corporate')</td>
+                  </tr>
+                  <tr>
+                    <td class="param-name">metadata</td>
+                    <td><span class="param-type">object</span> <span class="param-optional">optional</span></td>
+                    <td>Additional metadata for the document</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
+            <h4>Example Request</h4>
+            <div class="code-header">
+              <span>Upload a Document</span>
+              <button class="copy-button">Copy</button>
+            </div>
+            <div class="code-block">
+curl -X <span class="method">POST</span> "https://api.duediligenceai.com/v2/<span class="url-path">documents</span>" \
+-H "Authorization: Bearer YOUR_API_KEY" \
+-F "project_id=proj_1a2b3c4d" \
+-F "category=financial" \
+-F "file=@/path/to/Financial_Statement_2024.pdf"
+            </div>
+            
+            <h4>Example Response</h4>
+            <div class="code-header">
+              <span>201 Created</span>
+              <button class="copy-button">Copy</button>
+            </div>
+            <div class="code-block">
+{
+  <span class="key">"data"</span>: {
+    <span class="key">"id"</span>: <span class="string">"doc_3c4d5e6f"</span>,
+    <span class="key">"project_id"</span>: <span class="string">"proj_1a2b3c4d"</span>,
+    <span class="key">"name"</span>: <span class="string">"Financial_Statement_2024.pdf"</span>,
+    <span class="key">"file_type"</span>: <span class="string">"pdf"</span>,
+    <span class="key">"file_size"</span>: <span class="number">2548725</span>,
+    <span class="key">"category"</span>: <span class="string">"financial"</span>,
+    <span class="key">"status"</span>: <span class="string">"pending"</span>,
+    <span class="key">"uploaded_by"</span>: <span class="string">"user_2b3c4d5e"</span>,
+    <span class="key">"created_at"</span>: <span class="string">"2024-05-07T10:15:32Z"</span>,
+    <span class="key">"updated_at"</span>: <span class="string">"2024-05-07T10:15:32Z"</span>
+  }
+}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer with SDK links and support info -->
+      <div style="margin-top: var(--space-3xl); padding-top: var(--space-xl); border-top: 1px solid var(--light-gray);">
+        <h4>Need Help?</h4>
+        <p>If you have any questions or need assistance, please reach out to our developer support team:</p>
+        <ul style="margin-left: var(--space-xl); margin-bottom: var(--space-lg);">
+          <li>Email: <a href="mailto:api-support@duediligenceai.com" style="color: var(--azure-blue); text-decoration: none;">api-support@duediligenceai.com</a></li>
+          <li>Developer Forum: <a href="https://community.duediligenceai.com/developers" style="color: var(--azure-blue); text-decoration: none;">community.duediligenceai.com/developers</a></li>
+          <li>GitHub: <a href="https://github.com/duediligenceai" style="color: var(--azure-blue); text-decoration: none;">github.com/duediligenceai</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript for basic interactions (for demo purposes) -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Make sidebar links clickable
+      const sidebarLinks = document.querySelectorAll('.sidebar-link');
+      sidebarLinks.forEach(link => {
+        link.addEventListener('click', function() {
+          sidebarLinks.forEach(l => l.classList.remove('active'));
+          this.classList.add('active');
+        });
+      });
+      
+      // Make tabs clickable
+      const tabs = document.querySelectorAll('.tab');
+      tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          tabs.forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+        });
+      });
+      
+      // Copy button functionality
+      const copyButtons = document.querySelectorAll('.copy-button');
+      copyButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const codeBlock = this.closest('.code-header').nextElementSibling;
+          const textToCopy = codeBlock.textContent.trim();
+          
+          navigator.clipboard.writeText(textToCopy).then(() => {
+            this.textContent = 'Copied!';
+            setTimeout(() => {
+              this.textContent = 'Copy';
+            }, 2000);
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>

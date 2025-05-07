@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DueDiligenceAI - Data Room</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Base Styles */
+    :root {
+      /* Colors */
+      --deep-navy: #1A2441;
+      --slate-gray: #3C4858;
+      --medium-gray: #6B7280;
+      --light-gray: #F3F4F6;
+      --white: #FFFFFF;
+      --azure-blue: #2D72D9;
+      --light-blue: #EBF5FF;
+      --mint-green: #00BFA5;
+      
+      /* Spacing */
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 12px;
+      --space-lg: 16px;
+      --space-xl: 24px;
+      --space-2xl: 32px;
+      
+      /* Border Radius */
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      
+      /* Shadows */
+      --shadow-sm: 0px 1px 2px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0px 10px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--slate-gray);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+      color: var(--deep-navy);
+      margin-bottom: var(--space-md);
+    }
+    
+    h1 {
+      font-size: 24px;
+      font-weight: 600;
+    }
+    
+    h3.section-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: var(--space-lg);
+    }
+    
+    .container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    
+    /* Two Column Layout */
+    .two-column-layout {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .sidebar {
+      flex: 0 0 280px;
+      width: 280px;
+      min-width: 280px;
+      max-width: 280px;
+      background-color: var(--white);
+      border-right: 1px solid var(--light-gray);
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .main-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: var(--space-xl);
+      background-color: var(--light-gray);
+    }
+    
+    /* Page Header */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-xl);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: var(--space-md);
+    }
+    
+    /* Button Styles */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      border-radius: var(--radius-md);
+      font-weight: 500;
+      font-size: 14px;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .button .icon {
+      width: 18px;
+      height: 18px;
+      margin-right: var(--space-xs);
+    }
+
+    .primary {
+      background-color: var(--azure-blue);
+      color: var(--white);
+    }
+
+    .primary:hover {
+      background-color: #1A5DC7;
+    }
+
+    .secondary {
+      background-color: var(--white);
+      color: var(--azure-blue);
+      border: 1px solid var(--azure-blue);
+    }
+
+    .secondary:hover {
+      background-color: var(--light-blue);
+    }
+
+    .tertiary {
+      background-color: transparent;
+      color: var(--azure-blue);
+      padding: 8px 12px;
+    }
+
+    .tertiary:hover {
+      background-color: var(--light-blue);
+    }
+    
+    /* Sidebar Navigation */
+    .sidebar-header {
+      padding: var(--space-lg);
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .sidebar-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--deep-navy);
+    }
+    
+    .icon-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-md);
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+    }
+
+    .icon-button:hover {
+      background-color: var(--light-gray);
+    }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      stroke-width: 1.5;
+    }
+    
+    /* Folder Tree */
+    .folder-tree {
+      flex: 1;
+      overflow-y: auto;
+    }
+    
+    .tree-item {
+      display: flex;
+      align-items: center;
+      padding: var(--space-md) var(--space-lg);
+      font-size: 14px;
+      cursor: pointer;
+      color: var(--slate-gray);
+      transition: all 0.15s ease;
+    }
+    
+    .tree-item:hover {
+      background-color: var(--light-blue);
+    }
+    
+    .tree-item.active {
+      background-color: var(--light-blue);
+      font-weight: 500;
+      color: var(--azure-blue);
+    }
+    
+    .tree-item .icon {
+      width: 18px;
+      height: 18px;
+      margin-right: var(--space-md);
+      flex-shrink: 0;
+    }
+    
+    .tree-item-nested {
+      padding-left: var(--space-xl);
+    }
+    
+    /* Data Room Info */
+    .data-room-status {
+      padding: var(--space-lg);
+      border-top: 1px solid var(--light-gray);
+      background-color: var(--light-blue);
+    }
+    
+    .status-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-md);
+    }
+    
+    .status-title {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--deep-navy);
+    }
+    
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px var(--space-md);
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    
+    .status-badge.active {
+      background-color: rgba(0, 191, 165, 0.1);
+      color: var(--mint-green);
+    }
+    
+    .status-metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-md);
+      font-size: 13px;
+    }
+    
+    .metric-item {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .metric-label {
+      color: var(--medium-gray);
+      margin-bottom: 2px;
+    }
+    
+    .metric-value {
+      font-weight: 600;
+      color: var(--deep-navy);
+    }
+    
+    /* Tabs */
+    .tabs {
+      display: flex;
+      margin-bottom: var(--space-xl);
+      background-color: var(--white);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .tab {
+      padding: var(--space-md) var(--space-xl);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--slate-gray);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .tab:hover {
+      background-color: var(--light-blue);
+    }
+
+    .tab.active {
+      color: var(--azure-blue);
+      border-bottom: 2px solid var(--azure-blue);
+    }
+    
+    /* File Grid */
+    .file-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: var(--space-lg);
+      margin-bottom: var(--space-xl);
+    }
+    
+    .file-card {
+      background-color: var(--white);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      transition: all 0.15s ease;
+      cursor: pointer;
+    }
+    
+    .file-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+    
+    .file-icon {
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--light-blue);
+    }
+    
+    .file-icon.pdf {
+      background-color: rgba(244, 67, 54, 0.1);
+    }
+    
+    .file-icon.excel {
+      background-color: rgba(46, 125, 50, 0.1);
+    }
+    
+    .file-icon.word {
+      background-color: rgba(33, 150, 243, 0.1);
+    }
+    
+    .file-icon.image {
+      background-color: rgba(156, 39, 176, 0.1);
+    }
+    
+    .file-icon .icon {
+      width: 48px;
+      height: 48px;
+    }
+    
+    .file-info {
+      padding: var(--space-md);
+    }
+    
+    .file-name {
+      font-weight: 500;
+      font-size: 14px;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .file-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--medium-gray);
+    }
+    
+    /* Data Table */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: var(--space-xl);
+      background-color: var(--white);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .data-table th,
+    .data-table td {
+      padding: var(--space-md);
+      text-align: left;
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .data-table th {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--slate-gray);
+      background-color: var(--light-gray);
+    }
+    
+    .data-table td {
+      font-size: 14px;
+    }
+
+    .data-table tbody tr:hover {
+      background-color: var(--light-blue);
+    }
+    
+    .table-action {
+      color: var(--azure-blue);
+      cursor: pointer;
+    }
+    
+    .table-action:hover {
+      text-decoration: underline;
+    }
+    
+    .file-type-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: var(--radius-sm);
+      margin-right: var(--space-sm);
+    }
+    
+    .file-type-icon.pdf {
+      background-color: rgba(244, 67, 54, 0.1);
+      color: #F44336;
+    }
+    
+    .file-type-icon.excel {
+      background-color: rgba(46, 125, 50, 0.1);
+      color: #2E7D32;
+    }
+    
+    .file-type-icon.word {
+      background-color: rgba(33, 150, 243, 0.1);
+      color: #2196F3;
+    }
+    
+    .file-type-icon.image {
+      background-color: rgba(156, 39, 176, 0.1);
+      color: #9C27B0;
+    }
+    
+    .table-file {
+      display: flex;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <!-- Main Content (Container) - This would go after the header in the full page -->
+  <div class="container">
+    <div class="two-column-layout">
+      <!-- Sidebar Navigation -->
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-title">Files & Folders</div>
+          <button class="icon-button">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 12V6M12 12V18M12 12H18M12 12H6" stroke="#3C4858" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+        <div class="folder-tree">
+          <div class="tree-item active">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 17V7C3 5.89543 3.89543 5 5 5H9.58579C9.851 5 10.1054 5.10536 10.2929 5.29289L12 7H19C20.1046 7 21 7.89543 21 9V17C21 18.1046 20.1046 19 19 19H5C3.89543 19 3 18.1046 3 17Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Financial Information
+          </div>
+          <div class="tree-item tree-item-nested">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 17V7C3 5.89543 3.89543 5 5 5H9.58579C9.851 5 10.1054 5.10536 10.2929 5.29289L12 7H19C20.1046 7 21 7.89543 21 9V17C21 18.1046 20.1046 19 19 19H5C3.89543 19 3 18.1046 3 17Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Income Statements
+          </div>
+          <div class="tree-item tree-item-nested">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 17V7C3 5.89543 3.89543 5 5 5H9.58579C9.851 5 10.1054 5.10536 10.2929 5.29289L12 7H19C20.1046 7 21 7.89543 21 9V17C21 18.1046 20.1046 19 19 19H5C3.89543 19 3 18.1046 3 17Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Balance Sheets
+          </div>
+          <div class="tree-item tree-item-nested">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 17V7C3 5.89543 3.89543 5 5 5H9.58579C9.851 5 10.1054 5.10536 10.2929 5.29289L12 7H19C20.1046 7 21 7.89543 21 9V17C21 18.1046 20.1046 19 19 19H5C3.89543 19 3 18.1046 3 17Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Cash Flow Statements
+          </div>
+          <div class="tree-item tree-item-nested">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 17V7C3 5.89543 3.89543 5 5 5H9.58579C9.851 5 10.1054 5.10536 10.2929 5.29289L12 7H19C20.1046 7 21 7.89543 21 9V17C21 18.1046 20.1046 19 19 19H5C3.89543 19 3 18.1046 3 17Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Bank Statements
+          </div>
+          <div class="tree-item">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 17V7C3 5.89543 3.89543 5 5 5H9.58579C9.851 5 10.1054 5.10536 10.2929 5.29289L12 7H19C20.1046 7 21 7.89543 21 9V17C21 18.1046 20.1046 19 19 19H5C3.89543 19 3 18.1046 3 17Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Sales & Client Information
+          </div>
+          <div class="tree-item">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 17V7C3 5.89543 3.89543 5 5 5H9.58579C9.851 5 10.1054 5.10536 10.2929 5.29289L12 7H19C20.1046 7 21 7.89543 21 9V17C21 18.1046 20.1046 19 19 19H5C3.89543 19 3 18.1046 3 17Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Vendor Contracts
+          </div>
+          <div class="tree-item">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 17V7C3 5.89543 3.89543 5 5 5H9.58579C9.851 5 10.1054 5.10536 10.2929 5.29289L12 7H19C20.1046 7 21 7.89543 21 9V17C21 18.1046 20.1046 19 19 19H5C3.89543 19 3 18.1046 3 17Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Legal & Compliance
+          </div>
+          <div class="tree-item">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 17V7C3 5.89543 3.89543 5 5 5H9.58579C9.851 5 10.1054 5.10536 10.2929 5.29289L12 7H19C20.1046 7 21 7.89543 21 9V17C21 18.1046 20.1046 19 19 19H5C3.89543 19 3 18.1046 3 17Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Human Resources
+          </div>
+          <div class="tree-item">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 17V7C3 5.89543 3.89543 5 5 5H9.58579C9.851 5 10.1054 5.10536 10.2929 5.29289L12 7H19C20.1046 7 21 7.89543 21 9V17C21 18.1046 20.1046 19 19 19H5C3.89543 19 3 18.1046 3 17Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Operational Documentation
+          </div>
+          <div class="tree-item">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 17V7C3 5.89543 3.89543 5 5 5H9.58579C9.851 5 10.1054 5.10536 10.2929 5.29289L12 7H19C20.1046 7 21 7.89543 21 9V17C21 18.1046 20.1046 19 19 19H5C3.89543 19 3 18.1046 3 17Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Lender Requirements
+          </div>
+        </div>
+        
+        <!-- Data Room Status -->
+        <div class="data-room-status">
+          <div class="status-header">
+            <div class="status-title">Data Room Status</div>
+            <div class="status-badge active">Active</div>
+          </div>
+          <div class="status-metrics">
+            <div class="metric-item">
+              <div class="metric-label">Total Files</div>
+              <div class="metric-value">124</div>
+            </div>
+            <div class="metric-item">
+              <div class="metric-label">Total Size</div>
+              <div class="metric-value">1.2 GB</div>
+            </div>
+            <div class="metric-item">
+              <div class="metric-label">Last Updated</div>
+              <div class="metric-value">May 3, 2025</div>
+            </div>
+            <div class="metric-item">
+              <div class="metric-label">User Access</div>
+              <div class="metric-value">7 Users</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Main Content Area -->
+      <div class="main-content">
+        <!-- Page Header -->
+        <div class="page-header">
+          <h1>Financial Information</h1>
+          <div class="header-actions">
+            <button class="button secondary">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 16.5V18.75C3 19.9926 4.00736 21 5.25 21H18.75C19.9926 21 21 19.9926 21 18.75V16.5M16.5 12L12 16.5M12 16.5L7.5 12M12 16.5V3" stroke="#2D72D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Download All
+            </button>
+            <button class="button primary">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 5V19M5 12H19" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Upload Files
+            </button>
+          </div>
+        </div>
+        
+        <!-- Content Tabs -->
+        <div class="tabs">
+          <div class="tab active">All Files</div>
+          <div class="tab">Recent Uploads</div>
+          <div class="tab">Important Documents</div>
+          <div class="tab">Shared with Me</div>
+        </div>
+        
+        <!-- Initial Data Room Phase - Financial Marketing Materials -->
+        <h3 class="section-title">Initial Due Diligence (Pre-LOI)</h3>
+        <div class="file-grid">
+          <!-- CBR Document -->
+          <div class="file-card">
+            <div class="file-icon pdf">
+              <svg class="icon" width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="#F44336" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 2V8H20" stroke="#F44336" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16 13H8" stroke="#F44336" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16 17H8" stroke="#F44336" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 9H9H8" stroke="#F44336" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="file-info">
+              <div class="file-name">Confidential Business Review.pdf</div>
+              <div class="file-meta">
+                <span>3.2 MB</span>
+                <span>Apr 12, 2025</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- CIM Document -->
+          <div class="file-card">
+            <div class="file-icon pdf">
+              <svg class="icon" width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="#F44336" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 2V8H20" stroke="#F44336" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16 13H8" stroke="#F44336" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16 17H8" stroke="#F44336" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 9H9H8" stroke="#F44336" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="file-info">
+              <div class="file-name">Confidential Information Memorandum.pdf</div>
+              <div class="file-meta">
+                <span>5.7 MB</span>
+                <span>Apr 15, 2025</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Annual Financial Summary -->
+          <div class="file-card">
+            <div class="file-icon excel">
+              <svg class="icon" width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="#2E7D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 2V8H20" stroke="#2E7D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16 13H8" stroke="#2E7D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16 17H8" stroke="#2E7D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 9H9H8" stroke="#2E7D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="file-info">
+              <div class="file-name">Annual Financial Summary 2022-2024.xlsx</div>
+              <div class="file-meta">
+                <span>1.8 MB</span>
+                <span>Apr 18, 2025</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Market Analysis -->
+          <div class="file-card">
+            <div class="file-icon word">
+              <svg class="icon" width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="#2196F3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 2V8H20" stroke="#2196F3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16 13H8" stroke="#2196F3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16 17H8" stroke="#2196F3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 9H9H8" stroke="#2196F3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="file-info">
+              <div class="file-name">Market Analysis & Positioning.docx</div>
+              <div class="file-meta">
+                <span>2.4 MB</span>
+                <span>Apr 20, 2025</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Comprehensive Due Diligence (Post-LOI) -->
+        <h3 class="section-title">Comprehensive Due Diligence (Post-LOI)</h3>
+        
+        <!-- Financial Statements Table -->
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>File Name</th>
+              <th>Type</th>
+              <th>Period</th>
+              <th>Uploaded</th>
+              <th>Size</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Income Statements -->
+            <tr>
+              <td class="table-file">
+                <div class="file-type-icon excel">
+                  <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                Income Statement - Monthly (2022)
+              </td>
+              <td>Excel</td>
+              <td>Jan-Dec 2022</td>
+              <td>Apr 25, 2025</td>
+              <td>1.2 MB</td>
+              <td>
+                <span class="table-action">View</span> | 
+                <span class="table-action">Download</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="table-file">
+                <div class="file-type-icon excel">
+                  <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                Income Statement - Monthly (2023)
+              </td>
+              <td>Excel</td>
+              <td>Jan-Dec 2023</td>
+              <td>Apr 25, 2025</td>
+              <td>1.3 MB</td>
+              <td>
+                <span class="table-action">View</span> | 
+                <span class="table-action">Download</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="table-file">
+                <div class="file-type-icon excel">
+                  <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                Income Statement - Monthly (2024)
+              </td>
+              <td>Excel</td>
+              <td>Jan-Dec 2024</td>
+              <td>Apr 25, 2025</td>
+              <td>1.3 MB</td>
+              <td>
+                <span class="table-action">View</span> | 
+                <span class="table-action">Download</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="table-file">
+                <div class="file-type-icon excel">
+                  <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                Income Statement - Monthly (2025 YTD)
+              </td>
+              <td>Excel</td>
+              <td>Jan-Apr 2025</td>
+              <td>May 1, 2025</td>
+              <td>0.8 MB</td>
+              <td>
+                <span class="table-action">View</span> | 
+                <span class="table-action">Download</span>
+              </td>
+            </tr>
+            
+            <!-- Balance Sheets -->
+            <tr>
+              <td class="table-file">
+                <div class="file-type-icon excel">
+                  <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                Balance Sheet - Monthly (2022)
+              </td>
+              <td>Excel</td>
+              <td>Jan-Dec 2022</td>
+              <td>Apr 25, 2025</td>
+              <td>1.1 MB</td>
+              <td>
+                <span class="table-action">View</span> | 
+                <span class="table-action">Download</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="table-file">
+                <div class="file-type-icon excel">
+                  <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                Balance Sheet - Monthly (2023)
+              </td>
+              <td>Excel</td>
+              <td>Jan-Dec 2023</td>
+              <td>Apr 25, 2025</td>
+              <td>1.2 MB</td>
+              <td>
+                <span class="table-action">View</span> | 
+                <span class="table-action">Download</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="table-file">
+                <div class="file-type-icon excel">
+                  <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                Balance Sheet - Monthly (2024)
+              </td>
+              <td>Excel</td>
+              <td>Jan-Dec 2024</td>
+              <td>Apr 25, 2025</td>
+              <td>1.2 MB</td>
+              <td>
+                <span class="table-action">View</span> | 
+                <span class="table-action">Download</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="table-file">
+                <div class="file-type-icon excel">
+                  <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                Balance Sheet - Monthly (2025 YTD)
+              </td>
+              <td>Excel</td>
+              <td>Jan-Apr 2025</td>
+              <td>May 1, 2025</td>
+              <td>0.7 MB</td>
+              <td>
+                <span class="table-action">View</span> | 
+                <span class="table-action">Download</span>
+              </td>
+            </tr>
+            
+            <!-- Bank Statements -->
+            <tr>
+              <td class="table-file">
+                <div class="file-type-icon pdf">
+                  <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                Bank Statements (Jan-Jun 2024)
+              </td>
+              <td>PDF</td>
+              <td>Jan-Jun 2024</td>
+              <td>Apr 26, 2025</td>
+              <td>4.2 MB</td>
+              <td>
+                <span class="table-action">View</span> | 
+                <span class="table-action">Download</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="table-file">
+                <div class="file-type-icon pdf">
+                  <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                Bank Statements (Jul-Dec 2024)
+              </td>
+              <td>PDF</td>
+              <td>Jul-Dec 2024</td>
+              <td>Apr 26, 2025</td>
+              <td>4.8 MB</td>
+              <td>
+                <span class="table-action">View</span> | 
+                <span class="table-action">Download</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="table-file">
+                <div class="file-type-icon pdf">
+                  <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                Bank Statements (Jan-Apr 2025)
+              </td>
+              <td>PDF</td>
+              <td>Jan-Apr 2025</td>
+              <td>May 2, 2025</td>
+              <td>3.5 MB</td>
+              <td>
+                <span class="table-action">View</span> | 
+                <span class="table-action">Download</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <!-- Lender Requirements Section -->
+        <h3 class="section-title">Lender Requirements</h3>
+        <div class="file-grid">
+          <!-- Loan Application -->
+          <div class="file-card">
+            <div class="file-icon pdf">
+              <svg class="icon" width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="#F44336" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 2V8H20" stroke="#F44336" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16 13H8" stroke="#F44336" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16 17H8" stroke="#F44336" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 9H9H8" stroke="#F44336" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="file-info">
+              <div class="file-name">Loan Application.pdf</div>
+              <div class="file-meta">
+                <span>1.5 MB</span>
+                <span>May 1, 2025</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Loan Covenant Requirements -->
+          <div class="file-card">
+            <div class="file-icon word">
+              <svg class="icon" width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="#2196F3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 2V8H20" stroke="#2196F3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16 13H8" stroke="#2196F3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16 17H8" stroke="#2196F3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 9H9H8" stroke="#2196F3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="file-info">
+              <div class="file-name">Loan Covenant Requirements.docx</div>
+              <div class="file-meta">
+                <span>0.8 MB</span>
+                <span>May 1, 2025</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Collateral Assessment -->
+          <div class="file-card">
+            <div class="file-icon excel">
+              <svg class="icon" width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="#2E7D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 2V8H20" stroke="#2E7D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16 13H8" stroke="#2E7D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16 17H8" stroke="#2E7D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 9H9H8" stroke="#2E7D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="file-info">
+              <div class="file-name">Collateral Assessment.xlsx</div>
+              <div class="file-meta">
+                <span>1.3 MB</span>
+                <span>May 2, 2025</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Debt Schedule -->
+          <div class="file-card">
+            <div class="file-icon excel">
+              <svg class="icon" width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="#2E7D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 2V8H20" stroke="#2E7D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16 13H8" stroke="#2E7D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16 17H8" stroke="#2E7D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 9H9H8" stroke="#2E7D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="file-info">
+              <div class="file-name">Debt Schedule.xlsx</div>
+              <div class="file-meta">
+                <span>0.9 MB</span>
+                <span>May 2, 2025</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+
+              
